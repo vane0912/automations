@@ -67,93 +67,93 @@ def recordEvidence():
         time.sleep(0.5)
         pyautogui.hotkey('option','down')
     ## Go to top of page
-    time.sleep(1)
+    time.sleep(0.5)
     pyautogui.hotkey('command', 'up')
-    time.sleep(1)
+    time.sleep(0.5)
     ## Mobile 375px
     pyautogui.click(mobile_375)
-    time.sleep(1)
+    time.sleep(0.5)
     pyautogui.moveTo(433,352)
     pyautogui.click()
     for x in range(12):
         time.sleep(0.5)
         pyautogui.hotkey('option','down')
     ## Go to top of page
-    time.sleep(1)
+    time.sleep(0.5)
     pyautogui.hotkey('command', 'up')
-    time.sleep(1)
+    time.sleep(0.5)
     ## Mobile 425px
     pyautogui.click(mobile_425)
-    time.sleep(1)
+    time.sleep(0.5)
     pyautogui.moveTo(433,352)
     pyautogui.click()
     for x in range(13):
         time.sleep(0.5)
         pyautogui.hotkey('option','down')
     ## Go to top of page
-    time.sleep(1)
+    time.sleep(0.5)
     pyautogui.hotkey('command', 'up')
-    time.sleep(1)
+    time.sleep(0.5)
     ## Tablet 768px
     pyautogui.click(tablet_768)
-    time.sleep(1)
+    time.sleep(0.5)
     pyautogui.moveTo(433,352)
     pyautogui.click()
     for x in range(10):
         time.sleep(0.5)
         pyautogui.hotkey('option','down')
     ## Go to top of page
-    time.sleep(1)
+    time.sleep(0.5)
     pyautogui.hotkey('command', 'up')
-    time.sleep(1)
+    time.sleep(0.5)
     ## Desktop 1024px, 1440px, 2560px
     pyautogui.moveTo(desktop_resolutions)
     pyautogui.click()
-    time.sleep(1)
+    time.sleep(0.5)
     pyautogui.moveTo(433,352)
     pyautogui.click()
     for x in range(8):
         time.sleep(0.5)
         pyautogui.hotkey('option','down')
     ## Go to top of page
-    time.sleep(1)
+    time.sleep(0.5)
     pyautogui.hotkey('command', 'up')
-    time.sleep(1)
+    time.sleep(0.5)
     # 1440
     pyautogui.moveTo(desktop_resolutions)
     pyautogui.click()
-    time.sleep(1)
+    time.sleep(0.5)
     pyautogui.moveTo(433,352)
     pyautogui.click()
     for x in range(5):
         time.sleep(0.5)
         pyautogui.hotkey('option','down')
     ## Go to top of page
-    time.sleep(1)
+    time.sleep(0.5)
     pyautogui.hotkey('command', 'up')
-    time.sleep(1)
+    time.sleep(0.5)
     # 2560
     pyautogui.moveTo(desktop_resolutions)
     pyautogui.click()
-    time.sleep(1)
+    time.sleep(0.5)
     pyautogui.moveTo(433,280)
     pyautogui.click()
     for x in range(2):
         time.sleep(0.5)
         pyautogui.hotkey('option','down')
     ## Go to top of page
-    time.sleep(1)
+    time.sleep(0.5)
     pyautogui.hotkey('command', 'up')
-    time.sleep(1)
+    time.sleep(0.5)
     
     ## Ivisa Plus
     browser.get(url + "/plus")
     ## Scroll page
     pyautogui.click()
     for x in range(2):
-        time.sleep(1)
+        time.sleep(0.5)
         pyautogui.hotkey('option','down')
-    time.sleep(1)
+    time.sleep(0.5)
     ## Mobile 320
     pyautogui.click(mobile_320)
     pyautogui.hotkey('command','r')
@@ -163,74 +163,74 @@ def recordEvidence():
     pyautogui.click()
     pyautogui.hotkey('option','up')
     for x in range(8):
-        time.sleep(1)
+        time.sleep(0.5)
         pyautogui.hotkey('option','down')
     ## Go to top of page
-    time.sleep(1)
+    time.sleep(0.5)
     pyautogui.hotkey('command', 'up')
-    time.sleep(1)
+    time.sleep(0.5)
     ## Mobile 375
     pyautogui.click(mobile_375)
-    time.sleep(1)
+    time.sleep(0.5)
     pyautogui.moveTo(433,352)
     pyautogui.click()
     for x in range(7):
-        time.sleep(1)
+        time.sleep(0.5)
         pyautogui.hotkey('option','down')
     ## Go to top of page
-    time.sleep(1)
+    time.sleep(0.5)
     pyautogui.hotkey('command', 'up')
-    time.sleep(1)
+    time.sleep(0.5)
     ## Mobile 425
     pyautogui.click(mobile_425)
-    time.sleep(1)
+    time.sleep(0.5)
     pyautogui.moveTo(433,352)
     pyautogui.click()
     for x in range(7):
-        time.sleep(1)
+        time.sleep(0.5)
         pyautogui.hotkey('option','down')
     ## Go to top of page
-    time.sleep(1)
+    time.sleep(0.5)
     pyautogui.hotkey('command', 'up')
-    time.sleep(1)
+    time.sleep(0.5)
     ## tablet 768
     pyautogui.click(tablet_768)
-    time.sleep(1)
+    time.sleep(0.5)
     pyautogui.moveTo(433,352)
     pyautogui.click()
     for x in range(6):
-        time.sleep(1)
+        time.sleep(0.5)
         pyautogui.hotkey('option','down')
     ## Go to top of page
-    time.sleep(1)
+    time.sleep(0.5)
     pyautogui.hotkey('command', 'up')
-    time.sleep(1)
+    time.sleep(0.5)
     ## Desktop
     pyautogui.moveTo(desktop_resolutions)
     pyautogui.click()
-    time.sleep(1)
+    time.sleep(0.5)
     pyautogui.moveTo(433,352)
     pyautogui.click()
     for x in range(4):
-        time.sleep(1)
+        time.sleep(0.5)
         pyautogui.hotkey('option','down')
     ## Go to top of page
-    time.sleep(1)
+    time.sleep(0.5)
     pyautogui.hotkey('command', 'up')
-    time.sleep(1)
+    time.sleep(0.5)
     # 1440
     pyautogui.moveTo(desktop_resolutions)
     pyautogui.click()
-    time.sleep(1)
+    time.sleep(0.5)
     pyautogui.moveTo(433,352)
     pyautogui.click()
     for x in range(2):
-        time.sleep(1)
+        time.sleep(0.5)
         pyautogui.hotkey('option','down')
     ## Go to top of page
-    time.sleep(1)
+    time.sleep(0.5)
     pyautogui.hotkey('command', 'up')
-    time.sleep(1)
+    time.sleep(0.5)
 
     ## Passport Renewals 
     browser.get(url + "/passport-renewal/united-states")
@@ -243,87 +243,87 @@ def recordEvidence():
     pyautogui.click()
     pyautogui.hotkey('option','up')
     for x in range(9):
-        time.sleep(1)
+        time.sleep(0.5)
         pyautogui.hotkey('option','down')
     ## Go to top of page
-    time.sleep(1)
+    time.sleep(0.5)
     pyautogui.hotkey('command', 'up')
-    time.sleep(1)
+    time.sleep(0.5)
     ## Mobile 375px
     pyautogui.click(mobile_375)
-    time.sleep(1)
+    time.sleep(0.5)
     pyautogui.moveTo(433,352)
     pyautogui.click()
     for x in range(9):
-        time.sleep(1)
+        time.sleep(0.5)
         pyautogui.hotkey('option','down')
     ## Go to top of page
-    time.sleep(1)
+    time.sleep(0.5)
     pyautogui.hotkey('command', 'up')
-    time.sleep(1)
+    time.sleep(0.5)
     ## Mobile 425px
     pyautogui.click(mobile_425)
-    time.sleep(1)
+    time.sleep(0.5)
     pyautogui.moveTo(433,352)
     pyautogui.click()
     for x in range(9):
-        time.sleep(1)
+        time.sleep(0.5)
         pyautogui.hotkey('option','down')
     ## Go to top of page
-    time.sleep(1)
+    time.sleep(0.5)
     pyautogui.hotkey('command', 'up')
-    time.sleep(1)
+    time.sleep(0.5)
     ## Tablet 768px
     pyautogui.click(tablet_768)
-    time.sleep(1)
+    time.sleep(0.5)
     pyautogui.moveTo(433,352)
     pyautogui.click()
     for x in range(7):
-        time.sleep(1)
+        time.sleep(0.5)
         pyautogui.hotkey('option','down')
     ## Go to top of page
-    time.sleep(1)
+    time.sleep(0.5)
     pyautogui.hotkey('command', 'up')
-    time.sleep(1)
+    time.sleep(0.5)
     ## Desktop 1024px, 1440px, 2560px
     pyautogui.moveTo(desktop_resolutions)
     pyautogui.click()
-    time.sleep(1)
+    time.sleep(0.5)
     pyautogui.moveTo(433,352)
     pyautogui.click()
     for x in range(7):
-        time.sleep(1)
+        time.sleep(0.5)
         pyautogui.hotkey('option','down')
     ## Go to top of page
-    time.sleep(1)
+    time.sleep(0.5)
     pyautogui.hotkey('command', 'up')
-    time.sleep(1)
+    time.sleep(0.5)
     # 1440
     pyautogui.moveTo(desktop_resolutions)
     pyautogui.click()
-    time.sleep(1)
+    time.sleep(0.5)
     pyautogui.moveTo(433,352)
     pyautogui.click()
     for x in range(5):
-        time.sleep(1)
+        time.sleep(0.5)
         pyautogui.hotkey('option','down')
     ## Go to top of page
-    time.sleep(1)
+    time.sleep(0.5)
     pyautogui.hotkey('command', 'up')
-    time.sleep(1)
+    time.sleep(0.5)
     # 2560
     pyautogui.moveTo(desktop_resolutions)
     pyautogui.click()
-    time.sleep(1)
+    time.sleep(0.5)
     pyautogui.moveTo(433,280)
     pyautogui.click()
     for x in range(2):
-        time.sleep(1)
+        time.sleep(0.5)
         pyautogui.hotkey('option','down')
     ## Go to top of page
-    time.sleep(1)
+    time.sleep(0.5)
     pyautogui.hotkey('command', 'up')
-    time.sleep(1)
+    time.sleep(0.5)
 
     ## About Us
     browser.get(url + "/about-us")
@@ -336,87 +336,87 @@ def recordEvidence():
     pyautogui.click()
     pyautogui.hotkey('option','up')
     for x in range(9):
-        time.sleep(1)
+        time.sleep(0.5)
         pyautogui.hotkey('option','down')
     ## Go to top of page
-    time.sleep(1)
+    time.sleep(0.5)
     pyautogui.hotkey('command', 'up')
-    time.sleep(1)
+    time.sleep(0.5)
     ## Mobile 375px
     pyautogui.click(mobile_375)
-    time.sleep(1)
+    time.sleep(0.5)
     pyautogui.moveTo(433,352)
     pyautogui.click()
     for x in range(9):
-        time.sleep(1)
+        time.sleep(0.5)
         pyautogui.hotkey('option','down')
     ## Go to top of page
-    time.sleep(1)
+    time.sleep(0.5)
     pyautogui.hotkey('command', 'up')
-    time.sleep(1)
+    time.sleep(0.5)
     ## Mobile 425px
     pyautogui.click(mobile_425)
-    time.sleep(1)
+    time.sleep(0.5)
     pyautogui.moveTo(433,352)
     pyautogui.click()
     for x in range(9):
-        time.sleep(1)
+        time.sleep(0.5)
         pyautogui.hotkey('option','down')
     ## Go to top of page
-    time.sleep(1)
+    time.sleep(0.5)
     pyautogui.hotkey('command', 'up')
-    time.sleep(1)
+    time.sleep(0.5)
     ## Tablet 768px
     pyautogui.click(tablet_768)
-    time.sleep(1)
+    time.sleep(0.5)
     pyautogui.moveTo(433,352)
     pyautogui.click()
     for x in range(7):
-        time.sleep(1)
+        time.sleep(0.5)
         pyautogui.hotkey('option','down')
     ## Go to top of page
-    time.sleep(1)
+    time.sleep(0.5)
     pyautogui.hotkey('command', 'up')
-    time.sleep(1)
+    time.sleep(0.5)
     ## Desktop 1024px, 1440px, 2560px
     pyautogui.moveTo(desktop_resolutions)
     pyautogui.click()
-    time.sleep(1)
+    time.sleep(0.5)
     pyautogui.moveTo(433,352)
     pyautogui.click()
     for x in range(4):
-        time.sleep(1)
+        time.sleep(0.5)
         pyautogui.hotkey('option','down')
     ## Go to top of page
-    time.sleep(1)
+    time.sleep(0.5)
     pyautogui.hotkey('command', 'up')
-    time.sleep(1)
+    time.sleep(0.5)
     # 1440
     pyautogui.moveTo(desktop_resolutions)
     pyautogui.click()
-    time.sleep(1)
+    time.sleep(0.5)
     pyautogui.moveTo(433,352)
     pyautogui.click()
     for x in range(2):
-        time.sleep(1)
+        time.sleep(0.5)
         pyautogui.hotkey('option','down')
     ## Go to top of page
-    time.sleep(1)
+    time.sleep(0.5)
     pyautogui.hotkey('command', 'up')
-    time.sleep(1)
+    time.sleep(0.5)
     # 2560
     pyautogui.moveTo(desktop_resolutions)
     pyautogui.click()
-    time.sleep(1)
+    time.sleep(0.5)
     pyautogui.moveTo(433,280)
     pyautogui.click()
     for x in range(2):
-        time.sleep(1)
+        time.sleep(0.5)
         pyautogui.hotkey('option','down')
     ## Go to top of page
-    time.sleep(1)
+    time.sleep(0.5)
     pyautogui.hotkey('command', 'up')
-    time.sleep(1)
+    time.sleep(0.5)
 
     ## Contact Us
     browser.get(url + "/contact-us")
@@ -431,87 +431,87 @@ def recordEvidence():
     pyautogui.click()
     pyautogui.hotkey('option','up')
     for x in range(6):
-        time.sleep(1)
+        time.sleep(0.5)
         pyautogui.hotkey('option','down')
     ## Go to top of page
-    time.sleep(1)
+    time.sleep(0.5)
     pyautogui.hotkey('command', 'up')
-    time.sleep(1)
+    time.sleep(0.5)
     ## Mobile 375px
     pyautogui.click(mobile_375)
-    time.sleep(1)
+    time.sleep(0.5)
     pyautogui.moveTo(433,352)
     pyautogui.click()
     for x in range(6):
-        time.sleep(1)
+        time.sleep(0.5)
         pyautogui.hotkey('option','down')
     ## Go to top of page
-    time.sleep(1)
+    time.sleep(0.5)
     pyautogui.hotkey('command', 'up')
-    time.sleep(1)
+    time.sleep(0.5)
     ## Mobile 425px
     pyautogui.click(mobile_425)
-    time.sleep(1)
+    time.sleep(0.5)
     pyautogui.moveTo(433,352)
     pyautogui.click()
     for x in range(5):
-        time.sleep(1)
+        time.sleep(0.5)
         pyautogui.hotkey('option','down')
     ## Go to top of page
-    time.sleep(1)
+    time.sleep(0.5)
     pyautogui.hotkey('command', 'up')
-    time.sleep(1)
+    time.sleep(0.5)
     ## Tablet 768px
     pyautogui.click(tablet_768)
-    time.sleep(1)
+    time.sleep(0.5)
     pyautogui.moveTo(433,352)
     pyautogui.click()
     for x in range(5):
-        time.sleep(1)
+        time.sleep(0.5)
         pyautogui.hotkey('option','down')
     ## Go to top of page
-    time.sleep(1)
+    time.sleep(0.5)
     pyautogui.hotkey('command', 'up')
-    time.sleep(1)
+    time.sleep(0.5)
     ## Desktop 1024px, 1440px, 2560px
     pyautogui.moveTo(desktop_resolutions)
     pyautogui.click()
-    time.sleep(1)
+    time.sleep(0.5)
     pyautogui.moveTo(433,352)
     pyautogui.click()
     for x in range(3):
-        time.sleep(1)
+        time.sleep(0.5)
         pyautogui.hotkey('option','down')
     ## Go to top of page
-    time.sleep(1)
+    time.sleep(0.5)
     pyautogui.hotkey('command', 'up')
-    time.sleep(1)
+    time.sleep(0.5)
     # 1440
     pyautogui.moveTo(desktop_resolutions)
     pyautogui.click()
-    time.sleep(1)
+    time.sleep(0.5)
     pyautogui.moveTo(433,352)
     pyautogui.click()
     for x in range(2):
-        time.sleep(1)
+        time.sleep(0.5)
         pyautogui.hotkey('option','down')
     ## Go to top of page
-    time.sleep(1)
+    time.sleep(0.5)
     pyautogui.hotkey('command', 'up')
-    time.sleep(1)
+    time.sleep(0.5)
     # 2560
     pyautogui.moveTo(desktop_resolutions)
     pyautogui.click()
-    time.sleep(1)
+    time.sleep(0.5)
     pyautogui.moveTo(433,280)
     pyautogui.click()
     for x in range(1):
-        time.sleep(1)
+        time.sleep(0.5)
         pyautogui.hotkey('option','down')
     ## Go to top of page
-    time.sleep(1)
+    time.sleep(0.5)
     pyautogui.hotkey('command', 'up')
-    time.sleep(1)
+    time.sleep(0.5)
     ## Stop recording
     pyautogui.keyDown('option')
     pyautogui.keyDown('s')
