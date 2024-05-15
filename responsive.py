@@ -519,7 +519,7 @@ def recordEvidence():
     pyautogui.keyUp('s')
     while(True):
        pass
-asyncio.run(recordEvidence())
+recordEvidence()
 
 
 
