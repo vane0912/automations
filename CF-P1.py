@@ -1,24 +1,17 @@
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
-import time, pyscreeze, pyautogui, asyncio
+import Global_Variables
+import time, pyautogui
 
 
-def recordEvidence():
-    ##Get screen size
-    url = "https://www.ivisa.com"
-    screen_size = pyautogui.size()
-    mobile_320 = (448, 174)
-    mobile_375 = (618, 177)
-    mobile_425 = (641,177)
-    tablet_768 = (679,181)
-    desktop_resolutions = (853, 178)
+def CF_P1():
     ## Open Ivisa page with selenium
     browser = webdriver.Chrome()
-    browser.get(url)
+    browser.get(Global_Variables.url)
     time.sleep(4) 
     ## Move mouse to center of the screen
-    pyautogui.click(screen_size.width / 2, screen_size.height / 2) 
+    pyautogui.click(Global_Variables.screen_size.width / 2, Global_Variables.screen_size.height / 2) 
     ## Screen full size
     pyautogui.hotkey('command', 'ctrl', 'f') 
     time.sleep(2)
@@ -48,7 +41,7 @@ def recordEvidence():
     pyautogui.keyUp('option')
     pyautogui.keyUp('g')
     ## Mobile 320px resolution
-    pyautogui.click(mobile_320)
+    pyautogui.click(Global_Variables.mobile_320)
     pyautogui.hotkey('command','r')
     time.sleep(2)
     ## Scroll down
@@ -71,7 +64,7 @@ def recordEvidence():
     pyautogui.hotkey('command', 'up')
     time.sleep(0.5)
     ## Mobile 375px
-    pyautogui.click(mobile_375)
+    pyautogui.click(Global_Variables.mobile_375)
     time.sleep(0.5)
     pyautogui.moveTo(433,352)
     pyautogui.click()
@@ -83,7 +76,7 @@ def recordEvidence():
     pyautogui.hotkey('command', 'up')
     time.sleep(0.5)
     ## Mobile 425px
-    pyautogui.click(mobile_425)
+    pyautogui.click(Global_Variables.mobile_425)
     time.sleep(0.5)
     pyautogui.moveTo(433,352)
     pyautogui.click()
@@ -95,7 +88,7 @@ def recordEvidence():
     pyautogui.hotkey('command', 'up')
     time.sleep(0.5)
     ## Tablet 768px
-    pyautogui.click(tablet_768)
+    pyautogui.click(Global_Variables.tablet_768)
     time.sleep(0.5)
     pyautogui.moveTo(433,352)
     pyautogui.click()
@@ -107,7 +100,7 @@ def recordEvidence():
     pyautogui.hotkey('command', 'up')
     time.sleep(0.5)
     ## Desktop 1024px, 1440px, 2560px
-    pyautogui.moveTo(desktop_resolutions)
+    pyautogui.moveTo(Global_Variables.desktop_resolutions)
     pyautogui.click()
     time.sleep(0.5)
     pyautogui.moveTo(433,352)
@@ -120,7 +113,7 @@ def recordEvidence():
     pyautogui.hotkey('command', 'up')
     time.sleep(0.5)
     # 1440
-    pyautogui.moveTo(desktop_resolutions)
+    pyautogui.moveTo(Global_Variables.desktop_resolutions)
     pyautogui.click()
     time.sleep(0.5)
     pyautogui.moveTo(433,352)
@@ -133,7 +126,7 @@ def recordEvidence():
     pyautogui.hotkey('command', 'up')
     time.sleep(0.5)
     # 2560
-    pyautogui.moveTo(desktop_resolutions)
+    pyautogui.moveTo(Global_Variables.desktop_resolutions)
     pyautogui.click()
     time.sleep(0.5)
     pyautogui.moveTo(433,280)
@@ -147,7 +140,7 @@ def recordEvidence():
     time.sleep(0.5)
     
     ## Ivisa Plus
-    browser.get(url + "/plus")
+    browser.get(Global_Variables.url + "/plus")
     ## Scroll page
     pyautogui.click()
     for x in range(2):
@@ -155,7 +148,7 @@ def recordEvidence():
         pyautogui.hotkey('option','down')
     time.sleep(0.5)
     ## Mobile 320
-    pyautogui.click(mobile_320)
+    pyautogui.click(Global_Variables.mobile_320)
     pyautogui.hotkey('command','r')
     time.sleep(2)
     ## Scroll down
@@ -170,7 +163,7 @@ def recordEvidence():
     pyautogui.hotkey('command', 'up')
     time.sleep(0.5)
     ## Mobile 375
-    pyautogui.click(mobile_375)
+    pyautogui.click(Global_Variables.mobile_375)
     time.sleep(0.5)
     pyautogui.moveTo(433,352)
     pyautogui.click()
@@ -182,7 +175,7 @@ def recordEvidence():
     pyautogui.hotkey('command', 'up')
     time.sleep(0.5)
     ## Mobile 425
-    pyautogui.click(mobile_425)
+    pyautogui.click(Global_Variables.mobile_425)
     time.sleep(0.5)
     pyautogui.moveTo(433,352)
     pyautogui.click()
@@ -194,7 +187,7 @@ def recordEvidence():
     pyautogui.hotkey('command', 'up')
     time.sleep(0.5)
     ## tablet 768
-    pyautogui.click(tablet_768)
+    pyautogui.click(Global_Variables.tablet_768)
     time.sleep(0.5)
     pyautogui.moveTo(433,352)
     pyautogui.click()
@@ -206,7 +199,7 @@ def recordEvidence():
     pyautogui.hotkey('command', 'up')
     time.sleep(0.5)
     ## Desktop
-    pyautogui.moveTo(desktop_resolutions)
+    pyautogui.moveTo(Global_Variables.desktop_resolutions)
     pyautogui.click()
     time.sleep(0.5)
     pyautogui.moveTo(433,352)
@@ -219,7 +212,7 @@ def recordEvidence():
     pyautogui.hotkey('command', 'up')
     time.sleep(0.5)
     # 1440
-    pyautogui.moveTo(desktop_resolutions)
+    pyautogui.moveTo(Global_Variables.desktop_resolutions)
     pyautogui.click()
     time.sleep(0.5)
     pyautogui.moveTo(433,352)
@@ -233,9 +226,9 @@ def recordEvidence():
     time.sleep(0.5)
 
     ## Passport Renewals 
-    browser.get(url + "/passport-renewal/united-states")
+    browser.get(Global_Variables.url + "/passport-renewal/united-states")
     ## Mobile 320px resolution
-    pyautogui.click(mobile_320)
+    pyautogui.click(Global_Variables.mobile_320)
     pyautogui.hotkey('command','r')
     time.sleep(2)
     ## Scroll down
@@ -250,7 +243,7 @@ def recordEvidence():
     pyautogui.hotkey('command', 'up')
     time.sleep(0.5)
     ## Mobile 375px
-    pyautogui.click(mobile_375)
+    pyautogui.click(Global_Variables.mobile_375)
     time.sleep(0.5)
     pyautogui.moveTo(433,352)
     pyautogui.click()
@@ -262,7 +255,7 @@ def recordEvidence():
     pyautogui.hotkey('command', 'up')
     time.sleep(0.5)
     ## Mobile 425px
-    pyautogui.click(mobile_425)
+    pyautogui.click(Global_Variables.mobile_425)
     time.sleep(0.5)
     pyautogui.moveTo(433,352)
     pyautogui.click()
@@ -274,7 +267,7 @@ def recordEvidence():
     pyautogui.hotkey('command', 'up')
     time.sleep(0.5)
     ## Tablet 768px
-    pyautogui.click(tablet_768)
+    pyautogui.click(Global_Variables.tablet_768)
     time.sleep(0.5)
     pyautogui.moveTo(433,352)
     pyautogui.click()
@@ -286,7 +279,7 @@ def recordEvidence():
     pyautogui.hotkey('command', 'up')
     time.sleep(0.5)
     ## Desktop 1024px, 1440px, 2560px
-    pyautogui.moveTo(desktop_resolutions)
+    pyautogui.moveTo(Global_Variables.desktop_resolutions)
     pyautogui.click()
     time.sleep(0.5)
     pyautogui.moveTo(433,352)
@@ -299,7 +292,7 @@ def recordEvidence():
     pyautogui.hotkey('command', 'up')
     time.sleep(0.5)
     # 1440
-    pyautogui.moveTo(desktop_resolutions)
+    pyautogui.moveTo(Global_Variables.desktop_resolutions)
     pyautogui.click()
     time.sleep(0.5)
     pyautogui.moveTo(433,352)
@@ -312,7 +305,7 @@ def recordEvidence():
     pyautogui.hotkey('command', 'up')
     time.sleep(0.5)
     # 2560
-    pyautogui.moveTo(desktop_resolutions)
+    pyautogui.moveTo(Global_Variables.desktop_resolutions)
     pyautogui.click()
     time.sleep(0.5)
     pyautogui.moveTo(433,280)
@@ -326,9 +319,9 @@ def recordEvidence():
     time.sleep(0.5)
 
     ## About Us
-    browser.get(url + "/about-us")
+    browser.get(Global_Variables.url + "/about-us")
     ## Mobile 320px resolution
-    pyautogui.click(mobile_320)
+    pyautogui.click(Global_Variables.mobile_320)
     pyautogui.hotkey('command','r')
     time.sleep(2)
     ## Scroll down
@@ -343,7 +336,7 @@ def recordEvidence():
     pyautogui.hotkey('command', 'up')
     time.sleep(0.5)
     ## Mobile 375px
-    pyautogui.click(mobile_375)
+    pyautogui.click(Global_Variables.mobile_375)
     time.sleep(0.5)
     pyautogui.moveTo(433,352)
     pyautogui.click()
@@ -355,7 +348,7 @@ def recordEvidence():
     pyautogui.hotkey('command', 'up')
     time.sleep(0.5)
     ## Mobile 425px
-    pyautogui.click(mobile_425)
+    pyautogui.click(Global_Variables.mobile_425)
     time.sleep(0.5)
     pyautogui.moveTo(433,352)
     pyautogui.click()
@@ -367,7 +360,7 @@ def recordEvidence():
     pyautogui.hotkey('command', 'up')
     time.sleep(0.5)
     ## Tablet 768px
-    pyautogui.click(tablet_768)
+    pyautogui.click(Global_Variables.tablet_768)
     time.sleep(0.5)
     pyautogui.moveTo(433,352)
     pyautogui.click()
@@ -379,7 +372,7 @@ def recordEvidence():
     pyautogui.hotkey('command', 'up')
     time.sleep(0.5)
     ## Desktop 1024px, 1440px, 2560px
-    pyautogui.moveTo(desktop_resolutions)
+    pyautogui.moveTo(Global_Variables.desktop_resolutions)
     pyautogui.click()
     time.sleep(0.5)
     pyautogui.moveTo(433,352)
@@ -392,7 +385,7 @@ def recordEvidence():
     pyautogui.hotkey('command', 'up')
     time.sleep(0.5)
     # 1440
-    pyautogui.moveTo(desktop_resolutions)
+    pyautogui.moveTo(Global_Variables.desktop_resolutions)
     pyautogui.click()
     time.sleep(0.5)
     pyautogui.moveTo(433,352)
@@ -405,7 +398,7 @@ def recordEvidence():
     pyautogui.hotkey('command', 'up')
     time.sleep(0.5)
     # 2560
-    pyautogui.moveTo(desktop_resolutions)
+    pyautogui.moveTo(Global_Variables.desktop_resolutions)
     pyautogui.click()
     time.sleep(0.5)
     pyautogui.moveTo(433,280)
@@ -419,9 +412,9 @@ def recordEvidence():
     time.sleep(0.5)
 
     ## Contact Us
-    browser.get(url + "/contact-us")
+    browser.get(Global_Variables.url + "/contact-us")
     ## Mobile 320px resolution
-    pyautogui.click(mobile_320)
+    pyautogui.click(Global_Variables.mobile_320)
     pyautogui.hotkey('command','r')
     time.sleep(8)
     pyautogui.click(570, 257)
@@ -438,7 +431,7 @@ def recordEvidence():
     pyautogui.hotkey('command', 'up')
     time.sleep(0.5)
     ## Mobile 375px
-    pyautogui.click(mobile_375)
+    pyautogui.click(Global_Variables.mobile_375)
     time.sleep(0.5)
     pyautogui.moveTo(433,352)
     pyautogui.click()
@@ -450,7 +443,7 @@ def recordEvidence():
     pyautogui.hotkey('command', 'up')
     time.sleep(0.5)
     ## Mobile 425px
-    pyautogui.click(mobile_425)
+    pyautogui.click(Global_Variables.mobile_425)
     time.sleep(0.5)
     pyautogui.moveTo(433,352)
     pyautogui.click()
@@ -462,7 +455,7 @@ def recordEvidence():
     pyautogui.hotkey('command', 'up')
     time.sleep(0.5)
     ## Tablet 768px
-    pyautogui.click(tablet_768)
+    pyautogui.click(Global_Variables.tablet_768)
     time.sleep(0.5)
     pyautogui.moveTo(433,352)
     pyautogui.click()
@@ -474,7 +467,7 @@ def recordEvidence():
     pyautogui.hotkey('command', 'up')
     time.sleep(0.5)
     ## Desktop 1024px, 1440px, 2560px
-    pyautogui.moveTo(desktop_resolutions)
+    pyautogui.moveTo(Global_Variables.desktop_resolutions)
     pyautogui.click()
     time.sleep(0.5)
     pyautogui.moveTo(433,352)
@@ -487,7 +480,7 @@ def recordEvidence():
     pyautogui.hotkey('command', 'up')
     time.sleep(0.5)
     # 1440
-    pyautogui.moveTo(desktop_resolutions)
+    pyautogui.moveTo(Global_Variables.desktop_resolutions)
     pyautogui.click()
     time.sleep(0.5)
     pyautogui.moveTo(433,352)
@@ -500,7 +493,7 @@ def recordEvidence():
     pyautogui.hotkey('command', 'up')
     time.sleep(0.5)
     # 2560
-    pyautogui.moveTo(desktop_resolutions)
+    pyautogui.moveTo(Global_Variables.desktop_resolutions)
     pyautogui.click()
     time.sleep(0.5)
     pyautogui.moveTo(433,280)
@@ -519,7 +512,7 @@ def recordEvidence():
     pyautogui.keyUp('s')
     while(True):
        pass
-recordEvidence()
+CF_P1()
 
 
 
