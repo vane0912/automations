@@ -1,1 +1,1 @@
-last_name_txt
+/turkey/apply-no

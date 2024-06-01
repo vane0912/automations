@@ -8,7 +8,7 @@ import time, pyautogui, Global_Variables
 def TR_App_P2():
     ## Open Ivisa page with selenium
     browser = webdriver.Chrome()
-    for x in range(8):
+    for x in range(6):
         wait = WebDriverWait(browser, 150)
         browser.get(Global_Variables.url + '/turkey/apply-now')
         if(x == 0):

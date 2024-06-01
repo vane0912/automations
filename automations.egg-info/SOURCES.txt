@@ -1,0 +1,7 @@
+setup.py
+automations/__init__.py
+automations.egg-info/PKG-INFO
+automations.egg-info/SOURCES.txt
+automations.egg-info/dependency_links.txt
+automations.egg-info/requires.txt
+automations.egg-info/top_level.txt
