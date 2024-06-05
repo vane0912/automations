@@ -5,7 +5,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time, pyautogui, automations.Global_Variables as Global_Variables
 
-def EG_App_P2():
+def EG_180_Multiple():
     browser = webdriver.Chrome()
     wait = WebDriverWait(browser, 150)
     for x in range(3):
@@ -137,4 +137,3 @@ def EG_App_P2():
         wait.until(EC.element_to_be_clickable((By.ID, "btnSubmitPayment"))).click()
         wait.until(EC.element_to_be_clickable((By.ID, "btnCompleteProcess"))).click()
         time.sleep(3)
-EG_App_P2()

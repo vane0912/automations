@@ -149,4 +149,3 @@ def B1_B2():
         phone_postpayment = browser.find_element(By.NAME, "telephone")
         phone_postpayment.send_keys('6141212321')
         time.sleep(10)
-B1_B2()

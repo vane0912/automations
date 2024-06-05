@@ -5,7 +5,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time, pyautogui, automations.Global_Variables as Global_Variables
 
-def CF_P2():
+def India_1y_Multiple():
     browser = webdriver.Chrome()
     wait = WebDriverWait(browser, 60)
     ## Open Ivisa page with selenium
@@ -61,4 +61,3 @@ def CF_P2():
     continue_btn_sidebar.click()
     time.sleep(8)
     browser.quit()
-CF_P2()

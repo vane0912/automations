@@ -512,7 +512,6 @@ def CF_P1():
     pyautogui.keyUp('s')
     while(True):
        pass
-CF_P1()
 
 
 
