@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}App Automations{% endblock %}
+{% block content %}
+   <h1 class="text-5xl font-extrabold">Application Automations</h1>
+   <div class="w-9/12 h-full mt-12 flex">
+        <div class="col-span-2 bg-black rounded-sm w-5/12">
+            {%for value in categories%}
+                <h1 onclick="get_automations(this.innerText)" class="text-white font-semibold cursor-pointer py-3 px-6 hover:bg-green-500 hover:text-black">
+                    {{ value }}
+                </h1>
+            {%endfor%}
+        </div>
+        <div class="w-full">   
+            <input
+                placeholder="Search automation..." 
+                class="font-medium focus:outline-none ml-10 mb-2 px-6 w-full shadow-md rounded-sm bg-white h-10"
+            >
+            {% for automation in automations %}
+                <div class="focus:outline-none cursor-pointer ml-10 p-6 rounded-md bg-white h-32 mb-3 w-full hover:border-black border-[2px]">
+                    <h1 class="text-xl font-bold ">{{ automation.Title }}</h1>
+                    <h1 class="text-xl font-bold ">{{ automation.Country }}</h1>
+                </div>
+            {%endfor%}
+            <button onclick="go_automation()">Test</button>
+        </div>
+   </div>
+   <script>
+        function get_automations(value){
+            return window.location.assign(`http://127.0.0.1:5000/applications/${value}`)
+        }
+        async function go_automation(){
+            await fetch('http://127.0.0.1:5000/test',{
+                method: 'POST'
+            }).then(() => console.log('request sended'))
+        }
+    </script>
+{% endblock %}

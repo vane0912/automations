@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Weekly Automations{% endblock %}
+{% block content %}
+   <h1 class="text-5xl font-extrabold">Weekly Automations</h1>
+   {% for key, value in test.items() %}
+        <h1>{{key}}</h1>
+        <h1>"{{ value }}"</h1>
+   {% endfor %}
+   <div>
+    
+   </div>
+{% endblock %}

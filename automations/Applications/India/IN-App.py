@@ -3,7 +3,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-import time, pyautogui, Global_Variables
+import time, pyautogui, automations.Global_Variables as Global_Variables
 
 def CF_P2():
     browser = webdriver.Chrome()

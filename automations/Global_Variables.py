@@ -1,5 +1,5 @@
 import time, pyautogui
-url = 'https://deploy-20240530--2b9ffc30.visachinaonline.com'
+url = 'https://deploy-20240606--29ab40c7.visachinaonline.com'
 #Screen sizes
 screen_size = pyautogui.size()
 mobile_320 = (448, 174)
@@ -12,4 +12,4 @@ country = "MX"
 email_txt = "test1@mailinator.com"
 first_name_txt = "Pedro"
 last_name_txt = "Gonzalez"
-passport_num = "12345"
+passport_num = "123456789"
