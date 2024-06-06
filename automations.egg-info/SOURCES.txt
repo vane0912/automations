@@ -1,5 +1,10 @@
 setup.py
+automations/Global_Variables.py
 automations/__init__.py
+automations/applications.py
+automations/automations_list.py
+automations/homepage.py
+automations/weekly.py
 automations.egg-info/PKG-INFO
 automations.egg-info/SOURCES.txt
 automations.egg-info/dependency_links.txt
