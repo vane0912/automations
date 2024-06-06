@@ -4,9 +4,11 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time, pyautogui, automations.Global_Variables as Global_Variables
-
+from selenium.webdriver.chrome.options import Options
 def EG_180_Multiple():
-    browser = webdriver.Chrome()
+    chrome_options = Options()
+    chrome_options.add_argument('--headless')  # Run Chrome in headless mode
+    browser = webdriver.Chrome(options=chrome_options)
     wait = WebDriverWait(browser, 150)
     for x in range(3):
         browser.get(Global_Variables.url + '/egypt/apply-now')

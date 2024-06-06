@@ -4,10 +4,14 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time, pyautogui, automations.Global_Variables as Global_Variables
+from selenium.webdriver.chrome.options import Options
 def B1_B2():
     ## Open Ivisa page with selenium
-    browser = webdriver.Chrome()
+    chrome_options = Options()
+    chrome_options.add_argument('--headless')  # Run Chrome in headless mode
+    browser = webdriver.Chrome(options=chrome_options)
     for x in range(1):
+        
         wait = WebDriverWait(browser, 150)
         browser.get(Global_Variables.url + '/usa/apply-now')
         if(x == 0):

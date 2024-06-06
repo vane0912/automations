@@ -4,8 +4,12 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time, pyautogui, automations.Global_Variables as Global_Variables
-
+from selenium.webdriver.chrome.options import Options
 def India_1y_Multiple():
+    chrome_options = Options()
+    chrome_options.add_argument('--headless')  # Run Chrome in headless mode
+    browser = webdriver.Chrome(options=chrome_options)
+
     browser = webdriver.Chrome()
     wait = WebDriverWait(browser, 60)
     ## Open Ivisa page with selenium
