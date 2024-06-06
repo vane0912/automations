@@ -30,7 +30,6 @@ PyScreeze==0.1.30
 PySocks==1.7.1
 python-docx==1.1.2
 # Editable install with no version control (python_files==0.0.0)
--e /Users/Chapis/Desktop/Automation/Web-Scraping/Back-end
 pytweening==1.2.0
 rubicon-objc==0.4.8
 selenium==4.19.0
