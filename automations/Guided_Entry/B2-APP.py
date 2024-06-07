@@ -3,7 +3,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-import time, pyautogui, automations.Applications.Turkey.Global_Variables as Global_Variables
+import time, Global_Variables
 from selenium.webdriver.chrome.options import Options
 def B1_B2():
     ## Open Ivisa page with selenium
@@ -17,12 +17,12 @@ def B1_B2():
         if(x == 0):
             nationality = wait.until(EC.element_to_be_clickable((By.NAME, 'general.common_nationality_country')))
             nationality.click()
-            pyautogui.write(Global_Variables.country)
-            pyautogui.hotkey('enter')
+            #pyautogui.write(Global_Variables.country)
+            #pyautogui.hotkey('enter')
         product = browser.find_element(By.XPATH, "//div[@data-ivisa-slug='visa_type_id']")
         product.click()
-        pyautogui.hotkey('down')
-        pyautogui.hotkey('enter')
+        #pyautogui.hotkey('down')
+        #pyautogui.hotkey('enter')
         time.sleep(4)
         continue_btn = browser.find_element(By.ID, "btnContinueUnderSection")
         continue_btn.click()
@@ -72,7 +72,7 @@ def B1_B2():
         # step 4
         applying_from_country = wait.until(EC.element_to_be_clickable((By.XPATH, "//select[@data-handle='dropdown-applicant.0.living_country_residence']")))
         applying_from_country.click()
-        pyautogui.hotkey('enter')
+        #pyautogui.hotkey('enter')
         time.sleep(2)
         continue_btn_sidebar.click()
         # step 5
@@ -108,14 +108,14 @@ def B1_B2():
         time.sleep(1)
         applying_from_country = browser.find_element(By.XPATH, "//select[@data-handle='dropdown-applicant.0.which_statement_applies']")
         applying_from_country.click()
-        pyautogui.hotkey('enter')
+        #pyautogui.hotkey('enter')
         time.sleep(3)
         continue_btn_sidebar.click()
         time.sleep(3)
         appointment_location = browser.find_element(By.NAME, "applicant.0.appointment_location_id")
         appointment_location.click()
-        pyautogui.hotkey('down')
-        pyautogui.hotkey('enter')
+        #pyautogui.hotkey('down')
+        #pyautogui.hotkey('enter')
         time.sleep(2)
         continue_btn_sidebar.click()
         wait.until(EC.element_to_be_clickable((By.XPATH, "//div[@data-handle='no-subscription']"))).click()
@@ -130,8 +130,8 @@ def B1_B2():
         wait.until(EC.element_to_be_clickable((By.ID, "btnCompleteProcess"))).click()
         #Post payment
         wait.until(EC.element_to_be_clickable((By.XPATH, "//select[@data-handle='dropdown-general.type_of_contact']"))).click()
-        pyautogui.hotkey('down')
-        pyautogui.hotkey('enter')
+        #pyautogui.hotkey('down')
+        #pyautogui.hotkey('enter')
         time.sleep(3)
         contact_name = browser.find_element(By.NAME, "general.contact_first_name")
         contact_name.send_keys('Pedrito')
@@ -139,17 +139,17 @@ def B1_B2():
         contact_last_name.send_keys('Gonzalez')
         contact_relationship = browser.find_element(By.XPATH, "//select[@data-handle='dropdown-general.destination_contact_relationship']")
         contact_relationship.click()
-        pyautogui.hotkey('down')
-        pyautogui.hotkey('enter')
+        #pyautogui.hotkey('down')
+        #pyautogui.hotkey('enter')
         contact_adress = browser.find_element(By.NAME, "general.contact_address")
         contact_adress.click()
         contact_adress.send_keys('1150 Broadway')
-        pyautogui.hotkey('down')
-        pyautogui.hotkey('enter')
+        #pyautogui.hotkey('down')
+        #pyautogui.hotkey('enter')
         contact_phone = browser.find_element(By.XPATH, "//div[@data-flip='false']")
         contact_phone.click()
-        pyautogui.hotkey('down')
-        pyautogui.hotkey('enter')
+        #pyautogui.hotkey('down')
+        #pyautogui.hotkey('enter')
         phone_postpayment = browser.find_element(By.NAME, "telephone")
         phone_postpayment.send_keys('6141212321')
         time.sleep(10)

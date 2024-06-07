@@ -3,7 +3,8 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-import time, pyautogui, automations.Applications.Turkey.Global_Variables as Global_Variables
+import time
+import Global_Variables
 from selenium.webdriver.chrome.options import Options
 def EG_180_Multiple():
     chrome_options = Options()
@@ -15,12 +16,12 @@ def EG_180_Multiple():
         if(x == 0):
             nationality = wait.until(EC.element_to_be_clickable((By.NAME, 'general.common_nationality_country')))
             nationality.click()
-            pyautogui.write(Global_Variables.country)
-            pyautogui.hotkey('enter')
+            #pyautogui.write(Global_Variables.country)
+            #pyautogui.hotkey('enter')
         product = browser.find_element(By.XPATH, "//div[@data-ivisa-slug='visa_type_id']")
         product.click()
-        pyautogui.hotkey('down')
-        pyautogui.hotkey('enter')
+        #pyautogui.hotkey('down')
+        #pyautogui.hotkey('enter')
         time.sleep(2)
         continue_btn = browser.find_element(By.ID, "btnContinueUnderSection")
         continue_btn.click()
@@ -104,9 +105,9 @@ def EG_180_Multiple():
         time.sleep(1)
         application_type = browser.find_element(By.XPATH, "//select[@data-handle='dropdown-applicant.0.application_type']")
         application_type.click()
-        pyautogui.hotkey('down')
+        #pyautogui.hotkey('down')
         time.sleep(1)
-        pyautogui.hotkey('enter')
+        #pyautogui.hotkey('enter')
         time.sleep(1)
         passport_num2 = wait.until(EC.element_to_be_clickable((By.NAME, "applicant.1.passport_num")))
         passport_num2.send_keys(Global_Variables.passport_num)
@@ -125,8 +126,8 @@ def EG_180_Multiple():
         passport_year2.send_keys(Keys.ENTER)
         application_type = browser.find_element(By.XPATH, "//select[@data-handle='dropdown-applicant.1.application_type']")
         application_type.click()
-        pyautogui.hotkey('down')
-        pyautogui.hotkey('enter')
+        #pyautogui.hotkey('down')
+        #pyautogui.hotkey('enter')
         time.sleep(3)
         continue_btn_sidebar.click()
         time.sleep(3)

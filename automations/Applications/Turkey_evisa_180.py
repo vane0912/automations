@@ -3,29 +3,25 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-import time, pyautogui
+import time
 import Global_Variables 
 from selenium.webdriver.chrome.options import Options
 def TR_App_P2():
-    ## Open Ivisa page with selenium
-    #chrome_options = Options()
-    #chrome_options.add_argument('--headless') 
-    #options=chrome_options # Run Chrome in headless mode
-    browser = webdriver.Chrome()
+    chrome_options = Options()
+    chrome_options.add_argument('--headless') 
+    browser = webdriver.Chrome(options=chrome_options)
     for x in range(6):
         wait = WebDriverWait(browser, 150)
         browser.get(Global_Variables.url + '/turkey/apply-now')
         if(x == 0):
             nationality = wait.until(EC.element_to_be_clickable((By.NAME, 'general.common_nationality_country')))
             nationality.click()
-            time.sleep(3)
-            nationality_values = browser.find_element(By.XPATH, "//input[@data-handle='dropdown-general.common_nationality_country']")
-            time.sleep(3)
+            nationality_values = wait.until(EC.element_to_be_clickable((By.XPATH, "//input[@data-handle='dropdown-general.common_nationality_country']")))
             nationality_values.send_keys(Global_Variables.country, Keys.ENTER)
-        product = browser.find_element(By.XPATH, "//div[@data-ivisa-slug='visa_type_id']")
+        product = wait.until(EC.element_to_be_clickable((By.XPATH, "//select[@data-handle='dropdown-general.visa_type_id']")))
         product.click()
-        pyautogui.hotkey('down')
-        pyautogui.hotkey('enter')
+        product_type = product.find_elements(By.TAG_NAME, 'option')
+        product_type[0].click()
         time.sleep(2)
         continue_btn = browser.find_element(By.ID, "btnContinueUnderSection")
         continue_btn.click()

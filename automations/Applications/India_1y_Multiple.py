@@ -3,25 +3,24 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-import time, pyautogui, automations.Applications.Turkey.Global_Variables as Global_Variables
+import time
+import Global_Variables
 from selenium.webdriver.chrome.options import Options
 def India_1y_Multiple():
     chrome_options = Options()
     chrome_options.add_argument('--headless')  # Run Chrome in headless mode
     browser = webdriver.Chrome(options=chrome_options)
-
-    browser = webdriver.Chrome()
     wait = WebDriverWait(browser, 60)
     ## Open Ivisa page with selenium
     browser.get(Global_Variables.url + '/india/apply-now')
     nationality = wait.until(EC.element_to_be_clickable((By.NAME, 'general.common_nationality_country')))
     nationality.click()
-    pyautogui.write(Global_Variables.country)
-    pyautogui.hotkey('enter')
+    nationality_values = wait.until(EC.element_to_be_clickable((By.XPATH, "//input[@data-handle='dropdown-general.common_nationality_country']")))
+    nationality_values.send_keys(Global_Variables.country, Keys.ENTER)
     product = browser.find_element(By.XPATH, "//div[@data-ivisa-slug='visa_type_id']")
     product.click()
-    pyautogui.hotkey('down')
-    pyautogui.hotkey('enter')
+    ## pyautogui.hotkey('down')
+    ## pyautogui.hotkey('enter')
     time.sleep(2)
     continue_btn = browser.find_element(By.ID, "btnContinueUnderSection")
     continue_btn.click()
@@ -34,8 +33,8 @@ def India_1y_Multiple():
     wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, "div.day-13"))).click()
     port_arrival = browser.find_element(By.NAME, "general.port_of_arrival")
     port_arrival.click()
-    pyautogui.hotkey('down')
-    pyautogui.hotkey('enter')
+    ##  pyautogui.hotkey('down')
+    ##  pyautogui.hotkey('enter')
     email = browser.find_element(By.NAME,"general.email")
     email.send_keys(Global_Variables.email_txt)
     time.sleep(2)
