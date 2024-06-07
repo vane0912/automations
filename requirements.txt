@@ -5,6 +5,7 @@ certifi==2024.2.2
 click==8.1.7
 Flask==3.0.3
 Flask-Cors==4.0.1
+gunicorn==22.0.0
 h11==0.14.0
 idna==3.6
 itsdangerous==2.2.0
@@ -19,14 +20,16 @@ packaging==24.0
 pillow==10.3.0
 PyGetWindow==0.0.9
 PyMsgBox==1.0.9
-
+pyobjc-core==10.2
+pyobjc-framework-Cocoa==10.2
+pyobjc-framework-Quartz==10.2
 pyperclip==1.8.2
 pyproject_hooks==1.1.0
 PyRect==0.2.0
 PyScreeze==0.1.30
 PySocks==1.7.1
 python-docx==1.1.2
-# Editable install with no version control (python_files==0.0.0)
+
 pytweening==1.2.0
 rubicon-objc==0.4.8
 selenium==4.19.0
