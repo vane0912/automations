@@ -1,6 +1,8 @@
-from automations import create_app
 from flask import render_template
-app = create_app()
-@app.route('/weekly')
+from flask import Blueprint
+
+weekly_bp = Blueprint('weekly', __name__)
+
+@weekly_bp.route('/weekly')
 def weekly():
     return render_template('weekly.html')

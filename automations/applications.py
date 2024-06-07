@@ -1,10 +1,11 @@
 from .automations_list import automations_list
-from automations import create_app
-from flask import render_template
+from flask import Blueprint, render_template
 
-app = create_app()
-@app.route('/applications')
-@app.route('/applications/<app_type>')
+# Define a blueprint for your applications
+applications_bp = Blueprint('applications', __name__)
+
+@applications_bp.route('/applications')
+@applications_bp.route('/applications/<app_type>')
 def runapp(app_type=None):
     test = ["India", "Turkey", "Egypt"]
     filtered_Array = []
@@ -13,7 +14,6 @@ def runapp(app_type=None):
             filtered_Array.append(x)
     return render_template('applications.html', categories=test, app_type=app_type, automations=filtered_Array)
 
-@app.post('/test')
+@applications_bp.route('/test', methods=['POST'])
 def testrun():
-    
     return 'this worked'

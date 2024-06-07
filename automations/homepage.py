@@ -1,7 +1,9 @@
-from automations import create_app
 from flask import render_template
-app = create_app()
 
-@app.route('/')
+from flask import Blueprint
+
+homepage_bp = Blueprint('homepage', __name__)
+
+@homepage_bp.route('/')
 def homepage():
     return render_template('homepage.html')
