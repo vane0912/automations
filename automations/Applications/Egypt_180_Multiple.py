@@ -4,8 +4,15 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
-import Global_Variables
 from selenium.webdriver.chrome.options import Options
+Global_Variables = {
+    'url': 'https://deploy-20240610--73a8cdd1.visachinaonline.com',
+    'Country': "MX",
+    'Email': "test@mailinator.com",
+    'First_name' : 'Pedro',
+    'Last_name' : 'Gonzalez',
+    'Passport_num' : '123456789'   
+}
 def EG_180_Multiple():
     chrome_options = Options()
     chrome_options.add_argument('--headless')  # Run Chrome in headless mode

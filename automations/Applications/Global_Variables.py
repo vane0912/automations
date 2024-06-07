@@ -1,5 +1,5 @@
-import time
-url = 'https://deploy-20240610--73a8cdd1.visachinaonline.com'
+
+#url = 'https://deploy-20240610--73a8cdd1.visachinaonline.com'
 #Screen sizes
 #screen_size = pyautogui.size()
 #mobile_320 = (448, 174)
@@ -7,14 +7,14 @@ url = 'https://deploy-20240610--73a8cdd1.visachinaonline.com'
 #mobile_425 = (641,177)
 #tablet_768 = (679,181)
 #desktop_resolutions = (853, 178)
-# Personal Data
-country = "MX"
-email_txt = "test2@mailinator.com"
-first_name_txt = "Pedro"
-last_name_txt = "Gonzalez"
-passport_num = "123456789"
+## Personal Data
+#country = "MX"
+#email_txt = "test2@mailinator.com"
+#first_name_txt = "Pedro"
+#last_name_txt = "Gonzalez"
+#passport_num = "123456789"
 
-"""
+
 values = {
     'Country': "MX",
     'Email': "test@mailinator.com",
@@ -23,4 +23,3 @@ values = {
     'Passport_num' : '123456789'   
 }
 
-"""

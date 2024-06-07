@@ -4,20 +4,28 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
-import Global_Variables 
 from selenium.webdriver.chrome.options import Options
+
+Global_Variables = {
+    'url': 'https://deploy-20240610--73a8cdd1.visachinaonline.com',
+    'Country': "MX",
+    'Email': "test@mailinator.com",
+    'First_name' : 'Pedro',
+    'Last_name' : 'Gonzalez',
+    'Passport_num' : '123456789'   
+}
 def TR_App_P2():
     chrome_options = Options()
     chrome_options.add_argument('--headless') 
     browser = webdriver.Chrome(options=chrome_options)
     for x in range(6):
         wait = WebDriverWait(browser, 150)
-        browser.get(Global_Variables.url + '/turkey/apply-now')
+        browser.get(Global_Variables['url'] + '/turkey/apply-now')
         if(x == 0):
             nationality = wait.until(EC.element_to_be_clickable((By.NAME, 'general.common_nationality_country')))
             nationality.click()
             nationality_values = wait.until(EC.element_to_be_clickable((By.XPATH, "//input[@data-handle='dropdown-general.common_nationality_country']")))
-            nationality_values.send_keys(Global_Variables.country, Keys.ENTER)
+            nationality_values.send_keys(Global_Variables['country'], Keys.ENTER)
         product = wait.until(EC.element_to_be_clickable((By.XPATH, "//select[@data-handle='dropdown-general.visa_type_id']")))
         product.click()
         product_type = product.find_elements(By.TAG_NAME, 'option')
@@ -34,15 +42,15 @@ def TR_App_P2():
         wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, "div.day-13"))).click()
         if x == 0:
             email = browser.find_element(By.NAME,"general.email")
-            email.send_keys(Global_Variables.email_txt)
+            email.send_keys(Global_Variables['email_txt'])
         time.sleep(2)
         continue_btn_sidebar = browser.find_element(By.ID, "btnContinueSidebar")
         continue_btn_sidebar.click()
         ## Step 3
         first_name = wait.until(EC.element_to_be_clickable((By.NAME, 'applicant.0.first_name')))
-        first_name.send_keys(Global_Variables.first_name_txt)
+        first_name.send_keys(Global_Variables['first_name_txt'])
         last_name = browser.find_element(By.NAME, "applicant.0.last_name")
-        last_name.send_keys(Global_Variables.last_name_txt)
+        last_name.send_keys(Global_Variables['last_name_txt'])
         gender_select = browser.find_element(By.XPATH, "//select[@data-handle='dropdown-applicant.0.gender']")
         gender_select.click()
         gender_select.send_keys('f')

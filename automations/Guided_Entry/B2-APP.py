@@ -3,8 +3,16 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-import time, Global_Variables
+import time
 from selenium.webdriver.chrome.options import Options
+Global_Variables = {
+    'url': 'https://deploy-20240610--73a8cdd1.visachinaonline.com',
+    'Country': "MX",
+    'Email': "test@mailinator.com",
+    'First_name' : 'Pedro',
+    'Last_name' : 'Gonzalez',
+    'Passport_num' : '123456789'   
+}
 def B1_B2():
     ## Open Ivisa page with selenium
     chrome_options = Options()
