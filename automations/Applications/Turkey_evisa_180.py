@@ -159,4 +159,3 @@ def TR_App_P2():
         wait.until(EC.element_to_be_clickable((By.ID, "btnSubmitPayment"))).click()
         wait.until(EC.element_to_be_clickable((By.ID, "btnCompleteProcess"))).click()
         time.sleep(5)
-TR_App_P2()
