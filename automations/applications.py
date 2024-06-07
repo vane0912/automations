@@ -1,7 +1,8 @@
 from .automations_list import automations_list
-from automations import app
+from automations import create_app
 from flask import render_template
 
+app = create_app()
 @app.route('/applications')
 @app.route('/applications/<app_type>')
 def runapp(app_type=None):
