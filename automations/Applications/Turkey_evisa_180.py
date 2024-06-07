@@ -3,21 +3,25 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-import time, pyautogui, automations.Global_Variables as Global_Variables
+import time, pyautogui
+import Global_Variables 
 from selenium.webdriver.chrome.options import Options
 def TR_App_P2():
     ## Open Ivisa page with selenium
-    chrome_options = Options()
-    chrome_options.add_argument('--headless')  # Run Chrome in headless mode
-    browser = webdriver.Chrome(options=chrome_options)
+    #chrome_options = Options()
+    #chrome_options.add_argument('--headless') 
+    #options=chrome_options # Run Chrome in headless mode
+    browser = webdriver.Chrome()
     for x in range(6):
         wait = WebDriverWait(browser, 150)
         browser.get(Global_Variables.url + '/turkey/apply-now')
         if(x == 0):
             nationality = wait.until(EC.element_to_be_clickable((By.NAME, 'general.common_nationality_country')))
             nationality.click()
-            pyautogui.write(Global_Variables.country)
-            pyautogui.hotkey('enter')
+            time.sleep(3)
+            nationality_values = browser.find_element(By.XPATH, "//input[@data-handle='dropdown-general.common_nationality_country']")
+            time.sleep(3)
+            nationality_values.send_keys(Global_Variables.country, Keys.ENTER)
         product = browser.find_element(By.XPATH, "//div[@data-ivisa-slug='visa_type_id']")
         product.click()
         pyautogui.hotkey('down')
@@ -139,15 +143,16 @@ def TR_App_P2():
         passport_issue_year2 = browser.find_element(By.NAME, "applicant.1.passport_issued_date.year")
         passport_issue_year2.send_keys('2020')
         passport_issue_year2.send_keys(Keys.ENTER)
-        time.sleep(3)
+        time.sleep(4)
         continue_btn_sidebar.click()
-        time.sleep(3)
+        time.sleep(4)
         continue_btn_sidebar.click()
-        time.sleep(3)
+        time.sleep(4)
         continue_btn_sidebar.click()
-        time.sleep(3)
+        time.sleep(4)
         if browser.find_elements(By.ID, "btnDisclaimerNext"):
             browser.find_element(By.ID, "btnDisclaimerNext").click()
         wait.until(EC.element_to_be_clickable((By.ID, "btnSubmitPayment"))).click()
         wait.until(EC.element_to_be_clickable((By.ID, "btnCompleteProcess"))).click()
         time.sleep(5)
+TR_App_P2()

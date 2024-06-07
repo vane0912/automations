@@ -1,7 +1,7 @@
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
-import automations.Global_Variables as Global_Variables
+import automations.Applications.Turkey.Global_Variables as Global_Variables
 import time, pyautogui
 
 

@@ -1,6 +1,6 @@
-from .Applications.Turkey.Turkey_evisa_180 import TR_App_P2
-from .Applications.India.India_1y_Multiple import India_1y_Multiple
-from .Applications.Egypt.Egypt_180_Multiple import EG_180_Multiple
+from .Applications.Turkey_evisa_180 import TR_App_P2
+from .Applications.India_1y_Multiple import India_1y_Multiple
+from .Applications.Egypt_180_Multiple import EG_180_Multiple
 automations_list = [
         {
             'Title': 'Turkey E-Visa 180 Days',
