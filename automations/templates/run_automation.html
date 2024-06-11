@@ -13,7 +13,7 @@
    </div>
    <script>
         async function run_test(value){
-            await fetch(`http://127.0.0.1:5000/run-automation/${value.split('%20').join(' ')}`,{
+            await fetch(`https://costumer-facing1-production.up.railway.app/run-automation/${value.split('%20').join(' ')}`,{
                 method: 'POST'
             })
             .then(() => console.log('hello'))
