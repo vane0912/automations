@@ -16,22 +16,18 @@
                 class="font-medium focus:outline-none ml-10 mb-2 px-6 w-full shadow-md rounded-sm bg-white h-10"
             >
             {% for automation in automations %}
-                <div class="focus:outline-none cursor-pointer ml-10 p-6 rounded-md bg-white h-32 mb-3 w-full hover:border-black border-[2px]">
+                <div onclick="go_automation(this.innerText)" class="focus:outline-none cursor-pointer ml-10 p-6 rounded-md bg-white h-24 mb-3 w-full hover:border-black border-[2px]">
                     <h1 class="text-xl font-bold ">{{ automation.Title }}</h1>
-                    <h1 class="text-xl font-bold ">{{ automation.Country }}</h1>
                 </div>
             {%endfor%}
-            <button onclick="go_automation()">Test</button>
         </div>
    </div>
    <script>
         function get_automations(value){
             return window.location.assign(`http://127.0.0.1:5000/applications/${value}`)
         }
-        async function go_automation(){
-            await fetch('http://127.0.0.1:5000/test',{
-                method: 'POST'
-            }).then(() => console.log('request sended'))
+        function go_automation(value){
+            return window.location.assign(`http://127.0.0.1:5000/run-automation/${value}`)
         }
     </script>
 {% endblock %}

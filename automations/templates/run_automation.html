@@ -1,11 +1,22 @@
 {% extends "base.html" %}
 {% block title %}App Automations{% endblock %}
 {% block content %}
-   <h1 class="text-5xl font-extrabold">Application Automations</h1>
-   <div class="w-9/12 h-full mt-12 flex">
-        
+   <h1 class="text-5xl font-extrabold">{{ app_name }}</h1>
+   <div class="w-9/12 h-full mt-12 grid grid-cols-2 justify-items-center">
+        {%for requirement in requirements%}
+            <div class="w-11/12">
+                <h1 class="text-2xl font-bold">{{ requirement.Label }}</h1>
+                <input class="w-full font-normal h-[40px] px-3 rounded-sm shadow-lg mt-11" type="{{ requirement.Type }}">
+            </div>
+        {%endfor%}
+        <button class="bg-green-500 w-[130px] col-span-2 font-semibold rounded-sm h-[40px]" onclick="run_test(location.pathname.split('/')[2])">RUN</button>
    </div>
    <script>
-        
+        async function run_test(value){
+            await fetch(`http://127.0.0.1:5000/run-automation/${value.split('%20').join(' ')}`,{
+                method: 'POST'
+            })
+            .then(() => console.log('hello'))
+        }
     </script>
 {% endblock %}
