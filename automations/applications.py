@@ -1,8 +1,6 @@
 from .automations_list import automations_list
 from flask import Blueprint, render_template, request, jsonify
-from itertools import chain
 
-# Define a blueprint for your applications
 applications_bp = Blueprint('applications', __name__)
 
 @applications_bp.route('/applications')
