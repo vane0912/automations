@@ -9,12 +9,16 @@ from selenium.webdriver.chrome.options import Options
 Global_Variables = {
     'url': 'https://deploy-20240612--fb4af294.visachinaonline.com',
     'Country': "MX",
-    'Email': "test1@mailinator.com",
+    'Email': "test2@mailinator.com",
     'First_name' : 'Pedro',
     'Last_name' : 'Gonzalez',
     'Passport_num' : '123456789'  
 }
-def TR_App_P2(url, language, emailt, applicants, status, currency, number_of_orders):
+
+def TR_App_P2(data):
+    for x in data:
+        if x['type'] == 'Url':
+            Global_Variables['url'] = x['value']
     print('Running')
     chrome_options = Options()
     chrome_options.add_argument('--headless') 

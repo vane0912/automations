@@ -1,33 +1,33 @@
-from .Applications.Turkey_evisa_180 import TR_App_P2, Global_Variables
+from .Applications.Turkey_evisa_180 import TR_App_P2
 from .Applications.India_1y_Multiple import India_1y_Multiple
 from .Applications.Egypt_180_Multiple import EG_180_Multiple
 from .Applications.test import test
 
 automations_list = [
         {
-            'Title': 'Turkey E-Visa 180 Days',
+            'Title': 'Turkey-E-Visa-180-Days',
             'Country' : 'Turkey',
-            'Type': test,
+            'Type': TR_App_P2,
             'Requirements': [
                 {
                     'Label': 'Url',
-                    'Type': 'text',
+                    'Type': 'default',
                 },
                 {
                     'Label': 'Email',
-                    'Type': 'text',
+                    'Type': 'default',
                 },
                 {
                     'Label': 'Applicants',
-                    'Type': 'text',
+                    'Type': 'default',
                 },
                 {
                     'Label': 'Status',
-                    'Type': 'text',
+                    'Type': 'default',
                 },
                 {
                     'Label': 'Currency',
-                    'Type': 'Number',
+                    'Type': 'default',
                 },
                 {
                     'Label': 'Number of Orders',

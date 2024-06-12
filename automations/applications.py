@@ -1,6 +1,6 @@
 from .automations_list import automations_list
 from flask import Blueprint, render_template, request, jsonify
-
+from itertools import chain
 
 # Define a blueprint for your applications
 applications_bp = Blueprint('applications', __name__)
@@ -22,11 +22,9 @@ def set_variables(app_name=None):
         if x['Title'] == app_name:
             filtered_Array.append(x)
     requirements = filtered_Array[0]['Requirements']
-    
     if request.method == 'POST': 
-        filtered_Array[0]['Type']('hello')
+        data = request.get_json()
+        filtered_Array[0]['Type'](data)
         return 'hello'
     else:
-        arr = ['fsdf']
         return render_template('run_automation.html', app_name=app_name, requirements=requirements)
-    
