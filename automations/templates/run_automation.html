@@ -9,11 +9,16 @@
                  <input id="{{ requirement.Label }}" name="{{ app_name }}-input" class="w-full font-normal h-[40px] px-3 rounded-sm shadow-lg mt-11" type="{{ requirement.Type }}">
              </div>
          {%endfor%}
+         
          <button class="bg-green-500 w-[130px] col-span-2 font-semibold rounded-sm h-[40px]" onclick="run_test(location.pathname.split('/')[2])">RUN</button>
     </div>
     <div id="automation_running" class="hidden">
         <h1>hello</h1>
     </div>
+    <div class="tenor-gif-embed" data-postid="13657985" data-share-method="host" data-aspect-ratio="1" data-width="20%">
+        <a href="https://tenor.com/view/coffee-cup-of-coffee-drinking-coffee-pusheen-tea-time-gif-13657985">Coffee Cup Of Coffee Sticker</a>
+    </div> 
+   <script type="text/javascript" async src="https://tenor.com/embed.js"></script>
    <script>
     async function run_test(value){
         const inputs = document.getElementsByName(`${value}-input`)
@@ -32,7 +37,7 @@
             headers: {'Content-Type':'application/json'},
             body: JSON.stringify(variables)
         })
-        .then(() => console.log('hello'))
+        .then(() => document.getElementById('automation_running').classList.add('hidden'))
     }
     </script>
 {% endblock %}
