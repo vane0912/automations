@@ -1,23 +1,45 @@
 {% extends "base.html" %}
 {% block title %}App Automations{% endblock %}
 {% block content %}
-   <h1 class="text-5xl font-extrabold">{{ app_name.replace('-', ' ') }}</h1>
-    <div id="set_variables" class="w-9/12 h-full mt-12 grid grid-cols-2 justify-items-center">
-         {%for requirement in requirements%}
-             <div class="w-11/12">
-                 <h1 class="text-2xl font-bold">{{ requirement.Label }}</h1>
-                 <input id="{{ requirement.Label }}" name="{{ app_name }}-input" class="w-full font-normal h-[40px] px-3 rounded-sm shadow-lg mt-11" type="{{ requirement.Type }}">
-             </div>
-         {%endfor%}
-         
-         <button class="bg-green-500 w-[130px] col-span-2 font-semibold rounded-sm h-[40px]" onclick="run_test(location.pathname.split('/')[2])">RUN</button>
+    <div class="w-9/12 my-6 mb-20">
+        <h1 class="text-5xl font-extrabold">{{ app_name.replace('-', ' ') }}</h1>
     </div>
-    <div id="automation_running" class="hidden">
-        <h1>hello</h1>
+    <div id="set_variables" class="w-9/12 h-fit py-16 px-16 rounded-md items-center bg-white border-[1px] border-solid border-[#4ADE80]">
+        <div class="h-fit grid grid-cols-3 items-center gap-y-4 gap-x-5">
+            {%for requirement in requirements%}
+                    {%if loop.index == 1%}
+                        <div class="w-full col-start-1 col-end-4">
+                            <h2 class="text-xl font-semibold">{{ requirement.Label }}</h2>
+                            <input 
+                            id="{{ requirement.Label }}" name="{{ app_name }}-input" 
+                            class="w-full border-[1px] border-solid border-[#302E2E]/50 font-light h-[40px] px-6 py-5 rounded-lg mt-2" 
+                            type="{{ requirement.Type }}">
+                        </div>
+                    {%else%}
+                        <div class="w-full">
+                            <h2 class="text-xl font-semibold">{{ requirement.Label }}</h2>
+                            <input 
+                            id="{{ requirement.Label }}" name="{{ app_name }}-input" 
+                            class="w-full border-[1px] border-solid border-[#302E2E]/50 font-light h-[40px] px-6 py-5 rounded-lg mt-2" 
+                            type="{{ requirement.Type }}">
+                        </div>
+                    {%endif%}
+             {%endfor%}
+             <button class="bg-[#4ADE80] mt-8 w-[200px] col-start-1 col-end-1 font-semibold rounded-lg h-[40px]" onclick="run_test(location.pathname.split('/')[2])">RUN</button>
+        </div>
     </div>
-    <div class="tenor-gif-embed" data-postid="13657985" data-share-method="host" data-aspect-ratio="1" data-width="20%">
-        <a href="https://tenor.com/view/coffee-cup-of-coffee-drinking-coffee-pusheen-tea-time-gif-13657985">Coffee Cup Of Coffee Sticker</a>
-    </div> 
+    <div id="automation_running" class="hidden bg-[#302E2E]/50 top-0 w-full h-screen">
+        <div class="w-2/5 bg-white h-1/2 left-[30%] top-1/4 relative border-2 border-solid border-[#302E2E] rounded-lg">
+            <div class="flex flex-col justify-evenly px-24  items-center h-full">
+                <h2 class="text-[32px] font-semibold text-center">Running automations</h2>
+                <p class="text-xl font-medium text-center">(This is going to take a while so go ahead and make yourself a coffee while you wait)</p>
+                <img class="w-12 animate-spin" src="../static/images/loading.png">
+                <div class="tenor-gif-embed relative left-2" data-postid="13657985" data-share-method="host" data-aspect-ratio="1" data-width="20%">
+                    <a href="https://tenor.com/view/coffee-cup-of-coffee-drinking-coffee-pusheen-tea-time-gif-13657985">Coffee Cup Of Coffee Sticker</a>
+                </div>
+            </div>
+        </div> 
+    </div>
    <script type="text/javascript" async src="https://tenor.com/embed.js"></script>
    <script>
     async function run_test(value){
@@ -32,6 +54,7 @@
         }
         document.getElementById('set_variables').classList.add('hidden')
         document.getElementById('automation_running').classList.remove('hidden')
+        document.getElementById('automation_running').classList.add('absolute')
         await fetch(`http://127.0.0.1:5000/run-automation/${value.split('%20').join(' ')}`,{
             method: 'POST',
             headers: {'Content-Type':'application/json'},

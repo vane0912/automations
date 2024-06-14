@@ -10,7 +10,7 @@ automations_list = [
             'Type': TR_App_P2,
             'Requirements': [
                 {
-                    'Label': 'Url',
+                    'Label': 'ULR',
                     'Type': 'default',
                 },
                 {
@@ -30,9 +30,10 @@ automations_list = [
                     'Type': 'default',
                 },
                 {
-                    'Label': 'Number of Orders',
+                    'Label': 'N. Orders',
                     'Type': 'Number',
-                }
+                },
+                
             ]
         },
         {

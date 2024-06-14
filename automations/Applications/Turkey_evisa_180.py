@@ -7,9 +7,9 @@ import time
 from selenium.webdriver.chrome.options import Options
 
 Global_Variables = {
-    'url': 'https://deploy-20240612--fb4af294.visachinaonline.com',
+    'url': '',
     'Country': "MX",
-    'Email': "test2@mailinator.com",
+    'Email': "test5@mailinator.com",
     'First_name' : 'Pedro',
     'Last_name' : 'Gonzalez',
     'Passport_num' : '123456789'  
@@ -17,18 +17,19 @@ Global_Variables = {
 
 def TR_App_P2(data):
     for x in data:
-        if x['type'] == 'Url':
+        if x['type'] == 'ULR':
             Global_Variables['url'] = x['value']
     print('Running')
     chrome_options = Options()
     chrome_options.add_argument('--headless') 
     chrome_options.add_argument('window-size=1920,1080')
     browser = webdriver.Chrome(options=chrome_options)
-
+    print('Running')
     try:
         for x in range(1):
             wait = WebDriverWait(browser, 150)
             browser.get(Global_Variables['url'] + '/turkey/apply-now')
+            print('Running')
             if(x == 0):
                 nationality = wait.until(EC.element_to_be_clickable((By.NAME, 'general.common_nationality_country')))
                 nationality.click()
@@ -42,6 +43,7 @@ def TR_App_P2(data):
             div_continue_btn = browser.find_element(By.ID, "btnContinueUnderSection")
             continue_btn = div_continue_btn.find_element(By.TAG_NAME, 'button')
             continue_btn.click()
+            print('Step 1 Done')
             ## Step 2
             destination_input = wait.until(EC.element_to_be_clickable((By.NAME, "general.arrival_date")))
             destination_input.click()
@@ -56,6 +58,7 @@ def TR_App_P2(data):
             continue_btn_sidebar = browser.find_element(By.ID, "btnContinueSidebar")
             continue_btn_sidebar.click()
             time.sleep(3)
+            print('Step 3 Done')
             ## Step 3
             first_name = wait.until(EC.visibility_of((browser.find_element(By.NAME, 'applicant.0.first_name'))))
             first_name.send_keys(Global_Variables['First_name'])
@@ -97,9 +100,11 @@ def TR_App_P2(data):
             dob_year2 = browser.find_element(By.NAME, "applicant.1.dob.year")
             dob_year2.send_keys('1997')
             dob_year2.send_keys(Keys.ENTER)
+            print('Step  4 Done')
             # step 4
             time.sleep(2)
             continue_btn_sidebar.click()
+            print('Step  5 Done')
             # step 5
             time.sleep(2)
             continue_btn_sidebar.click()
@@ -157,10 +162,13 @@ def TR_App_P2(data):
             passport_issue_year2 = browser.find_element(By.NAME, "applicant.1.passport_issued_date.year")
             passport_issue_year2.send_keys('2020')
             passport_issue_year2.send_keys(Keys.ENTER)
+            print('Step  6 Done')
             time.sleep(4)
             continue_btn_sidebar.click()
+            print('Step  7 Done')
             time.sleep(4)
             continue_btn_sidebar.click()
+            print('Step  8 Done')
             time.sleep(2)
             popup_wraper = browser.find_elements(By.XPATH, '//div[@role="dialog"]')
             subscription_popup = popup_wraper[1].find_element(By.TAG_NAME, 'main')
@@ -168,10 +176,12 @@ def TR_App_P2(data):
             get_buttons[1].click()
             time.sleep(4)
             wait.until(EC.element_to_be_clickable((continue_btn_sidebar))).click()
+            print('Step 9 Done')
             time.sleep(4)
             if browser.find_elements(By.ID, "btnDisclaimerNext"):
                 browser.find_element(By.ID, "btnDisclaimerNext").click()
             wait.until(EC.element_to_be_clickable((By.ID, "btnSubmitPayment"))).click()
             wait.until(EC.element_to_be_clickable((By.ID, "btnCompleteProcess"))).click()
+            print('Payment Done')
     except Exception as e :
         print(e)
