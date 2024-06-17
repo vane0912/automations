@@ -22,14 +22,6 @@ automations_list = [
                     'Type': 'default',
                 },
                 {
-                    'Label': 'Status',
-                    'Type': 'default',
-                },
-                {
-                    'Label': 'Currency',
-                    'Type': 'default',
-                },
-                {
                     'Label': 'N. Orders',
                     'Type': 'Number',
                 },

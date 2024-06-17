@@ -2,9 +2,9 @@
 {% block title %}App Automations{% endblock %}
 {% block content %}
     <div class="w-9/12 my-6 mb-20">
-        <h1 class="text-5xl font-extrabold">{{ app_name.replace('-', ' ') }}</h1>
+        <h1 id="main_title" class="text-5xl font-extrabold">{{ app_name.replace('-', ' ') }}</h1>
     </div>
-    <div id="set_variables" class="w-9/12 h-fit py-16 px-16 rounded-md items-center bg-white border-[1px] border-solid border-[#4ADE80]">
+    <div id="set_variables" class=" w-9/12 h-fit py-16 px-16 rounded-md items-center bg-white border-[1px] border-solid border-[#4ADE80]">
         <div class="h-fit grid grid-cols-3 items-center gap-y-4 gap-x-5">
             {%for requirement in requirements%}
                     {%if loop.index == 1%}
@@ -40,6 +40,31 @@
             </div>
         </div> 
     </div>
+    <div id="automation_results" class="w-9/12 h-fit hidden">
+        <div class="w-full bg-white h-fit flex justify-between px-12 py-8 rounded-xl border-solid border-[#4ADE80] border-2 ">
+            <div class="w-2/6 h-full">
+                <h2 class="text-2xl font-bold">Credentials</h2>
+                <div class="w-full mt-5">
+                    <div class="flex w-full justify-between">
+                        <p class="mb-6">Log in Email:</p>
+                        <p name="user_email"></p>
+                    </div>
+                    <div class="flex w-full justify-between">
+                        <p>Password:</p>
+                        <p>testivisa5!</p>
+                    </div>
+                </div>
+            </div>
+            <div class="flex w-2/5 justify-between">
+                <div name="user_order_type" class="flex flex-col">
+                    <h2 class="text-2xl font-bold mb-5">Automations Ran</h2>
+                </div>
+                <div name="user_order_status">
+                    <h2 class="text-2xl font-bold mb-5">Status</h2>
+                </div>
+            </div>
+        </div>
+    </div>
    <script type="text/javascript" async src="https://tenor.com/embed.js"></script>
    <script>
     async function run_test(value){
@@ -52,7 +77,6 @@
             }
             variables.push(values)
         }
-        document.getElementById('set_variables').classList.add('hidden')
         document.getElementById('automation_running').classList.remove('hidden')
         document.getElementById('automation_running').classList.add('absolute')
         await fetch(`http://127.0.0.1:5000/run-automation/${value.split('%20').join(' ')}`,{
@@ -60,7 +84,33 @@
             headers: {'Content-Type':'application/json'},
             body: JSON.stringify(variables)
         })
-        .then(() => document.getElementById('automation_running').classList.add('hidden'))
+        .then(() =>{
+                document.getElementById('set_variables').classList.add('hidden')
+                document.getElementById('automation_running').classList.add('hidden')
+                document.getElementById('automation_results').classList.remove('hidden')
+                document.getElementById('automation_results').classList.add('content')
+                document.getElementById('main_title').textContent = 'Automation Ran Successfully'
+                const getEmail = variables.filter((value) => value.type === 'Email')
+                const getOrderNumber = variables.filter((value) => value.type === 'N. Orders')
+                const getOrderStatus = variables.filter((value) => value.type === 'Status')
+
+                document.getElementsByName('user_email')[0].textContent = getEmail[0].value
+                const order_container = document.getElementsByName('user_order_type')[0]
+                const order_status_container = document.getElementsByName('user_order_status')[0]
+                const order_name = location.href.split('/').length
+                for(let i = 0; i < getOrderNumber[0].value; i++){
+                    const order_title = document.createElement('p')
+                    const order_status = document.createElement('p')
+                    order_title.textContent = location.href.split('/')[order_name - 1].replace(/-/g,' ')
+                    order_title.classList.add('text-center', 'mb-5')
+                    order_status.textContent = getOrderStatus[0].value
+                    order_status.classList.add('text-center', 'mb-5')
+                    order_container.append(order_title)
+                    order_status_container.append(order_status)
+                }
+                
+            }
+        )
     }
     </script>
 {% endblock %}
