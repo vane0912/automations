@@ -1,8 +1,8 @@
 from flask import Flask
-
+from .config import Config
 def create_app():
     app = Flask(__name__)
-
+    app.config.from_object(Config)
     # Import blueprints here to avoid circular imports
     from .homepage import homepage_bp
     from .weekly import weekly_bp

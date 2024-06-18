@@ -18,10 +18,21 @@
                     {%else%}
                         <div class="w-full">
                             <h2 class="text-xl font-semibold">{{ requirement.Label }}</h2>
-                            <input 
-                            id="{{ requirement.Label }}" name="{{ app_name }}-input" 
-                            class="w-full border-[1px] border-solid border-[#302E2E]/50 font-light h-[40px] px-6 py-5 rounded-lg mt-2" 
-                            type="{{ requirement.Type }}">
+                            {%if requirement.Label == 'Status'%}
+                                    <select 
+                                    id="{{ requirement.Label }}"
+                                    name="{{ app_name }}-input" 
+                                    class="w-full border-[1px] border-solid bg-white px-6 border-[#302E2E]/50 font-light h-[42px] rounded-lg mt-2" >
+                                        {%for status in status%}
+                                            <option>{{ status }}</option>
+                                        {%endfor%}
+                                    </select>
+                                {%else%}
+                                    <input 
+                                    id="{{ requirement.Label }}" name="{{ app_name }}-input" 
+                                    class="w-full border-[1px] border-solid border-[#302E2E]/50 font-light h-[40px] px-6 py-5 rounded-lg mt-2" 
+                                    type="{{ requirement.Type }}">
+                            {%endif%}
                         </div>
                     {%endif%}
              {%endfor%}
@@ -77,6 +88,7 @@
             }
             variables.push(values)
         }
+        console.log(variables)
         document.getElementById('automation_running').classList.remove('hidden')
         document.getElementById('automation_running').classList.add('absolute')
         await fetch(`http://127.0.0.1:5000/run-automation/${value.split('%20').join(' ')}`,{

@@ -19,10 +19,14 @@ def set_variables(app_name=None):
     for x in automations_list:
         if x['Title'] == app_name:
             filtered_Array.append(x)
+    status = []
     requirements = filtered_Array[0]['Requirements']
+    for x in requirements:
+        if x['Label'] == 'Status':
+            status.append(x)
     if request.method == 'POST': 
         data = request.get_json()
         filtered_Array[0]['Type'](data)
         return 'hello'
     else:
-        return render_template('run_automation.html', app_name=app_name, requirements=requirements)
+        return render_template('run_automation.html', app_name=app_name, requirements=requirements, status=status[0]['Status_Available'])

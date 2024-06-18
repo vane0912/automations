@@ -22,6 +22,10 @@ automations_list = [
                     'Type': 'default',
                 },
                 {
+                    'Label': 'Status',
+                    'Status_Available': ['Received', 'MIN']
+                },
+                {
                     'Label': 'N. Orders',
                     'Type': 'Number',
                 },
