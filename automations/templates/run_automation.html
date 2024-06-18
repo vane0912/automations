@@ -21,10 +21,10 @@
                             {%if requirement.Label == 'Status'%}
                                     <select 
                                     id="{{ requirement.Label }}"
-                                    name="{{ app_name }}-input" 
+                                    name="{{ app_name }}-input"
                                     class="w-full border-[1px] border-solid bg-white px-6 border-[#302E2E]/50 font-light h-[42px] rounded-lg mt-2" >
                                         {%for status in status%}
-                                            <option>{{ status }}</option>
+                                            <option>{{status}}</option>
                                         {%endfor%}
                                     </select>
                                 {%else%}
@@ -36,7 +36,7 @@
                         </div>
                     {%endif%}
              {%endfor%}
-             <button class="bg-[#4ADE80] mt-8 w-[200px] col-start-1 col-end-1 font-semibold rounded-lg h-[40px]" onclick="run_test(location.pathname.split('/')[2])">RUN</button>
+             <button class="bg-[#4ADE80] mt-8 w-[200px] col-start-1 col-end-1 font-semibold rounded-lg h-[40px]" onclick="run_test('{{goto}}' ,location.pathname.split('/')[2])">RUN</button>
         </div>
     </div>
     <div id="automation_running" class="hidden bg-[#302E2E]/50 top-0 w-full h-screen">
@@ -78,7 +78,7 @@
     </div>
    <script type="text/javascript" async src="https://tenor.com/embed.js"></script>
    <script>
-    async function run_test(value){
+    async function run_test(url,value){
         const inputs = document.getElementsByName(`${value}-input`)
         const variables = []
         for(let i = 0; i < inputs.length; i++){
@@ -88,10 +88,9 @@
             }
             variables.push(values)
         }
-        console.log(variables)
         document.getElementById('automation_running').classList.remove('hidden')
         document.getElementById('automation_running').classList.add('absolute')
-        await fetch(`http://127.0.0.1:5000/run-automation/${value.split('%20').join(' ')}`,{
+        await fetch(`${url}/run-automation/${value.split('%20').join(' ')}`,{
             method: 'POST',
             headers: {'Content-Type':'application/json'},
             body: JSON.stringify(variables)

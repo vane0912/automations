@@ -1,10 +1,11 @@
 from .automations_list import automations_list
-from flask import Blueprint, render_template, request, jsonify
+from flask import Blueprint, render_template, request, current_app
 
 applications_bp = Blueprint('applications', __name__)
 
 @applications_bp.route('/applications')
 @applications_bp.route('/applications/<app_type>')
+
 def get_app(app_type=None):
     test = ["India", "Turkey", "Egypt"]
     filtered_Array = []
@@ -15,6 +16,11 @@ def get_app(app_type=None):
 
 @applications_bp.route('/run-automation/<app_name>', methods=['POST', 'GET'])
 def set_variables(app_name=None):
+    url=''
+    if current_app.config['ENVIROMENT_VARIABLE'] == 'production':
+        url = current_app.config['URL_VARIABLE']
+    else: 
+        url = 'http://127.0.0.1:5000'
     filtered_Array = []
     for x in automations_list:
         if x['Title'] == app_name:
@@ -29,4 +35,4 @@ def set_variables(app_name=None):
         filtered_Array[0]['Type'](data)
         return 'hello'
     else:
-        return render_template('run_automation.html', app_name=app_name, requirements=requirements, status=status[0]['Status_Available'])
+        return render_template('run_automation.html', app_name=app_name, requirements=requirements, status=status[0]['Status_Available'], goto=url)

@@ -1,16 +1,18 @@
-from flask import Flask
+from flask import Flask, current_app
 from dotenv import load_dotenv
 import os
 
 load_dotenv()
  
 class Config(): 
-    ENVIROMENT_VARIABLE = os.getenv('RAILWAY_STATIC_URL')
+    ENVIROMENT_VARIABLE = os.getenv('RAILWAY_ENVIRONMENT')
+    URL_VARIABLE = os.getenv('RAILWAY_STATIC_URL')
 
 def create_app():
     app = Flask(__name__)
+    
     app.config.from_object(Config)
-    # Import blueprints here to avoid circular imports
+    
     from .homepage import homepage_bp
     from .weekly import weekly_bp
     from .applications import applications_bp

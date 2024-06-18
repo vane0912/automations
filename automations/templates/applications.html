@@ -7,9 +7,11 @@
    <div class="w-9/12 h-full mt-12 flex">
         <div class="col-span-2 bg-[#302E2E] rounded-[5px] w-5/12">
             {%for value in categories%}
-                <h1 onclick="get_automations(this.innerText)" class="text-white text-xl font-medium cursor-pointer py-3 px-6 hover:bg-[#4ADE80] hover:text-[#302E2E]">
-                    {{ value }}
-                </h1>
+                <a href="{{goto}}/applications/{{value}}">
+                    <h1 class="text-white text-xl font-medium cursor-pointer py-3 px-6 hover:bg-[#4ADE80] hover:text-[#302E2E]">
+                        {{ value }}
+                    </h1>
+                </a>
             {%endfor%}
         </div>
         <div class="w-full">   
@@ -18,18 +20,12 @@
                 class="font-medium focus:outline-none ml-10 mb-2 px-6 w-full border-solid border-[1px] border-[#302E2E] rounded-sm bg-white h-10"
             >
             {% for automation in automations %}
-                <div onclick="go_automation(this.innerText)" class="cursor-pointer ml-10 p-6 rounded-md bg-white h-24 mb-3 w-full hover:border-[#302E2E] border-[2px] hover:bg-[#4ADE80]">
-                    <h1 class="text-2xl font-bold">{{ automation.Title }}</h1>
-                </div>
+                <a class="w-full" href="{{goto}}/run-automation/{{automation.Title}}">
+                    <div class="cursor-pointer ml-10 p-6 rounded-md bg-white h-24 mb-3 hover:border-[#302E2E] border-[2px] hover:bg-[#4ADE80]">
+                        <h1 class="text-2xl font-bold">{{ automation.Title }}</h1>
+                    </div>
+                </a>
             {%endfor%}
         </div>
    </div>
-   <script>
-        function get_automations(value){
-            return window.location.assign(`http://127.0.0.1:5000/applications/${value}`)
-        }
-        function go_automation(value){
-            return window.location.assign(`http://127.0.0.1:5000/run-automation/${value}`)
-        }
-    </script>
 {% endblock %}
