@@ -9,5 +9,4 @@ def homepage():
         url = current_app.config['URL_VARIABLE']
     else: 
         url = 'http://127.0.0.1:5000'
-    print(current_app.config['URL_VARIABLE'])
     return render_template('homepage.html', goto=url)
