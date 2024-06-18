@@ -1,5 +1,12 @@
 from flask import Flask
-from .config import Config
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+ 
+class Config(): 
+    ENVIROMENT_VARIABLE = os.getenv('RAILWAY_STATIC_URL')
+
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
