@@ -90,8 +90,8 @@
         }
         document.getElementById('automation_running').classList.remove('hidden')
         document.getElementById('automation_running').classList.add('absolute')
-        console.log(`${url}/run-automation/${value.split('%20').join(' ')}`)
-        await fetch(`${url}/run-automation/${value.split('%20').join(' ')}`,{
+        console.log(`/run-automation/${value.split('%20').join(' ')}`)
+        await fetch(`/run-automation/${value.split('%20').join(' ')}`,{
             method: 'POST',
             headers: {'Content-Type':'application/json'},
             body: JSON.stringify(variables)
