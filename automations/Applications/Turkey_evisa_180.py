@@ -35,9 +35,9 @@ def TR_App_P2(data):
     chrome_options.add_argument('window-size=1920,1080')
     chrome_options.add_argument('--no-sandbox')
     chrome_options.add_argument('--disable-dev-shm-usage')
-    selenium_grid_url = "https://standalone-chrome-production-a2c8.up.railway.app/"
-    browser = webdriver.Remote(command_executor=selenium_grid_url,options=chrome_options)
+    browser = None
     try:
+        browser = webdriver.Remote('https://standalone-chrome-production-a2c8.up.railway.app', options=chrome_options)
         browser.get(Global_Variables['url'] + '/turkey/apply-now')
         print('done')
     except Exception as e:
