@@ -6,6 +6,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
 from selenium.webdriver.chrome.options import Options
+from webdriver_manager.chrome import ChromeDriverManager
 
 logging.basicConfig(level=logging.ERROR)
 Global_Variables = {
@@ -34,7 +35,7 @@ def TR_App_P2(data):
     chrome_options.add_argument('--headless') 
     ##options=chrome_options
     chrome_options.add_argument('window-size=1920,1080')
-    browser = webdriver.Chrome(options=chrome_options, executable_path='./chromedriver')
+    browser =  webdriver.Chrome(ChromeDriverManager().install(), options=chrome_options)
     print('Running')
     try:
         wait = WebDriverWait(browser, 150)
