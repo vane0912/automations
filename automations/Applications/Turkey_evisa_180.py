@@ -20,16 +20,16 @@ Global_Variables = {
     'N. Orders': 0  
 }
 
-def TR_App_P2():
-    #for x in data:
-    #    if x['type'] == 'ULR':
-    #        Global_Variables['url'] = x['value']
-    #    if x['type'] == 'Email':
-    #        Global_Variables['Email'] = x['value']
-    #    if x['type'] == 'Applicants':
-    #        Global_Variables['applicants'] = x['value']
-    #    if x['type'] == 'N. Orders':
-    #        Global_Variables['N. Orders'] = x['value']
+def TR_App_P2(data):
+    for x in data:
+        if x['type'] == 'ULR':
+            Global_Variables['url'] = x['value']
+        if x['type'] == 'Email':
+            Global_Variables['Email'] = x['value']
+        if x['type'] == 'Applicants':
+            Global_Variables['applicants'] = x['value']
+        if x['type'] == 'N. Orders':
+            Global_Variables['N. Orders'] = x['value']
     print('Running')
     chrome_options = Options()
     chrome_options.add_argument('--headless') 
@@ -161,4 +161,3 @@ def TR_App_P2():
             print('Payment Done')
     except Exception as e :
         print(logging.error("An error occurred:" + str(e)))
-TR_App_P2()
