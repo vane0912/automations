@@ -21,7 +21,16 @@ Global_Variables = {
     'N. Orders': '0'  
 }
 
-def TR_App_P2():
+def TR_App_P2(data):
+    for x in data:
+        if x['type'] == 'ULR':
+            Global_Variables['url'] = x['value']
+        if x['type'] == 'Email':
+            Global_Variables['Email'] = x['value']
+        if x['type'] == 'Applicants':
+            Global_Variables['applicants'] = x['value']
+        if x['type'] == 'N. Orders':
+            Global_Variables['N. Orders'] = x['value']
     chrome_options = Options()
     chrome_options.add_argument('--headless') 
     chrome_options.add_argument('window-size=1920,1080')
