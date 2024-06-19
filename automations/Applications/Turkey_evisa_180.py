@@ -160,5 +160,4 @@ def TR_App_P2(data):
             time.sleep(4)
             print('Payment Done')
     except Exception as e :
-        logging.error("An error occurred: {str(e)}")
-        print(e)
+        print(logging.error("An error occurred:" + str(e)))
