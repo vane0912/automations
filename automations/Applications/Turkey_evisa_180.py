@@ -36,7 +36,7 @@ def TR_App_P2(data):
     chrome_options.add_argument('window-size=1920,1080')
     chrome_options.add_argument('--no-sandbox')
     chrome_options.add_argument('--disable-dev-shm-usage')
-    browser = webdriver.Chrome(service=Service('/Users/Chapis/Desktop/Automation/Automation/automations/Applications/chromedriver'), options=chrome_options)
+    browser = webdriver.Chrome(service=Service('/automations/Applications/chromedriver'), options=chrome_options)
     print('Running')
     try:
         wait = WebDriverWait(browser, 150)
