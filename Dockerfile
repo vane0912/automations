@@ -4,9 +4,11 @@ ARG PORT=443
 FROM cypress/browsers:latest
 
 # Install Python 3 and necessary tools
-RUN apt-get update && \
-    apt-get install -y python3 python3-pip && \
-    python3 -m pip install --upgrade pip
+RUN apk add --no-cache python3 py3-pip && \
+    python3 -m ensurepip
+
+# Remove the "externally managed" tag to allow pip installs
+RUN rm /usr/lib/python*/EXTERNALLY-MANAGED
 
 # Set working directory in the container
 WORKDIR /app
@@ -15,7 +17,8 @@ WORKDIR /app
 COPY requirements.txt .
 
 # Install dependencies
-RUN python3 -m pip install -r requirements.txt
+RUN python3 -m pip install --upgrade pip && \
+    python3 -m pip install -r requirements.txt
 
 # Copy the rest of your application code
 COPY . .
