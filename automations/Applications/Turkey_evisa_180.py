@@ -6,12 +6,11 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
 from selenium.webdriver.chrome.options import Options
-from webdriver_manager.chrome import ChromeDriverManager
-
+from selenium.webdriver.chrome.service import Service
 
 logging.basicConfig(level=logging.ERROR)
 Global_Variables = {
-    'url': '',
+    'url': 'https://deploy-20240619--079f7edd.visachinaonline.com',
     'applicants': 5,
     'Country': "MX",
     'Email': "",
@@ -21,23 +20,23 @@ Global_Variables = {
     'N. Orders': 0  
 }
 
-def TR_App_P2(data):
-    for x in data:
-        if x['type'] == 'ULR':
-            Global_Variables['url'] = x['value']
-        if x['type'] == 'Email':
-            Global_Variables['Email'] = x['value']
-        if x['type'] == 'Applicants':
-            Global_Variables['applicants'] = x['value']
-        if x['type'] == 'N. Orders':
-            Global_Variables['N. Orders'] = x['value']
+def TR_App_P2():
+    #for x in data:
+    #    if x['type'] == 'ULR':
+    #        Global_Variables['url'] = x['value']
+    #    if x['type'] == 'Email':
+    #        Global_Variables['Email'] = x['value']
+    #    if x['type'] == 'Applicants':
+    #        Global_Variables['applicants'] = x['value']
+    #    if x['type'] == 'N. Orders':
+    #        Global_Variables['N. Orders'] = x['value']
     print('Running')
     chrome_options = Options()
     chrome_options.add_argument('--headless') 
     chrome_options.add_argument('window-size=1920,1080')
     chrome_options.add_argument('--no-sandbox')
     chrome_options.add_argument('--disable-dev-shm-usage')
-    browser = webdriver.Chrome(ChromeDriverManager().install(), options=chrome_options, executable_path='./chromedriver')
+    browser = webdriver.Chrome(service=Service('/Users/Chapis/Desktop/Automation/Automation/automations/Applications/chromedriver'), options=chrome_options)
     print('Running')
     try:
         wait = WebDriverWait(browser, 150)
@@ -162,3 +161,4 @@ def TR_App_P2(data):
             print('Payment Done')
     except Exception as e :
         print(logging.error("An error occurred:" + str(e)))
+TR_App_P2()
