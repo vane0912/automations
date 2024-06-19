@@ -7,7 +7,6 @@ from selenium.webdriver.support import expected_conditions as EC
 import time
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager
 
 logging.basicConfig(level=logging.ERROR)
 Global_Variables = {
@@ -36,11 +35,9 @@ def TR_App_P2(data):
     chrome_options.add_argument('window-size=1920,1080')
     chrome_options.add_argument('--no-sandbox')
     chrome_options.add_argument('--disable-dev-shm-usage')
-    driver_path = ChromeDriverManager().install()
-    browser = webdriver.Chrome(service=Service(driver_path), options=chrome_options)
+    selenium_grid_url = "https://standalone-chrome-production-a2c8.up.railway.app/"
+    browser = webdriver.Remote(command_executor=selenium_grid_url,options=chrome_options)
     try:
-        driver_path = ChromeDriverManager().install()
-        browser = webdriver.Chrome(service=Service(driver_path), options=chrome_options)
         browser.get(Global_Variables['url'] + '/turkey/apply-now')
         print('done')
     except Exception as e:
