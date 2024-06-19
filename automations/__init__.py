@@ -1,5 +1,4 @@
-import chromedriver_binary
-from flask import Flask, current_app
+from flask import Flask
 from dotenv import load_dotenv
 import os
 
