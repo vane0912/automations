@@ -10,6 +10,7 @@ build==1.2.1
 certifi==2024.6.2
 charset-normalizer==3.3.2
 chromedriver-binary==128.0.6542.0.0
+chromedriver-binary-auto==0.3.1
 click==8.1.7
 decorator==5.1.1
 defusedxml==0.7.1
@@ -53,9 +54,11 @@ platformdirs==4.2.2
 prompt_toolkit==3.0.47
 ptyprocess==0.7.0
 pure-eval==0.2.2
+
 PyGetWindow==0.0.9
 Pygments==2.18.0
 PyMsgBox==1.0.9
+
 pyperclip==1.8.2
 pyproject_hooks==1.1.0
 PyRect==0.2.0
@@ -88,6 +91,7 @@ trio-websocket==0.11.1
 typing_extensions==4.10.0
 urllib3==2.2.1
 wcwidth==0.2.13
+webdriver-manager==4.0.1
 webencodings==0.5.1
 Werkzeug==3.0.3
 wsproto==1.2.0

@@ -34,7 +34,7 @@ def TR_App_P2(data):
     chrome_options.add_argument('--headless') 
     ##options=chrome_options
     chrome_options.add_argument('window-size=1920,1080')
-    browser = webdriver.Chrome(options=chrome_options)
+    browser = webdriver.Chrome(options=chrome_options, executable_path='./chromedriver')
     print('Running')
     try:
         wait = WebDriverWait(browser, 150)
