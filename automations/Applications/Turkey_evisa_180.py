@@ -157,4 +157,3 @@ def TR_App_P2(data):
             print('Payment Done')
     except Exception as e :
         print(e)
-print(chromedriver_binary.chromedriver_filename)
