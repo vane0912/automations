@@ -5,7 +5,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
-from selenium.webdriver.chrome.options import Options
+##from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.firefox.options import  Options
 from selenium.webdriver.chrome.service import Service
 
 logging.basicConfig(level=logging.ERROR)
