@@ -12,7 +12,7 @@ class Config():
 
 def create_app():
     app = Flask(__name__)
-    
+    app.config['DEBUG'] = True 
     app.config.from_object(Config)
     
     from .homepage import homepage_bp

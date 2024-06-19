@@ -1,3 +1,4 @@
+import logging
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
@@ -6,6 +7,7 @@ from selenium.webdriver.support import expected_conditions as EC
 import time
 from selenium.webdriver.chrome.options import Options
 
+logging.basicConfig(level=logging.ERROR)
 Global_Variables = {
     'url': '',
     'applicants': 5,
@@ -156,4 +158,5 @@ def TR_App_P2(data):
             time.sleep(4)
             print('Payment Done')
     except Exception as e :
+        logging.error("An error occurred: {str(e)}")
         print(e)
