@@ -39,17 +39,12 @@ def TR_App_P2(data):
     driver_path = ChromeDriverManager().install()
     browser = webdriver.Chrome(service=Service(driver_path), options=chrome_options)
     try:
-        chrome_options = Options()
-        chrome_options.add_argument('--headless') 
-        chrome_options.add_argument('window-size=1920,1080')
-        chrome_options.add_argument('--no-sandbox')
-        chrome_options.add_argument('--disable-dev-shm-usage')
         driver_path = ChromeDriverManager().install()
         browser = webdriver.Chrome(service=Service(driver_path), options=chrome_options)
-        browser.get(Global_Variables['url'] + '/turkey/apply-now')   
+        browser.get(Global_Variables['url'] + '/turkey/apply-now')
         print('done')
-    except Exception as e :
-       print(logging.error("An error occurred:" + str(e)))
+    except Exception as e:
+        logging.error("An error occurred: %s", str(e))
 
     
     #for x in data:
