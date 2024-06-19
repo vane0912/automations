@@ -7,6 +7,7 @@ from selenium.webdriver.support import expected_conditions as EC
 import time
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
 
 logging.basicConfig(level=logging.ERROR)
 Global_Variables = {
@@ -17,7 +18,7 @@ Global_Variables = {
     'First_name' : 'Pedro',
     'Last_name' : 'Gonzalez',
     'Passport_num' : '123456789',
-    'N. Orders': 0  
+    'N. Orders': '0'  
 }
 
 def TR_App_P2(data):
@@ -36,7 +37,8 @@ def TR_App_P2(data):
     chrome_options.add_argument('window-size=1920,1080')
     chrome_options.add_argument('--no-sandbox')
     chrome_options.add_argument('--disable-dev-shm-usage')
-    browser = webdriver.Chrome(service=Service('/automations/Applications/chromedriver'), options=chrome_options)
+    driver_path = ChromeDriverManager().install()
+    browser = webdriver.Chrome(service=Service(driver_path), options=chrome_options)
     print('Running')
     try:
         wait = WebDriverWait(browser, 150)
