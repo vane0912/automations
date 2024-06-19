@@ -40,6 +40,7 @@ def TR_App_P2(data):
     browser = webdriver.Chrome(service=Service(driver_path), options=chrome_options)
   
     browser.get(Global_Variables['url'] + '/turkey/apply-now')   
+    print('done')
 
 
     
