@@ -31,7 +31,6 @@ def TR_App_P2(data):
             Global_Variables['applicants'] = x['value']
         if x['type'] == 'N. Orders':
             Global_Variables['N. Orders'] = x['value']
-    print('Running')
     chrome_options = Options()
     chrome_options.add_argument('--headless') 
     chrome_options.add_argument('window-size=1920,1080')
@@ -39,20 +38,15 @@ def TR_App_P2(data):
     chrome_options.add_argument('--disable-dev-shm-usage')
     driver_path = ChromeDriverManager().install()
     browser = webdriver.Chrome(service=Service(driver_path), options=chrome_options)
-    print('Running')
     try:
         wait = WebDriverWait(browser, 150)
         for order in range(int(Global_Variables['N. Orders'])):
             browser.get(Global_Variables['url'] + '/turkey/apply-now')
-            print('Running')
             if order == 0:
-                print('Running')
                 nationality = wait.until(EC.element_to_be_clickable((By.NAME, 'general.common_nationality_country')))
                 nationality.click()
-                print('Running')
                 nationality_values = wait.until(EC.element_to_be_clickable((By.XPATH, "//input[@data-handle='dropdown-general.common_nationality_country']")))
                 nationality_values.send_keys(Global_Variables['Country'], Keys.ENTER)
-                print('Running')
                 
             product = wait.until(EC.element_to_be_clickable((By.XPATH, "//select[@data-handle='dropdown-general.visa_type_id']")))
             product.click()
@@ -62,7 +56,6 @@ def TR_App_P2(data):
             div_continue_btn = browser.find_element(By.ID, "btnContinueUnderSection")
             continue_btn = div_continue_btn.find_element(By.TAG_NAME, 'button')
             continue_btn.click()
-            print('Step 1 Done')
             ## Step 2
             destination_input = wait.until(EC.element_to_be_clickable((By.NAME, "general.arrival_date")))
             destination_input.click()
@@ -77,7 +70,6 @@ def TR_App_P2(data):
             continue_btn_sidebar = browser.find_element(By.ID, "btnContinueSidebar")
             continue_btn_sidebar.click()
             time.sleep(3)
-            print('Step 3 Done')
             for x in range(int(Global_Variables['applicants']) - 1):
                 add_traveler_div = browser.find_element(By.XPATH, "//div[@data-handle='add-traveler']")
                 add_traveler_div2 = add_traveler_div.find_elements(By.TAG_NAME, "div")
@@ -105,7 +97,6 @@ def TR_App_P2(data):
             # step 4
             time.sleep(2)
             continue_btn_sidebar.click()
-            print('Step  5 Done')
             # step 5
             time.sleep(2)
             continue_btn_sidebar.click()
@@ -130,13 +121,10 @@ def TR_App_P2(data):
                 passport_issue_year = browser.find_element(By.NAME, "applicant."+ str(user) +".passport_issued_date.year")
                 passport_issue_year.send_keys('2020')
                 passport_issue_year.send_keys(Keys.ENTER)
-            print('Step  6 Done')
             time.sleep(4)
             continue_btn_sidebar.click()
-            print('Step  7 Done')
             time.sleep(4)
             continue_btn_sidebar.click()
-            print('Step  8 Done')
             time.sleep(2)
             popup_wraper = browser.find_elements(By.XPATH, '//div[@role="dialog"]')
             subscription_popup = popup_wraper[1].find_element(By.TAG_NAME, 'main')
@@ -144,17 +132,14 @@ def TR_App_P2(data):
             get_buttons[1].click()
             time.sleep(4)
             wait.until(EC.element_to_be_clickable((continue_btn_sidebar))).click()
-            print('Step 9 Done')
             time.sleep(4)
             if browser.find_elements(By.ID, "btnDisclaimerNext"):
                 browser.find_element(By.ID, "btnDisclaimerNext").click()
             wait.until(EC.element_to_be_clickable((By.ID, "btnSubmitPayment"))).click()
             wait.until(EC.element_to_be_clickable((By.ID, "btnCompleteProcess"))).click()
             if order == 0:
-                print('got here')
                 browser.get(Global_Variables['url'] + '/account/settings/security')
                 password = wait.until(EC.element_to_be_clickable((By.ID, "new_password")))
-                print('got here')
                 password.send_keys('testivisa5!')
                 password_repeat = wait.until(EC.element_to_be_clickable((By.ID, "password_repeat")))
                 password_repeat.send_keys('testivisa5!') 
