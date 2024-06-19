@@ -3,10 +3,9 @@ ARG PORT=443
 # Use a suitable base image with Python 3 already installed
 FROM cypress/browsers:latest
 
-# Install Python 3 and necessary tools using apt-get (assuming Debian-based)
+# Install Python 3 and pip directly
 RUN apt-get update && \
-    apt-get install -y python3 python3-pip && \
-    python3 -m ensurepip
+    apt-get install -y python3 python3-pip
 
 # Set working directory in the container
 WORKDIR /app
