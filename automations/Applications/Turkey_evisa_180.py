@@ -8,6 +8,7 @@ import time
 from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
 
+
 logging.basicConfig(level=logging.ERROR)
 Global_Variables = {
     'url': '',
@@ -36,7 +37,7 @@ def TR_App_P2(data):
     chrome_options.add_argument('window-size=1920,1080')
     chrome_options.add_argument('--no-sandbox')
     chrome_options.add_argument('--disable-dev-shm-usage')
-    browser = webdriver.Chrome(ChromeDriverManager().install(), options=chrome_options)
+    browser = webdriver.Chrome(ChromeDriverManager().install(), options=chrome_options, executable_path='/path/to/chrome/binary')
     print('Running')
     try:
         wait = WebDriverWait(browser, 150)
