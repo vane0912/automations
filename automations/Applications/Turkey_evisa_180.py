@@ -1,4 +1,3 @@
-import chromedriver_binary
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
@@ -158,3 +157,4 @@ def TR_App_P2(data):
             print('Payment Done')
     except Exception as e :
         print(e)
+print(chromedriver_binary.chromedriver_filename)
