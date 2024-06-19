@@ -3,12 +3,10 @@ ARG PORT=443
 # Use a suitable base image with Python 3 already installed
 FROM cypress/browsers:latest
 
-# Install Python 3 and necessary tools
-RUN apk add --no-cache python3 py3-pip && \
+# Install Python 3 and necessary tools using apt-get (assuming Debian-based)
+RUN apt-get update && \
+    apt-get install -y python3 python3-pip && \
     python3 -m ensurepip
-
-# Remove the "externally managed" tag to allow pip installs
-RUN rm /usr/lib/python*/EXTERNALLY-MANAGED
 
 # Set working directory in the container
 WORKDIR /app
