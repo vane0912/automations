@@ -1,9 +1,20 @@
-ARG PORT=443
-FROM cypress/browsers:latest
-RUN apt-get install python3 -y 
-RUN echo $(python3 -m site --user-base)
+# Use Railway's base Python image
+FROM railwayapp/python:3.10
+
+# Install Python and dependencies
+RUN apt-get update \
+    && apt-get install -y python3-pip \
+    && pip install --upgrade pip
+
+# Set working directory
+WORKDIR /app
+
+# Copy requirements and install dependencies
 COPY requirements.txt .
-ENV PATH /home/root/.local/bin:${PATH}
-RUN apt-get update && apt-get install -y python3-pip && pip install -r requirements.txt
+RUN pip install -r requirements.txt
+
+# Copy the rest of the application code
 COPY . .
-CMD uvicorn main:app --host 0.0.0.0 --port $PORT
+
+# Command to run the application
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "${PORT}"]
