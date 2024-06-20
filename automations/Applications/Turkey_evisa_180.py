@@ -5,8 +5,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
-##from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.firefox.options import  Options
+from selenium.webdriver.chrome.options import Options
+##from selenium.webdriver.firefox.options import  Options
 from selenium.webdriver.chrome.service import Service
 
 logging.basicConfig(level=logging.ERROR)
@@ -46,11 +46,12 @@ def TR_App_P2(data):
                 nationality.click()
                 nationality_values = wait.until(EC.element_to_be_clickable((By.XPATH, "//input[@data-handle='dropdown-general.common_nationality_country']")))
                 nationality_values.send_keys(Global_Variables['Country'], Keys.ENTER)
-                
+            print('Step 1 running')
             product = wait.until(EC.element_to_be_clickable((By.XPATH, "//select[@data-handle='dropdown-general.visa_type_id']")))
             product.click()
             product_type = product.find_elements(By.TAG_NAME, 'option')
             product_type[0].click()
+            print('Step 1 running')
             time.sleep(2)
             div_continue_btn = browser.find_element(By.ID, "btnContinueUnderSection")
             continue_btn = div_continue_btn.find_element(By.TAG_NAME, 'button')
