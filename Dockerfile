@@ -1,5 +1,5 @@
 # Use Railway's base Python image
-FROM railwayapp/python:3.10
+FROM python:3.10
 
 # Install Python and dependencies
 RUN apt-get update \
