@@ -5,6 +5,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
+from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.options import Options
 ##from selenium.webdriver.firefox.options import  Options
 from selenium.webdriver.chrome.service import Service
@@ -36,7 +37,7 @@ def TR_App_P2(data):
     chrome_options.add_argument('window-size=1920,1080')
     chrome_options.add_argument('--no-sandbox')
     chrome_options.add_argument('--disable-dev-shm-usage')
-    browser = webdriver.Remote('http://selenium-hub-production-18d8.up.railway.app', options=chrome_options)
+    browser = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
     try:
         wait = WebDriverWait(browser, 150)
         for order in range(int(Global_Variables['N. Orders'])):
