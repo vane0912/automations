@@ -10,7 +10,9 @@
                     {%if loop.index == 1%}
                         <div class="w-full col-start-1 col-end-4">
                             <h2 class="text-xl font-semibold">{{ requirement.Label }}</h2>
+                            <p id="lastCharacterRemove" class="hidden text-red-400">Please remove the / at the end</p>
                             <input 
+                            onchange="checkLastCharacter(this.value)"
                             id="{{ requirement.Label }}" name="{{ app_name }}-input" 
                             class="w-full border-[1px] border-solid border-[#302E2E]/50 font-light h-[40px] px-6 py-5 rounded-lg mt-2" 
                             type="{{ requirement.Type }}">
@@ -27,11 +29,11 @@
                                             <option>{{status}}</option>
                                         {%endfor%}
                                     </select>
-                                {%else%}
-                                    <input 
-                                    id="{{ requirement.Label }}" name="{{ app_name }}-input" 
-                                    class="w-full border-[1px] border-solid border-[#302E2E]/50 font-light h-[40px] px-6 py-5 rounded-lg mt-2" 
-                                    type="{{ requirement.Type }}">
+                            {%else%}
+                                <input 
+                                id="{{ requirement.Label }}" name="{{ app_name }}-input" 
+                                class="w-full border-[1px] border-solid border-[#302E2E]/50 font-light h-[40px] px-6 py-5 rounded-lg mt-2" 
+                                type="{{ requirement.Type }}">
                             {%endif%}
                         </div>
                     {%endif%}
@@ -78,6 +80,16 @@
     </div>
    <script type="text/javascript" async src="https://tenor.com/embed.js"></script>
    <script>
+    function checkLastCharacter(value){
+        if (value[value.length - 1] === '/'){
+            document.getElementById('lastCharacterRemove').classList.remove('hidden')
+            document.getElementById('lastCharacterRemove').classList.add('content')
+        } else {
+            document.getElementById('lastCharacterRemove').classList.add('hidden')
+            document.getElementById('lastCharacterRemove').classList.remove('content')
+        }
+
+    }
     async function run_test(url,value){
         const inputs = document.getElementsByName(`${value}-input`)
         const variables = []
