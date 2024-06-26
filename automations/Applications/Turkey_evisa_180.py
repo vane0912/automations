@@ -4,14 +4,12 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import StaleElementReferenceException, TimeoutException, NoSuchElementException, ElementClickInterceptedException
+from selenium.common.exceptions import StaleElementReferenceException, NoSuchElementException, ElementClickInterceptedException
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.alert import Alert
 from selenium.webdriver.support.ui import Select
-
-
 logging.basicConfig(level=logging.ERROR)
 
 console_handler = logging.StreamHandler()
@@ -103,22 +101,21 @@ def TR_App_P2(data):
                 add_traveler_div2 = add_traveler_div.find_elements(By.TAG_NAME, "div")
                 add_traveler_btn = add_traveler_div2[1].find_element(By.TAG_NAME, 'button')
                 add_traveler_btn.click()
+            
             for applicant in range(int(Global_Variables['applicants'])):
-                first_name = wait.until(EC.visibility_of((browser.find_element(By.NAME, 'applicant.' + str(applicant) + '.first_name'))))
+                first_name = wait.until(EC.visibility_of_element_located((By.NAME, 'applicant.' + str(applicant) + '.first_name')))
                 first_name.send_keys(Global_Variables['First_name'])
-                last_name = browser.find_element(By.NAME, "applicant." + str(applicant) + ".last_name")
+                last_name = wait.until(EC.visibility_of_element_located((By.NAME, "applicant." + str(applicant) + ".last_name"))) 
                 last_name.send_keys(Global_Variables['Last_name'])
-                gender_select = browser.find_element(By.XPATH, "//select[@data-handle='dropdown-applicant." + str(applicant) + ".gender']")
-                gender_select.click()
-                gender_select.send_keys('f')
-                gender_select.send_keys(Keys.ENTER)
-                dob_day = browser.find_element(By.NAME, "applicant." + str(applicant) + ".dob.day")
+                gender_select = Select(wait.until(EC.element_to_be_clickable((By.XPATH, "//select[@data-handle='dropdown-applicant." + str(applicant) + ".gender']"))) ) 
+                gender_select.select_by_index(0)
+                dob_day = wait.until(EC.visibility_of_element_located((By.NAME, "applicant." + str(applicant) + ".dob.day"))) 
                 dob_day.send_keys('23')
                 dob_day.send_keys(Keys.ENTER)
-                dob_month = browser.find_element(By.NAME, "applicant." + str(applicant) + ".dob.month")
+                dob_month = wait.until(EC.visibility_of_element_located((By.NAME, "applicant." + str(applicant) + ".dob.month")))  
                 dob_month.send_keys('d')
                 dob_month.send_keys(Keys.ENTER)
-                dob_year = browser.find_element(By.NAME, "applicant." + str(applicant) + ".dob.year")
+                dob_year = wait.until(EC.visibility_of_element_located((By.NAME, "applicant." + str(applicant) + ".dob.year")))
                 dob_year.send_keys('1997')
                 dob_year.send_keys(Keys.ENTER)
             print('STEP 2')
@@ -237,5 +234,8 @@ def TR_App_P2(data):
                 wait.until(EC.element_to_be_clickable((By.XPATH, '//button[@data-handle="submitChangeStatus"]'))).click()
                 wait.until_not(EC.visibility_of_element_located((By.XPATH, '//div[@data-vue-component="order-item-editor"]')))
                 print('ORDER DONE MIN ' + str(order_numbers))
-    except Exception as e :
-       logging.error("An error occurred: %s", e)
+    except Exception as e:
+        logging.error(e)
+    finally: 
+        browser.quit()
+        return Global_Variables['Order_Numbers']

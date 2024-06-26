@@ -1,5 +1,5 @@
 from .automations_list import automations_list
-from flask import Blueprint, render_template, request, current_app
+from flask import Blueprint, render_template, request, current_app, jsonify, Response
 
 applications_bp = Blueprint('applications', __name__)
 
@@ -33,7 +33,6 @@ def set_variables(app_name=None):
             status.append(x)
     if request.method == 'POST': 
         data = request.get_json()
-        filtered_Array[0]['Type'](data)
-        return 'hello'
+        return jsonify(filtered_Array[0]['Type'](data))
     else:
         return render_template('run_automation.html', app_name=app_name, requirements=requirements, status=status[0]['Status_Available'], goto=url)

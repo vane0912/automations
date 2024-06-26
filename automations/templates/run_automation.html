@@ -53,6 +53,34 @@
             </div>
         </div> 
     </div>
+    <div id="automation_failed" class="hidden bg-[#302E2E]/50 top-0 w-full h-screen">
+        <div class="w-fit bg-white h-fit left-[18%] top-[20%] relative border-2 border-solid border-[#302E2E] rounded-lg">
+            <div class="flex flex-col justify-evenly p-9  items-center h-full">
+                <h2 class="text-[32px] font-semibold text-center mb-8">There was an error</h2>
+                <h2 
+                onclick="document.getElementById('automation_failed').classList.add('hidden')"
+                class="text-[18px] font-semibold absolute top-5 right-16 cursor-pointer">
+                    X
+                </h2>
+                <div class="flex w-full justify-between items-center">
+                    <div class="w-1/2 ml-12">
+                        <p class="text-xl font-medium text-center">There could be a couple of reasons why:</p>
+                        <ul class="text-base font-normal text-center list-disc" >
+                            <li class="my-4">If no orders where made please check that the URL is correct and is available</li>
+                            <li class="my-4" >Network error: Please try to run the automation again with a different email</li>
+                            <li class="my-4">You used an email that already has an account, please try again with another account</li>
+                        </ul>
+                    </div>
+                    <div class="tenor-gif-embed w-[10px] h-[200px] m-0" data-postid="8085108947907151027" data-share-method="host" data-aspect-ratio="1.04622" data-width="40%">
+                        <a href="https://tenor.com/view/%E3%81%82-gif-8085108947907151027">あ GIF</a>from <a href="https://tenor.com/search/%E3%81%82-gifs">あ GIFs</a>
+                    </div>
+                </div>      
+                <div>
+                    <p class="text-center">If nothing of the above works then contact me so i can check if something is wrong</p>
+                </div>
+            </div>
+        </div> 
+    </div> 
     <div id="automation_results" class="w-9/12 h-fit hidden">
         <div class="w-full bg-white h-fit flex justify-between px-12 py-8 rounded-xl border-solid border-[#4ADE80] border-2 ">
             <div class="w-2/6 h-full">
@@ -79,6 +107,7 @@
         </div>
     </div>
    <script type="text/javascript" async src="https://tenor.com/embed.js"></script>
+   <script type="text/javascript" async src="https://tenor.com/embed.js"></script>
    <script>
     function checkLastCharacter(value){
         if (value[value.length - 1] === '/'){
@@ -102,39 +131,48 @@
         }
         document.getElementById('automation_running').classList.remove('hidden')
         document.getElementById('automation_running').classList.add('absolute')
-        
+
         await fetch(`/run-automation/${value.split('%20').join(' ')}`,{
             method: 'POST',
             headers: {'Content-Type':'application/json'},
             body: JSON.stringify(variables)
         })
-        .then(() =>{
+        .then((res) => res.json())
+        .then((val) => {
+            console.log(val)
+            if(val){
                 document.getElementById('set_variables').classList.add('hidden')
                 document.getElementById('automation_running').classList.add('hidden')
                 document.getElementById('automation_results').classList.remove('hidden')
                 document.getElementById('automation_results').classList.add('content')
                 document.getElementById('main_title').textContent = 'Automation Ran Successfully'
+                
                 const getEmail = variables.filter((value) => value.type === 'Email')
-                const getOrderNumber = variables.filter((value) => value.type === 'N. Orders')
                 const getOrderStatus = variables.filter((value) => value.type === 'Status')
-
                 document.getElementsByName('user_email')[0].textContent = getEmail[0].value
                 const order_container = document.getElementsByName('user_order_type')[0]
                 const order_status_container = document.getElementsByName('user_order_status')[0]
-                const order_name = location.href.split('/').length
-                for(let i = 0; i < getOrderNumber[0].value; i++){
+    
+                for(let i = 0; i < val.length; i++){
                     const order_title = document.createElement('p')
                     const order_status = document.createElement('p')
-                    order_title.textContent = location.href.split('/')[order_name - 1].replace(/-/g,' ')
+                    order_title.textContent = 'Order Created ' + val[i][0]
                     order_title.classList.add('text-center', 'mb-5')
                     order_status.textContent = getOrderStatus[0].value
                     order_status.classList.add('text-center', 'mb-5')
                     order_container.append(order_title)
                     order_status_container.append(order_status)
                 }
-                
+            }else{
+                document.getElementById('set_variables').classList.add('hidden')
+                document.getElementById('automation_running').classList.add('hidden')
+                document.getElementById('automation_failed').classList.remove('hidden')
+                document.getElementById('automation_failed').classList.add('absolute')
+                document.getElementById('automation_results').classList.remove('hidden')
+                document.getElementById('automation_results').classList.add('content')
+                document.getElementById('main_title').textContent = 'Automation Failed'
             }
-        ).catch((res) => console.log(res))
+        })
     }
     </script>
 {% endblock %}
