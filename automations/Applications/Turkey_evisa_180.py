@@ -4,8 +4,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import NoSuchElementException
-from selenium.common.exceptions import StaleElementReferenceException, TimeoutException, NoSuchElementException
+from selenium.common.exceptions import StaleElementReferenceException, TimeoutException, NoSuchElementException, ElementClickInterceptedException
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
@@ -14,6 +13,16 @@ from selenium.webdriver.support.ui import Select
 
 
 logging.basicConfig(level=logging.ERROR)
+
+console_handler = logging.StreamHandler()
+console_handler.setLevel(logging.ERROR)  # Set the desired level if necessary
+
+# Create a formatter for the handler
+formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+console_handler.setFormatter(formatter)
+
+# Add the handler to the root logger (if not added by basicConfig)
+logging.getLogger().addHandler(console_handler)
 Global_Variables = {
     'url': 'https://deploy-20240619--079f7edd.visachinaonline.com',
     'applicants': 5,
@@ -61,7 +70,7 @@ def TR_App_P2(data):
     chrome_options.add_argument('--disable-dev-shm-usage')
     chrome_options.add_argument("--incognito")
     browser = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
-    wait = WebDriverWait(browser, 150, ignored_exceptions=(NoSuchElementException,StaleElementReferenceException))
+    wait = WebDriverWait(browser, 60, ignored_exceptions=(NoSuchElementException,StaleElementReferenceException))
     try:
         for order in range(int(Global_Variables['N. Orders'])):
             browser.get(Global_Variables['url'] + '/turkey/apply-now')
@@ -73,14 +82,12 @@ def TR_App_P2(data):
             product = Select(wait.until(EC.element_to_be_clickable((By.XPATH, "//select[@data-handle='dropdown-general.visa_type_id']"))))
             product.select_by_index(0)
             div_continue_btn = wait.until(EC.visibility_of_element_located((By.ID, "btnContinueUnderSection")))
-            if div_continue_btn.find_element(By.TAG_NAME, 'button').is_enabled():
-                div_continue_btn.find_element(By.TAG_NAME, 'button').click()
-            else:
-                continue_button_step1 = wait.until(EC.element_to_be_clickable((div_continue_btn.find_element(By.TAG_NAME, 'button'))))
-                continue_button_step1.click()
+            
+            div_continue_btn.find_element(By.TAG_NAME, 'button').click() if div_continue_btn.find_element(By.TAG_NAME, 'button').is_enabled() else wait.until(EC.element_to_be_clickable((div_continue_btn.find_element(By.TAG_NAME, 'button')))).click()
+            
             arrival_date = wait.until(EC.element_to_be_clickable((By.NAME, "general.arrival_date")))
             arrival_date.click()
-            print('Got here')
+
             svg_locator = (By.CSS_SELECTOR, "div.is-right svg")
             day_month = (By.CSS_SELECTOR, "div.day-13")
             safe_element_click(browser, svg_locator)
@@ -88,16 +95,15 @@ def TR_App_P2(data):
             if order == 0:
                 email = browser.find_element(By.NAME,"general.email")
                 email.send_keys(Global_Variables['Email'])
-            continue_sidebar_step2 = wait.until(EC.element_to_be_clickable((By.ID, "btnContinueSidebar")))
-            continue_sidebar_step2.click()
-            time.sleep(2)
+            continue_sidebar = wait.until(EC.visibility_of_element_located((By.ID, "btnContinueSidebar")))
+            print('STEP 1')
+            continue_sidebar.click() if continue_sidebar.is_enabled() else wait.until(EC.element_to_be_clickable((By.ID, "btnContinueSidebar"))).click()
             for x in range(int(Global_Variables['applicants']) - 1):
                 add_traveler_div = wait.until(EC.visibility_of_element_located((By.XPATH, "//div[@data-handle='add-traveler']")))
                 add_traveler_div2 = add_traveler_div.find_elements(By.TAG_NAME, "div")
                 add_traveler_btn = add_traveler_div2[1].find_element(By.TAG_NAME, 'button')
                 add_traveler_btn.click()
             for applicant in range(int(Global_Variables['applicants'])):
-            ## Step 3
                 first_name = wait.until(EC.visibility_of((browser.find_element(By.NAME, 'applicant.' + str(applicant) + '.first_name'))))
                 first_name.send_keys(Global_Variables['First_name'])
                 last_name = browser.find_element(By.NAME, "applicant." + str(applicant) + ".last_name")
@@ -115,10 +121,11 @@ def TR_App_P2(data):
                 dob_year = browser.find_element(By.NAME, "applicant." + str(applicant) + ".dob.year")
                 dob_year.send_keys('1997')
                 dob_year.send_keys(Keys.ENTER)
+            print('STEP 2')
             # step 4
-            wait.until(EC.element_to_be_clickable((By.ID, "btnContinueSidebar"))).click()
+            continue_sidebar.click() if continue_sidebar.is_enabled() else wait.until(EC.element_to_be_clickable((By.ID, "btnContinueSidebar"))).click()
             # step 5
-            wait.until(EC.element_to_be_clickable((By.ID, "btnContinueSidebar"))).click()
+            continue_sidebar.click() if continue_sidebar.is_enabled() else wait.until(EC.element_to_be_clickable((By.ID, "btnContinueSidebar"))).click()
             for user in range(int(Global_Variables['applicants'])):
                 passport_num = wait.until(EC.element_to_be_clickable((By.NAME, "applicant."+ str(user) +".passport_num")))
                 passport_num.send_keys(Global_Variables['Passport_num'])
@@ -140,24 +147,47 @@ def TR_App_P2(data):
                 passport_issue_year = browser.find_element(By.NAME, "applicant."+ str(user) +".passport_issued_date.year")
                 passport_issue_year.send_keys('2020')
                 passport_issue_year.send_keys(Keys.ENTER)
-            wait.until(EC.element_to_be_clickable((By.ID, "btnContinueSidebar"))).click()
-            time.sleep(2)
-            wait.until(EC.element_to_be_clickable((By.ID, "btnContinueSidebar"))).click()
-            time.sleep(2)
-            subscription_button = wait.until(EC.element_to_be_clickable((By.XPATH, '//button[@data-handle="no-subscription"]')))
-            subscription_button.click()
-            wait.until(EC.element_to_be_clickable((By.ID, "btnContinueSidebar"))).click()
-            print('Got here')
+            print('STEP 3')
+            time.sleep(3)
+            continue_sidebar.click() if continue_sidebar.is_enabled() else wait.until(EC.element_to_be_clickable((By.ID, "btnContinueSidebar"))).click()
+            print('STEP 4')
+            time.sleep(3)
+            continue_sidebar.click() if continue_sidebar.is_enabled() else wait.until(EC.element_to_be_clickable((By.ID, "btnContinueSidebar"))).click()
+            print('STEP 5')
+            time.sleep(3)
             try:
-                btn_disclaimer = WebDriverWait(browser, 10).until(EC.element_to_be_clickable((By.ID, "btnDisclaimerNext")))
+                continue_sidebar.click() if continue_sidebar.is_enabled() else wait.until(EC.element_to_be_clickable((By.ID, "btnContinueSidebar"))).click()
+            except ElementClickInterceptedException:
+                subscription_button = wait.until(EC.visibility_of_element_located((By.XPATH, '//button[@data-handle="no-subscription"]')))
+                subscription_button.click() if subscription_button.is_enabled() else wait.until(EC.element_to_be_clickable((By.XPATH, '//button[@data-handle="no-subscription"]'))).click()
+            time.sleep(3)
+            try:
+                continue_sidebar.click() if continue_sidebar.is_enabled() else wait.until(EC.element_to_be_clickable((By.ID, "btnContinueSidebar"))).click()
+            except ElementClickInterceptedException:
+                subscription_button = wait.until(EC.visibility_of_element_located((By.XPATH, '//button[@data-handle="no-subscription"]')))
+                subscription_button.click() if subscription_button.is_enabled() else wait.until(EC.element_to_be_clickable((By.XPATH, '//button[@data-handle="no-subscription"]'))).click()
+            print('STEP 6')
+            try:
+                print('Trying payment...')
+                btn_submit_payment = wait.until(EC.element_to_be_clickable((By.ID, "btnSubmitPayment")))
+                btn_submit_payment.click()
+                print('Payment done.')
+            
+                btn_complete = wait.until(EC.element_to_be_clickable((By.ID, "btnCompleteProcess")))
+                btn_complete.click()
+            except ElementClickInterceptedException: 
+                print('Handling ElementClickInterceptedException...')
+                btn_disclaimer = wait.until(EC.element_to_be_clickable((By.ID, "btnDisclaimerNext")))
                 btn_disclaimer.click()
-                wait.until(EC.element_to_be_clickable((By.ID, "btnSubmitPayment"))).click()
-                wait.until(EC.element_to_be_clickable((By.ID, "btnCompleteProcess"))).click()
-                print('ORDER DONE ' + str(order + 1))
-            except TimeoutException: 
-                wait.until(EC.element_to_be_clickable((By.ID, "btnSubmitPayment"))).click()
-                wait.until(EC.element_to_be_clickable((By.ID, "btnCompleteProcess"))).click()
-                print('ORDER DONE ' + str(order + 1))
+
+                # Retry payment after handling disclaimer
+                btn_submit_payment = wait.until(EC.element_to_be_clickable((By.ID, "btnSubmitPayment")))
+                btn_submit_payment.click()
+                print('Payment done.')
+
+                btn_complete = wait.until(EC.element_to_be_clickable((By.ID, "btnCompleteProcess")))
+                btn_complete.click()
+            print('ORDER DONE ' + str(order + 1))
             wait.until(EC.element_to_be_clickable((By.ID, 'btnDismissAppDownload'))).click()
             order_number = wait.until(EC.visibility_of_element_located((By.ID, 'h1-tag-container')))
             Global_Variables['Order_Numbers'].append(re.findall(r'\d+', order_number.text))
@@ -169,42 +199,43 @@ def TR_App_P2(data):
                 password_repeat.send_keys('testivisa5!') 
                 browser.find_element(By.XPATH, '//button[@data-handle="updatePasswordBtn"]').click()
                 wait.until(EC.element_to_be_clickable((By.CLASS_NAME, 'swal-button--confirm'))).click()
-            print('ORDER DONE ' + str(order + 1))
-        wait.until(EC.element_to_be_clickable((By.ID, 'loggedInUserContainer-chevron'))).click()
-        wait.until(EC.element_to_be_clickable((By.ID, 'btnLogout'))).click()
-        browser.get(Global_Variables['url'] + '/admin')
-        admin_email = wait.until(EC.element_to_be_clickable((By.ID, 'email_login_input')))
-        admin_email.send_keys('david@admin.com')
-        wait.until(EC.element_to_be_clickable((By.ID, 'continue_button'))).click()
-        admin_password = wait.until(EC.element_to_be_clickable((By.ID, 'password_login_input')))
-        admin_password.send_keys('testivisa5!')
-        wait.until(EC.element_to_be_clickable((By.ID, 'log_in_button'))).click()
-        for order_numbers in (Global_Variables['Order_Numbers']):
-            wait.until(EC.element_to_be_clickable((By.XPATH, '//li[@onclick="searchOrderID();"]'))).click()
-            order_alert = Alert(browser)
-            order_alert.send_keys(order_numbers[0])
-            order_alert.accept()
-            wait.until(EC.element_to_be_clickable((By.XPATH, '//section[@aria-labelledby="info-title"]'))).click()
-            applicants_admin = wait.until(EC.visibility_of_any_elements_located((By.XPATH,'//div[@data-handle="applicant-details"]')))
-            time.sleep(2)
-            applicants_admin[0].click()
-            time.sleep(2)
-            table_wraper = browser.find_element(By.XPATH, '//section[@aria-labelledby="info-title"]')
-            questions_table = table_wraper.find_element(By.TAG_NAME, 'table')
-            first_and_middle_name_row = questions_table.find_elements(By.TAG_NAME, 'tr')
-            send_name_min = first_and_middle_name_row[0].find_element(By.XPATH, '//span[@data-handle="min_checkbox_first_name"]')
-            time.sleep(2)
-            send_name_min.find_element(By.ID, 'Vector').click()
-            wait.until(EC.visibility_of_element_located((By.XPATH, '//div[@role="dialog"]')))
-            browser.find_element(By.XPATH, '//label[@data-handle="Non-English characters"]').click()
-            wait.until(EC.visibility_of_element_located((By.XPATH, '//input[@placeholder="Search a MIN reason"]')))
-            browser.find_element(By.ID, 'close').click()
-            change_status = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'change-status'))))
-            change_status.select_by_index(3)
-            wait.until(EC.element_to_be_clickable((By.XPATH, '//button[@data-handle="minModalYes"]'))).click()
-            time.sleep(3)
-            wait.until(EC.element_to_be_clickable((By.XPATH, '//button[@data-handle="submitChangeStatus"]'))).click()
-            wait.until_not(EC.visibility_of_element_located((By.XPATH, '//div[@data-vue-component="order-item-editor"]')))
-            print('ORDER DONE MIN ' + str(len(Global_Variables['Order_Numbers'] - 1)))
+        ## MIN STATUS
+        if Global_Variables['Status'] == 'MIN':
+            wait.until(EC.element_to_be_clickable((By.ID, 'loggedInUserContainer-chevron'))).click()
+            wait.until(EC.element_to_be_clickable((By.ID, 'btnLogout'))).click()
+            browser.get(Global_Variables['url'] + '/admin')
+            admin_email = wait.until(EC.element_to_be_clickable((By.ID, 'email_login_input')))
+            admin_email.send_keys('david@admin.com')
+            wait.until(EC.element_to_be_clickable((By.ID, 'continue_button'))).click()
+            admin_password = wait.until(EC.element_to_be_clickable((By.ID, 'password_login_input')))
+            admin_password.send_keys('testivisa5!')
+            wait.until(EC.element_to_be_clickable((By.ID, 'log_in_button'))).click()
+            for order_numbers in (Global_Variables['Order_Numbers']):
+                wait.until(EC.element_to_be_clickable((By.XPATH, '//li[@onclick="searchOrderID();"]'))).click()
+                order_alert = Alert(browser)
+                order_alert.send_keys(order_numbers[0])
+                order_alert.accept()
+                wait.until(EC.element_to_be_clickable((By.XPATH, '//section[@aria-labelledby="info-title"]'))).click()
+                applicants_admin = wait.until(EC.visibility_of_any_elements_located((By.XPATH,'//div[@data-handle="applicant-details"]')))
+                time.sleep(2)
+                applicants_admin[0].click()
+                time.sleep(2)
+                table_wraper = browser.find_element(By.XPATH, '//section[@aria-labelledby="info-title"]')
+                questions_table = table_wraper.find_element(By.TAG_NAME, 'table')
+                first_and_middle_name_row = questions_table.find_elements(By.TAG_NAME, 'tr')
+                send_name_min = first_and_middle_name_row[0].find_element(By.XPATH, '//span[@data-handle="min_checkbox_first_name"]')
+                time.sleep(2)
+                send_name_min.find_element(By.ID, 'Vector').click()
+                wait.until(EC.visibility_of_element_located((By.XPATH, '//div[@role="dialog"]')))
+                browser.find_element(By.XPATH, '//label[@data-handle="Non-English characters"]').click()
+                wait.until(EC.visibility_of_element_located((By.XPATH, '//input[@placeholder="Search a MIN reason"]')))
+                browser.find_element(By.ID, 'close').click()
+                change_status = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'change-status'))))
+                change_status.select_by_index(3)
+                wait.until(EC.element_to_be_clickable((By.XPATH, '//button[@data-handle="minModalYes"]'))).click()
+                time.sleep(3)
+                wait.until(EC.element_to_be_clickable((By.XPATH, '//button[@data-handle="submitChangeStatus"]'))).click()
+                wait.until_not(EC.visibility_of_element_located((By.XPATH, '//div[@data-vue-component="order-item-editor"]')))
+                print('ORDER DONE MIN ' + str(order_numbers))
     except Exception as e :
-        print(logging.error("An error occurred:" + str(e)))
+       logging.error("An error occurred: %s", e)
