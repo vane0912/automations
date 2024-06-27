@@ -8,6 +8,7 @@ automations_list = [
             'Subtitles': ['Only for MX citizens'],
             'Country' : 'Turkey',
             'Type': TR_App_P2,
+            'Enabled': True,
             'Requirements': [
                 {
                     'Label': 'ULR',
@@ -18,16 +19,8 @@ automations_list = [
                     'Type': 'default',
                 },
                 {
-                    'Label': 'Applicants',
-                    'Type': 'Number',
-                },
-                {
                     'Label': 'Status',
                     'Status_Available': ['Received', 'MIN']
-                },
-                {
-                    'Label': 'N. Orders',
-                    'Type': 'Number',
                 },
             ]
         },
@@ -36,6 +29,7 @@ automations_list = [
             'Subtitles': ['Only for MX citizens'],
             'Country' : 'India',
             'Type': India_1y_Multiple,
+            'Enabled': False,
             'Requirements': [
                 {
                     'Label': 'ULR',
@@ -64,6 +58,7 @@ automations_list = [
             'Subtitles': ['Only for MX citizens'],
             'Country' : 'Egypt',
             'Type': EG_180_Multiple,
+            'Enabled': False,
             'Requirements': [
                 {
                     'Label': 'ULR',
