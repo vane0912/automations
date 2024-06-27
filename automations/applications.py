@@ -1,3 +1,4 @@
+import asyncio
 from .automations_list import automations_list
 from flask import Blueprint, render_template, request, current_app, jsonify, Response
 
@@ -10,8 +11,8 @@ def get_app(app_type=None):
     categories = []
     filtered_Array = []
     for x in automations_list:
-        categories.append(x['Country'])
-        if x['Country'] == app_type:
+        if x['Country'] == app_type or x['Enabled'] == True:
+            categories.append(x['Country'])
             filtered_Array.append(x)
     return render_template('applications.html', categories=categories, app_type=app_type, automations=filtered_Array)
 
@@ -33,6 +34,11 @@ def set_variables(app_name=None):
             status.append(x)
     if request.method == 'POST': 
         data = request.get_json()
-        return jsonify(filtered_Array[0]['Type'](data))
+        try:
+            results = filtered_Array[0]['Type'](data)
+            return jsonify(results)
+        except Exception as e:
+            print(Exception)
+            return jsonify({'error': str(e)})
     else:
         return render_template('run_automation.html', app_name=app_name, requirements=requirements, status=status[0]['Status_Available'], goto=url)
