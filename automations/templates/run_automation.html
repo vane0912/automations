@@ -198,7 +198,7 @@
             pollAutomationStatus(order_array.Order_numbers, variables);
         }
         catch(err){
-            console.error('Error running automation:', error);
+            console.error('Error running automation:', err);
         }
     }
     async function pollAutomationStatus(order_array, variables){
@@ -236,12 +236,11 @@
                     completed = true;
                 }
                 else {
-
                     await new Promise(resolve => setTimeout(resolve, 5000)); 
                 }
             }
-        } catch (error) {
-            console.error('Error checking automation status:', error);
+        } catch(err) {
+            console.error('Error checking automation status:', err);
         }
     }
     </script>
