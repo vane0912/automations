@@ -181,6 +181,7 @@ def TR_App_P2(data):
                 password_repeat.send_keys('testivisa5!') 
                 browser.find_element(By.XPATH, '//button[@data-handle="updatePasswordBtn"]').click()
                 wait.until(EC.element_to_be_clickable((By.CLASS_NAME, 'swal-button--confirm'))).click()
+            print('ORDER ' + str(order))
         ## MIN STATUS
         if Global_Variables['Status'] == 'MIN':
             wait.until(EC.element_to_be_clickable((By.ID, 'loggedInUserContainer-chevron'))).click()
@@ -219,8 +220,13 @@ def TR_App_P2(data):
                 wait.until(EC.element_to_be_clickable((By.XPATH, '//button[@data-handle="submitChangeStatus"]'))).click()
                 wait.until_not(EC.visibility_of_element_located((By.XPATH, '//div[@data-vue-component="order-item-editor"]')))
         browser.quit()
-        return Global_Variables['Order_Numbers']
+        automation_results = {
+            'Order_numbers' : Global_Variables['Order_Numbers'],
+            'Status' : 'Success'
+        }
+        return automation_results
     except Exception as e:
+        print(e)
         logging.debug('Debug message: %s', e)
         return e
    

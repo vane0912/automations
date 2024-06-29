@@ -42,3 +42,23 @@ def set_variables(app_name=None):
             return jsonify({'error': str(e)})
     else:
         return render_template('run_automation.html', app_name=app_name, requirements=requirements, status=status[0]['Status_Available'], goto=url)
+@applications_bp.route('/check-automation-status/<status>', methods=['GET'])
+def check_automation_status(status):
+    results = {
+        'status': status,  
+        'completed': False,
+        'results': []
+    }
+    if(status):
+        results = {
+            'status': status,  
+            'completed': True,
+            'results': []
+        }
+    else: 
+        results = {
+            'status': status,  
+            'completed': False,
+            'results': []
+        }
+    return jsonify(results)

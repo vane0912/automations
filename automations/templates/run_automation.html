@@ -42,7 +42,6 @@
             <div class="w-full">
                 <h2 class="text-xl font-semibold">N. Orders</h2>
                 <input 
-                   onchange="this.value > 10 ? alert('Please Enter less than 10 orders') : this.value"
                    id="N. Orders" name="{{ app_name }}-input" 
                    class="w-full border-[1px] border-solid border-[#302E2E]/50 font-light h-[40px] px-6 py-5 rounded-lg mt-2" 
                    type="Number"
@@ -172,41 +171,20 @@
             }
             variables.push(values)
         }
+
         document.getElementById('automation_running').classList.remove('hidden')
         document.getElementById('automation_running').classList.add('absolute')
         document.getElementById('user_email_status').textContent = variables.filter((value) => value.type === 'Email')[0].value
-        await fetch(`/run-automation/${value.split('%20').join(' ')}`,{
-            method: 'POST',
-            headers: {'Content-Type':'application/json'},
-            body: JSON.stringify(variables)
-        })
-        .then((res) => res.json())
-        .then((val) => {
-            if(val.length > 0){
-                document.getElementById('set_variables').classList.add('hidden')
-                document.getElementById('automation_running').classList.add('hidden')
-                document.getElementById('automation_results').classList.remove('hidden')
-                document.getElementById('automation_results').classList.add('content')
-                document.getElementById('main_title').textContent = 'Automation Ran Successfully'
-                
-                const getEmail = variables.filter((value) => value.type === 'Email')
-                const getOrderStatus = variables.filter((value) => value.type === 'Status')
-                document.getElementsByName('user_email')[0].textContent = getEmail[0].value
-                const order_container = document.getElementsByName('user_order_type')[0]
-                const order_status_container = document.getElementsByName('user_order_status')[0]
-    
-                for(let i = 0; i < val.length; i++){
-                    const order_title = document.createElement('p')
-                    const order_status = document.createElement('p')
-                    order_title.textContent = 'Order Created ' + val[i][0]
-                    order_title.classList.add('text-center', 'mb-5')
-                    order_status.textContent = getOrderStatus[0].value
-                    order_status.classList.add('text-center', 'mb-5')
-                    order_container.append(order_title)
-                    order_status_container.append(order_status)
-                }
-            }else{
-                console.log(val)
+
+        try{
+            const response = await fetch(`/run-automation/${value.split('%20').join(' ')}`,{
+                method: 'POST',
+                headers: {'Content-Type':'application/json'},
+                body: JSON.stringify(variables)
+            })
+            const order_array = await response.json();
+            if(!Array.isArray(order_array.Order_numbers)){
+                console.log(order_array)
                 document.getElementById('set_variables').classList.add('hidden')
                 document.getElementById('automation_running').classList.add('hidden')
                 document.getElementById('automation_failed').classList.remove('hidden')
@@ -217,7 +195,54 @@
                 const getEmail = variables.filter((value) => value.type === 'Email')
                 document.getElementsByName('user_email')[0].textContent = getEmail[0].value
             }
-        })
+            pollAutomationStatus(order_array.Order_numbers, variables);
+        }
+        catch(err){
+            console.error('Error running automation:', error);
+        }
+    }
+    async function pollAutomationStatus(order_array, variables){
+        try {
+            let completed = false;
+            while (!completed) {
+                const statusResponse = await fetch(`/check-automation-status/${order_array.Status}`);
+                if (!statusResponse.ok) {
+                    throw new Error('Failed to fetch status');
+                }
+                const status = await statusResponse.json();
+    
+                if (status.completed) {
+                    document.getElementById('set_variables').classList.add('hidden')
+                    document.getElementById('automation_running').classList.add('hidden')
+                    document.getElementById('automation_results').classList.remove('hidden')
+                    document.getElementById('automation_results').classList.add('content')
+                    document.getElementById('main_title').textContent = 'Automation Ran Successfully'
+                    
+                    const getEmail = variables.filter((value) => value.type === 'Email')
+                    const getOrderStatus = variables.filter((value) => value.type === 'Status')
+                    document.getElementsByName('user_email')[0].textContent = getEmail[0].value
+                    const order_container = document.getElementsByName('user_order_type')[0]
+                    const order_status_container = document.getElementsByName('user_order_status')[0]
+                    for(let i = 0; i < order_array.length; i++){
+                        const order_title = document.createElement('p')
+                        const order_status = document.createElement('p')
+                        order_title.textContent = 'Order Created ' + order_array[i][0]
+                        order_title.classList.add('text-center', 'mb-5')
+                        order_status.textContent = getOrderStatus[0].value
+                        order_status.classList.add('text-center', 'mb-5')
+                        order_container.append(order_title)
+                        order_status_container.append(order_status)
+                    }
+                    completed = true;
+                }
+                else {
+
+                    await new Promise(resolve => setTimeout(resolve, 5000)); 
+                }
+            }
+        } catch (error) {
+            console.error('Error checking automation status:', error);
+        }
     }
     </script>
 {% endblock %}
