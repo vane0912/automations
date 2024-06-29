@@ -195,7 +195,7 @@
                 const getEmail = variables.filter((value) => value.type === 'Email')
                 document.getElementsByName('user_email')[0].textContent = getEmail[0].value
             }
-            pollAutomationStatus(order_array.Order_numbers, variables);
+            pollAutomationStatus(order_array, variables);
         }
         catch(err){
             console.error('Error running automation:', err);
@@ -205,6 +205,7 @@
         try {
             let completed = false;
             while (!completed) {
+                console.log(order_array.Status)
                 const statusResponse = await fetch(`/check-automation-status/${order_array.Status}`);
                 if (!statusResponse.ok) {
                     throw new Error('Failed to fetch status');
@@ -223,10 +224,10 @@
                     document.getElementsByName('user_email')[0].textContent = getEmail[0].value
                     const order_container = document.getElementsByName('user_order_type')[0]
                     const order_status_container = document.getElementsByName('user_order_status')[0]
-                    for(let i = 0; i < order_array.length; i++){
+                    for(let i = 0; i < order_array.Order_numbers.length; i++){
                         const order_title = document.createElement('p')
                         const order_status = document.createElement('p')
-                        order_title.textContent = 'Order Created ' + order_array[i][0]
+                        order_title.textContent = 'Order Created ' + order_array.Order_numbers[i][0]
                         order_title.classList.add('text-center', 'mb-5')
                         order_status.textContent = getOrderStatus[0].value
                         order_status.classList.add('text-center', 'mb-5')
