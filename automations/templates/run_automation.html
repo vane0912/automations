@@ -183,6 +183,7 @@
                 body: JSON.stringify(variables)
             })
             const order_array = await response.json();
+            pollAutomationStatus(order_array, variables);
             if(!Array.isArray(order_array.Order_numbers)){
                 console.log(order_array)
                 document.getElementById('set_variables').classList.add('hidden')
@@ -195,7 +196,6 @@
                 const getEmail = variables.filter((value) => value.type === 'Email')
                 document.getElementsByName('user_email')[0].textContent = getEmail[0].value
             }
-            pollAutomationStatus(order_array, variables);
         }
         catch(err){
             console.error('Error running automation:', err);

@@ -44,21 +44,16 @@ def set_variables(app_name=None):
         return render_template('run_automation.html', app_name=app_name, requirements=requirements, status=status[0]['Status_Available'], goto=url)
 @applications_bp.route('/check-automation-status/<status>', methods=['GET'])
 def check_automation_status(status):
-    results = {
-        'status': status,  
-        'completed': False,
-        'results': []
-    }
-    if(status):
+    try:
+        completed = True if status == 'Success' else False
+
         results = {
-            'status': status,  
-            'completed': True,
-            'results': []
+            'status': status,
+            'completed': completed,
+            'results': [] 
         }
-    else: 
-        results = {
-            'status': status,  
-            'completed': False,
-            'results': []
-        }
-    return jsonify(results)
+
+        return jsonify(results)
+
+    except Exception as e:
+        return jsonify({'error': str(e)})
