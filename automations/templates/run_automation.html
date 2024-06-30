@@ -152,6 +152,7 @@
    <script type="text/javascript" async src="https://tenor.com/embed.js"></script>
    <script>
     let responsearr = []
+    let automation_status = false
     function checkLastCharacter(value){
         if (value[value.length - 1] === '/'){
             document.getElementById('lastCharacterRemove').classList.remove('hidden')
@@ -211,6 +212,7 @@
                 document.getElementsByName('user_email')[0].textContent = getEmail[0].value
                 return
             }
+            automation_status = true
         }
         catch(err){
             console.error('Error running automation:', err);
@@ -220,14 +222,13 @@
         try {
             let completed = false;
             while (!completed) {
-                const statusResponse = await fetch(`/check-automation-status/${responsearr.Status}`);
+                const statusResponse = await fetch(`/check-automation-status/${automation_status}`);
                 const status = await statusResponse.json();
                 if (responsearr.Status === 'Failed'){
                     completed = true
                     document.getElementById('main_title').textContent = 'Automation Failed'
                 }
-                if (status.completed) {
-                    console.log('Success')
+                if (status.status === "true") {
                     document.getElementById('set_variables').classList.add('hidden')
                     document.getElementById('automation_running').classList.add('hidden')
                     document.getElementById('automation_results').classList.remove('hidden')

@@ -44,11 +44,8 @@ def set_variables(app_name=None):
 @applications_bp.route('/check-automation-status/<status>', methods=['GET'])
 def check_automation_status(status):
     try:
-        completed = True if status == 'Success' else False
-
         results = {
             'status': status,
-            'completed': completed,
             'results': [] 
         }
 
