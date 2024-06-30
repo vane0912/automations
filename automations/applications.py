@@ -38,8 +38,7 @@ def set_variables(app_name=None):
             results = filtered_Array[0]['Type'](data)
             return jsonify(results)
         except Exception as e:
-            print(Exception)
-            return jsonify({'error': str(e)})
+            return jsonify({'error': str(e), 'Status': 'Failed'})
     else:
         return render_template('run_automation.html', app_name=app_name, requirements=requirements, status=status[0]['Status_Available'], goto=url)
 @applications_bp.route('/check-automation-status/<status>', methods=['GET'])
