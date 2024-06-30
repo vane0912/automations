@@ -178,12 +178,13 @@
         document.getElementById('automation_running').classList.add('absolute')
         document.getElementById('user_email_status').textContent = variables.filter((value) => value.type === 'Email')[0].value
         try{
-            pollAutomationStatus(variables);
-            const response = await fetch(`/run-automation/${value.split('%20').join(' ')}`,{
+            const fetchpromise = fetch(`/run-automation/${value.split('%20').join(' ')}`,{
                 method: 'POST',
                 headers: {'Content-Type':'application/json'},
                 body: JSON.stringify(variables)
             })
+            pollAutomationStatus(variables);
+            const response = await fetchpromise;
             if(!response.ok){
                 document.getElementById('set_variables').classList.add('hidden')
                 document.getElementById('automation_running').classList.add('hidden')
@@ -215,7 +216,17 @@
             automation_status = true
         }
         catch(err){
+            document.getElementById('set_variables').classList.add('hidden')
+            document.getElementById('automation_running').classList.add('hidden')
+            document.getElementById('automation_failed').classList.remove('hidden')
+            document.getElementById('automation_failed').classList.add('absolute')
+            document.getElementById('automation_results').classList.remove('hidden')
+            document.getElementById('automation_results').classList.add('content')
+            document.getElementById('main_title').textContent = 'Automation Failed'
+            const getEmail = variables.filter((value) => value.type === 'Email')
+            document.getElementsByName('user_email')[0].textContent = getEmail[0].value
             console.error('Error running automation:', err);
+            return
         }
     }
     async function pollAutomationStatus(variables){
@@ -224,6 +235,7 @@
             while (!completed) {
                 const statusResponse = await fetch(`/check-automation-status/${automation_status}`);
                 const status = await statusResponse.json();
+                console.log(status)
                 if (responsearr.Status === 'Failed'){
                     completed = true
                     document.getElementById('main_title').textContent = 'Automation Failed'
