@@ -178,13 +178,12 @@
         document.getElementById('automation_running').classList.add('absolute')
         document.getElementById('user_email_status').textContent = variables.filter((value) => value.type === 'Email')[0].value
         try{
-            const fetchpromise = fetch(`/run-automation/${value.split('%20').join(' ')}`,{
+            pollAutomationStatus(variables);
+            const fetchpromise = await fetch(`/run-automation/${value.split('%20').join(' ')}`,{
                 method: 'POST',
                 headers: {'Content-Type':'application/json'},
                 body: JSON.stringify(variables)
             })
-            pollAutomationStatus(variables);
-            const response = await fetchpromise;
             if(!response.ok){
                 document.getElementById('set_variables').classList.add('hidden')
                 document.getElementById('automation_running').classList.add('hidden')
@@ -198,7 +197,7 @@
                 console.log('Not initialiced correctly')
                 return
             }
-            const order_array = await response.json();
+            const order_array = await fetchpromise.json();
             responsearr = order_array
             if(!Array.isArray(order_array.Order_numbers)){
                 console.log(order_array)
