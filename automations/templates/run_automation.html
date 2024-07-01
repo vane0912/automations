@@ -196,7 +196,7 @@
                 console.log('Success');
             } else {
                 await new Promise(resolve => setTimeout(resolve, 10000))
-                await pollAutomationStatus()
+                pollAutomationStatus()
             }
         } catch (error) {
             console.error('Error occurred while checking automation status:', error);
