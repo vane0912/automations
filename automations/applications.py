@@ -17,7 +17,7 @@ def get_app(app_type=None):
     return render_template('applications.html', categories=categories, app_type=app_type, automations=filtered_Array)
 
 @applications_bp.route('/run-automation/<app_name>', methods=['POST', 'GET'])
-def set_variables(app_name=None):
+async def set_variables(app_name=None):
     url=''
     if current_app.config['ENVIROMENT_VARIABLE'] == 'production':
         url = current_app.config['URL_VARIABLE']
@@ -35,8 +35,9 @@ def set_variables(app_name=None):
     if request.method == 'POST': 
         data = request.get_json()
         try:
-            results = filtered_Array[0]['Type'](data)
-            return jsonify(results)
+            results = await filtered_Array[0]['Type'](data)
+            results_json = await jsonify(results)
+            return results_json
         except Exception as e:
             return jsonify({'error': str(e), 'Status': 'Failed'})
     else:

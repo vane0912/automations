@@ -163,8 +163,8 @@
         }
 
     }
-    function run_test(url,value){
-        pollAutomationStatus()
+    async function run_test(url,value){
+        //pollAutomationStatus()
         const inputs = document.getElementsByName(`${value}-input`)
         const variables = []
         for(let i = 0; i < inputs.length; i++){
@@ -179,32 +179,27 @@
         document.getElementById('automation_running').classList.add('absolute')
         document.getElementById('user_email_status').textContent = variables.filter((value) => value.type === 'Email')[0].value
         
-        fetch(`/run-automation/${value.split('%20').join(' ')}`,{
+        const run_automation = await fetch(`/run-automation/${value.split('%20').join(' ')}`,{
                 method: 'POST',
                 headers: {'Content-Type':'application/json'},
                 body: JSON.stringify(variables)
         })
+        const automation_response = await run_automation.json()
+        console.log(automation_response)
     }
-    async function pollAutomationStatus(){
-        try {
-            const response = await fetch(`/check-automation-status/${automation_status}`);
-            const json_response = await response.json();
-            console.log(json_response); 
-            if (json_response.status === "true") {
-                document.getElementById('set_variables').classList.add('hidden');
-                document.getElementById('automation_running').classList.add('hidden');
-                document.getElementById('automation_results').classList.remove('hidden');
-                console.log('Success');
-            } else {
-                console.log('trying')
-                await new Promise(resolve => setTimeout(resolve, 10000))
-                pollAutomationStatus()
-            }
-        } catch (error) {
-            console.error('Error occurred while checking automation status:', error);
-            await new Promise(resolve => setTimeout(resolve, 10000));
-        }
-    }
+    //async function pollAutomationStatus(){
+    //    const response = await fetch(`/check-automation-status/${automation_status}`);
+    //    if (json_response.status === "true") {
+    //        document.getElementById('set_variables').classList.add('hidden');
+    //        document.getElementById('automation_running').classList.add('hidden');
+    //        document.getElementById('automation_results').classList.remove('hidden');
+    //        console.log('Success');
+    //    } else {
+    //        console.log('trying')
+    //        await new Promise(resolve => setTimeout(resolve, 10000))
+    //        pollAutomationStatus()
+    //    }
+    //}
     //Failed run
     /*
     document.getElementById('set_variables').classList.add('hidden')
