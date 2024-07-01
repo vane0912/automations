@@ -1,6 +1,6 @@
 import asyncio
 from .automations_list import automations_list
-from flask import Blueprint, render_template, request, current_app, jsonify, Response
+from flask import Blueprint, render_template, request, current_app, jsonify
 
 applications_bp = Blueprint('applications', __name__)
 
@@ -35,8 +35,8 @@ async def set_variables(app_name=None):
     if request.method == 'POST': 
         data = request.get_json()
         try:
-            results = await filtered_Array[0]['Type'](data)
-            results_json = await jsonify(results)
+            results = asyncio.run(filtered_Array[0]['Type'](data)) 
+            results_json = jsonify(results)
             return results_json
         except Exception as e:
             return jsonify({'error': str(e), 'Status': 'Failed'})
