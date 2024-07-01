@@ -163,120 +163,114 @@
         }
 
     }
-    async function run_test(){
-       const statusResponse = await fetch(`/check-automation-status/false`);
-       const status = await statusResponse.json()
-       
-       console.log(status.status)
+    async function run_test(url,value){
+        const inputs = document.getElementsByName(`${value}-input`)
+        const variables = []
+        for(let i = 0; i < inputs.length; i++){
+            const values = {
+                type : inputs[i].id,
+                value : inputs[i].value
+            }
+            variables.push(values)
+        }
+
+        document.getElementById('automation_running').classList.remove('hidden')
+        document.getElementById('automation_running').classList.add('absolute')
+        document.getElementById('user_email_status').textContent = variables.filter((value) => value.type === 'Email')[0].value
+        try{
+            const fetchpromise = fetch(`/run-automation/${value.split('%20').join(' ')}`,{
+                method: 'POST',
+                headers: {'Content-Type':'application/json'},
+                body: JSON.stringify(variables)
+            })
+            pollAutomationStatus(variables);
+            const response = await fetchpromise;
+            if(!response.ok){
+                document.getElementById('set_variables').classList.add('hidden')
+                document.getElementById('automation_running').classList.add('hidden')
+                document.getElementById('automation_failed').classList.remove('hidden')
+                document.getElementById('automation_failed').classList.add('absolute')
+                document.getElementById('automation_results').classList.remove('hidden')
+                document.getElementById('automation_results').classList.add('content')
+                document.getElementById('main_title').textContent = 'Automation Failed'
+                const getEmail = variables.filter((value) => value.type === 'Email')
+                document.getElementsByName('user_email')[0].textContent = getEmail[0].value
+                console.log('Not initialiced correctly')
+                return
+            }
+            const order_array = await response.json();
+            responsearr = order_array
+            if(!Array.isArray(order_array.Order_numbers)){
+                console.log(order_array)
+                document.getElementById('set_variables').classList.add('hidden')
+                document.getElementById('automation_running').classList.add('hidden')
+                document.getElementById('automation_failed').classList.remove('hidden')
+                document.getElementById('automation_failed').classList.add('absolute')
+                document.getElementById('automation_results').classList.remove('hidden')
+                document.getElementById('automation_results').classList.add('content')
+                document.getElementById('main_title').textContent = 'Automation Failed'
+                const getEmail = variables.filter((value) => value.type === 'Email')
+                document.getElementsByName('user_email')[0].textContent = getEmail[0].value
+                return
+            }
+            automation_status = true
+        }
+        catch(err){
+            document.getElementById('set_variables').classList.add('hidden')
+            document.getElementById('automation_running').classList.add('hidden')
+            document.getElementById('automation_failed').classList.remove('hidden')
+            document.getElementById('automation_failed').classList.add('absolute')
+            document.getElementById('automation_results').classList.remove('hidden')
+            document.getElementById('automation_results').classList.add('content')
+            document.getElementById('main_title').textContent = 'Automation Failed'
+            const getEmail = variables.filter((value) => value.type === 'Email')
+            document.getElementsByName('user_email')[0].textContent = getEmail[0].value
+            console.error('Error running automation:', err);
+            return
+        }
     }
-    //async function run_test(url,value){
-    //    const inputs = document.getElementsByName(`${value}-input`)
-    //    const variables = []
-    //    for(let i = 0; i < inputs.length; i++){
-    //        const values = {
-    //            type : inputs[i].id,
-    //            value : inputs[i].value
-    //        }
-    //        variables.push(values)
-    //    }
-//
-    //    document.getElementById('automation_running').classList.remove('hidden')
-    //    document.getElementById('automation_running').classList.add('absolute')
-    //    document.getElementById('user_email_status').textContent = variables.filter((value) => value.type === 'Email')[0].value
-    //    try{
-    //        const fetchpromise = fetch(`/run-automation/${value.split('%20').join(' ')}`,{
-    //            method: 'POST',
-    //            headers: {'Content-Type':'application/json'},
-    //            body: JSON.stringify(variables)
-    //        })
-    //        pollAutomationStatus(variables);
-    //        const response = await fetchpromise;
-    //        if(!response.ok){
-    //            document.getElementById('set_variables').classList.add('hidden')
-    //            document.getElementById('automation_running').classList.add('hidden')
-    //            document.getElementById('automation_failed').classList.remove('hidden')
-    //            document.getElementById('automation_failed').classList.add('absolute')
-    //            document.getElementById('automation_results').classList.remove('hidden')
-    //            document.getElementById('automation_results').classList.add('content')
-    //            document.getElementById('main_title').textContent = 'Automation Failed'
-    //            const getEmail = variables.filter((value) => value.type === 'Email')
-    //            document.getElementsByName('user_email')[0].textContent = getEmail[0].value
-    //            console.log('Not initialiced correctly')
-    //            return
-    //        }
-    //        const order_array = await response.json();
-    //        responsearr = order_array
-    //        if(!Array.isArray(order_array.Order_numbers)){
-    //            console.log(order_array)
-    //            document.getElementById('set_variables').classList.add('hidden')
-    //            document.getElementById('automation_running').classList.add('hidden')
-    //            document.getElementById('automation_failed').classList.remove('hidden')
-    //            document.getElementById('automation_failed').classList.add('absolute')
-    //            document.getElementById('automation_results').classList.remove('hidden')
-    //            document.getElementById('automation_results').classList.add('content')
-    //            document.getElementById('main_title').textContent = 'Automation Failed'
-    //            const getEmail = variables.filter((value) => value.type === 'Email')
-    //            document.getElementsByName('user_email')[0].textContent = getEmail[0].value
-    //            return
-    //        }
-    //        automation_status = true
-    //    }
-    //    catch(err){
-    //        document.getElementById('set_variables').classList.add('hidden')
-    //        document.getElementById('automation_running').classList.add('hidden')
-    //        document.getElementById('automation_failed').classList.remove('hidden')
-    //        document.getElementById('automation_failed').classList.add('absolute')
-    //        document.getElementById('automation_results').classList.remove('hidden')
-    //        document.getElementById('automation_results').classList.add('content')
-    //        document.getElementById('main_title').textContent = 'Automation Failed'
-    //        const getEmail = variables.filter((value) => value.type === 'Email')
-    //        document.getElementsByName('user_email')[0].textContent = getEmail[0].value
-    //        console.error('Error running automation:', err);
-    //        return
-    //    }
-    //}
-    //async function pollAutomationStatus(variables){
-    //    try {
-    //        let completed = false;
-    //        while (!completed) {
-    //            const statusResponse = await fetch(`/check-automation-status/${automation_status}`);
-    //            const status = await statusResponse.json();
-    //            console.log(status)
-    //            if (responsearr.Status === 'Failed'){
-    //                completed = true
-    //                document.getElementById('main_title').textContent = 'Automation Failed'
-    //            }
-    //            if (status.status === "true") {
-    //                document.getElementById('set_variables').classList.add('hidden')
-    //                document.getElementById('automation_running').classList.add('hidden')
-    //                document.getElementById('automation_results').classList.remove('hidden')
-    //                document.getElementById('automation_results').classList.add('content')
-    //                document.getElementById('main_title').textContent = 'Automation Ran Successfully'
-    //                
-    //                const getEmail = variables.filter((value) => value.type === 'Email')
-    //                const getOrderStatus = variables.filter((value) => value.type === 'Status')
-    //                document.getElementsByName('user_email')[0].textContent = getEmail[0].value
-    //                const order_container = document.getElementsByName('user_order_type')[0]
-    //                const order_status_container = document.getElementsByName('user_order_status')[0]
-    //                for(let i = 0; i < responsearr.Order_numbers.length; i++){
-    //                    const order_title = document.createElement('p')
-    //                    const order_status = document.createElement('p')
-    //                    order_title.textContent = 'Order Created ' + responsearr.Order_numbers[i][0]
-    //                    order_title.classList.add('text-center', 'mb-5')
-    //                    order_status.textContent = getOrderStatus[0].value
-    //                    order_status.classList.add('text-center', 'mb-5')
-    //                    order_container.append(order_title)
-    //                    order_status_container.append(order_status)
-    //                }
-    //                completed = true;
-    //            }
-    //            else {
-    //                await new Promise(resolve => setTimeout(resolve, 6000)); 
-    //            }
-    //        }
-    //    } catch(err) {
-    //        console.error('Error checking automation status:', err);
-    //    }
-    //}
+    async function pollAutomationStatus(variables){
+        try {
+            let completed = false;
+            while (!completed) {
+                const statusResponse = await fetch(`/check-automation-status/${automation_status}`);
+                const status = await statusResponse.json();
+                console.log(status)
+                if (responsearr.Status === 'Failed'){
+                    completed = true
+                    document.getElementById('main_title').textContent = 'Automation Failed'
+                }
+                if (status.status === "true") {
+                    document.getElementById('set_variables').classList.add('hidden')
+                    document.getElementById('automation_running').classList.add('hidden')
+                    document.getElementById('automation_results').classList.remove('hidden')
+                    document.getElementById('automation_results').classList.add('content')
+                    document.getElementById('main_title').textContent = 'Automation Ran Successfully'
+                    
+                    const getEmail = variables.filter((value) => value.type === 'Email')
+                    const getOrderStatus = variables.filter((value) => value.type === 'Status')
+                    document.getElementsByName('user_email')[0].textContent = getEmail[0].value
+                    const order_container = document.getElementsByName('user_order_type')[0]
+                    const order_status_container = document.getElementsByName('user_order_status')[0]
+                    for(let i = 0; i < responsearr.Order_numbers.length; i++){
+                        const order_title = document.createElement('p')
+                        const order_status = document.createElement('p')
+                        order_title.textContent = 'Order Created ' + responsearr.Order_numbers[i][0]
+                        order_title.classList.add('text-center', 'mb-5')
+                        order_status.textContent = getOrderStatus[0].value
+                        order_status.classList.add('text-center', 'mb-5')
+                        order_container.append(order_title)
+                        order_status_container.append(order_status)
+                    }
+                    completed = true;
+                }
+                else {
+                    await new Promise(resolve => setTimeout(resolve, 10000)); 
+                }
+            }
+        } catch(err) {
+            console.error('Error checking automation status:', err);
+        }
+    }
     </script>
 {% endblock %}
