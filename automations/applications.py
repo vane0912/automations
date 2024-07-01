@@ -44,12 +44,12 @@ def set_variables(app_name=None):
 @applications_bp.route('/check-automation-status/<status>', methods=['GET'])
 def check_automation_status(status):
     try:
-        results = {
+        check_status = {
             'status': status,
             'results': [] 
         }
 
-        return jsonify(results)
+        return jsonify(check_status)
 
     except Exception as e:
         return jsonify({'error': str(e)})

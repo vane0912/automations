@@ -163,8 +163,7 @@
         }
 
     }
-    async function run_test(url,value){
-        pollAutomationStatus()
+    function run_test(url,value){
         const inputs = document.getElementsByName(`${value}-input`)
         const variables = []
         for(let i = 0; i < inputs.length; i++){
@@ -184,6 +183,7 @@
                 headers: {'Content-Type':'application/json'},
                 body: JSON.stringify(variables)
         })
+        pollAutomationStatus()
     }
     async function pollAutomationStatus(){
         while (true) {
