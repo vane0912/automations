@@ -164,6 +164,7 @@
 
     }
     function run_test(url,value){
+        pollAutomationStatus()
         const inputs = document.getElementsByName(`${value}-input`)
         const variables = []
         for(let i = 0; i < inputs.length; i++){
@@ -195,6 +196,7 @@
                 document.getElementById('automation_results').classList.remove('hidden');
                 console.log('Success');
             } else {
+                console.log('trying')
                 await new Promise(resolve => setTimeout(resolve, 10000))
                 pollAutomationStatus()
             }
@@ -203,7 +205,6 @@
             await new Promise(resolve => setTimeout(resolve, 10000));
         }
     }
-    pollAutomationStatus()
     //Failed run
     /*
     document.getElementById('set_variables').classList.add('hidden')
