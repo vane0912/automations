@@ -178,16 +178,12 @@
         document.getElementById('automation_running').classList.remove('hidden')
         document.getElementById('automation_running').classList.add('absolute')
         document.getElementById('user_email_status').textContent = variables.filter((value) => value.type === 'Email')[0].value
-        try{
-            const fetchpromise = fetch(`/run-automation/${value.split('%20').join(' ')}`,{
+        
+        fetch(`/run-automation/${value.split('%20').join(' ')}`,{
                 method: 'POST',
                 headers: {'Content-Type':'application/json'},
                 body: JSON.stringify(variables)
-            })
-        }catch(error){
-            console.log(error)
-        }
-         
+        })
     }
     async function pollAutomationStatus(){
         const response = await fetch(`/check-automation-status/${automation_status}`)
