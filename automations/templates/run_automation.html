@@ -195,7 +195,8 @@
                 document.getElementById('automation_results').classList.remove('hidden');
                 console.log('Success');
             } else {
-                await new Promise(resolve => setTimeout(resolve, 10000));
+                await new Promise(resolve => setTimeout(resolve, 10000))
+                await pollAutomationStatus()
             }
         } catch (error) {
             console.error('Error occurred while checking automation status:', error);
