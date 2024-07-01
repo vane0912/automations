@@ -183,9 +183,6 @@
                 method: 'POST',
                 headers: {'Content-Type':'application/json'},
                 body: JSON.stringify(variables)
-            }).then(()=> {
-                automation_status = true
-                console.log('Done')
             })
         }catch(error){
             console.log(error)
