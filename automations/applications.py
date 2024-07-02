@@ -35,8 +35,8 @@ async def set_variables(app_name=None):
     if request.method == 'POST': 
         data = request.get_json()
         try:
-            results = asyncio.run(filtered_Array[0]['Type'](data)) 
-            results_json = jsonify(results)
+            results = await filtered_Array[0]['Type'](data)
+            results_json = await jsonify(results)
             return results_json
         except Exception as e:
             return jsonify({'error': str(e), 'Status': 'Failed'})
