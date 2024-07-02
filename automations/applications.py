@@ -1,6 +1,6 @@
-import asyncio
+import json
 from .automations_list import automations_list
-from flask import Blueprint, render_template, request, current_app, jsonify
+from flask import Blueprint, render_template, request, current_app, jsonify, make_response
 
 applications_bp = Blueprint('applications', __name__)
 
@@ -35,22 +35,51 @@ async def set_variables(app_name=None):
     if request.method == 'POST': 
         data = request.get_json()
         try:
-            results = await filtered_Array[0]['Type'](data)
-            results_json = await jsonify(results)
-            return results_json
+            results = filtered_Array[0]['Type'](data)
+            send_success = make_response(render_template('run_automation.html',app_name=app_name, requirements=requirements, status=status[0]['Status_Available'], goto=url))
+            send_success.set_cookie('Status', json.dumps(results))
+            return send_success
         except Exception as e:
-            return jsonify({'error': str(e), 'Status': 'Failed'})
+            send_failed = make_response(render_template('run_automation.html',app_name=app_name, requirements=requirements, status=status[0]['Status_Available'], goto=url))
+            send_failed.set_cookie('Status', 'Failed')
+            send_failed.set_cookie('error', str(e))
+            return send_failed
     else:
-        return render_template('run_automation.html', app_name=app_name, requirements=requirements, status=status[0]['Status_Available'], goto=url)
-@applications_bp.route('/check-automation-status/<status>', methods=['GET'])
-def check_automation_status(status):
+        response = make_response(render_template('run_automation.html',app_name=app_name, requirements=requirements, status=status[0]['Status_Available'], goto=url))   
+        response.set_cookie('Status', '')
+        response.set_cookie('error', '')
+        return response
+@applications_bp.route('/check-automation-status')
+def check_automation_status():
     try:
-        check_status = {
-            'status': status,
-            'results': [] 
-        }
-
+        get_response_cookie = request.cookies.get('Status')
+        if len(get_response_cookie) > 0:
+            if get_response_cookie == 'Failed':
+                status = request.cookies.get('Status')
+                error = request.cookies.get('error')
+                check_status = {
+                    'status': status,
+                    'errorMsg': error
+                }
+            else:
+                cookie_dict = json.loads(get_response_cookie)
+                order_numbers = cookie_dict.get('Order_numbers')
+                status = cookie_dict.get('Status')
+                email = cookie_dict.get('email')
+                order_status = cookie_dict.get('order_status')
+                check_status = {
+                    'status': status,
+                    'results': order_numbers,
+                    'email': email,
+                    'order_status': order_status
+                }
+        else:
+            check_status = {
+                'status': '',
+                'results': []
+            }
         return jsonify(check_status)
-
+    
     except Exception as e:
+        print(f"Exception occurred: {str(e)}")
         return jsonify({'error': str(e)})

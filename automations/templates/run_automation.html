@@ -151,8 +151,12 @@
    <script type="text/javascript" async src="https://tenor.com/embed.js"></script>
    <script type="text/javascript" async src="https://tenor.com/embed.js"></script>
    <script>
-    let responsearr = []
+    let automation_started = false
     let automation_status = false
+    function runpolling(){
+        automation_started = true
+        pollAutomationStatus()
+    }
     function checkLastCharacter(value){
         if (value[value.length - 1] === '/'){
             document.getElementById('lastCharacterRemove').classList.remove('hidden')
@@ -163,8 +167,7 @@
         }
 
     }
-    async function run_test(url,value){
-        //pollAutomationStatus()
+    function run_test(url,value){
         const inputs = document.getElementsByName(`${value}-input`)
         const variables = []
         for(let i = 0; i < inputs.length; i++){
@@ -174,32 +177,61 @@
             }
             variables.push(values)
         }
-
+        runpolling()
+        automation_started = true;
         document.getElementById('automation_running').classList.remove('hidden')
         document.getElementById('automation_running').classList.add('absolute')
         document.getElementById('user_email_status').textContent = variables.filter((value) => value.type === 'Email')[0].value
         
-        const run_automation = await fetch(`/run-automation/${value.split('%20').join(' ')}`,{
-                method: 'POST',
-                headers: {'Content-Type':'application/json'},
-                body: JSON.stringify(variables)
-        })
-        const automation_response = await run_automation.json()
-        console.log(automation_response)
+        fetch(`/run-automation/${value.split('%20').join(' ')}`,{
+            method: 'POST',
+            headers: {'Content-Type':'application/json'},
+            body: JSON.stringify(variables)
+        }) 
     }
-    //async function pollAutomationStatus(){
-    //    const response = await fetch(`/check-automation-status/${automation_status}`);
-    //    if (json_response.status === "true") {
-    //        document.getElementById('set_variables').classList.add('hidden');
-    //        document.getElementById('automation_running').classList.add('hidden');
-    //        document.getElementById('automation_results').classList.remove('hidden');
-    //        console.log('Success');
-    //    } else {
-    //        console.log('trying')
-    //        await new Promise(resolve => setTimeout(resolve, 10000))
-    //        pollAutomationStatus()
-    //    }
-    //}
+    async function pollAutomationStatus(){
+        try{
+            const response = await fetch(`/check-automation-status`);
+            const json_response = await response.json()
+            if (json_response.status === "Success") {
+                document.getElementById('set_variables').classList.add('hidden')
+                document.getElementById('automation_running').classList.add('hidden')
+                document.getElementById('automation_results').classList.remove('hidden')
+                document.getElementById('automation_results').classList.add('content')
+                document.getElementById('main_title').textContent = 'Automation Ran Successfully'
+
+                document.getElementsByName('user_email')[0].textContent = json_response.email
+                const order_container = document.getElementsByName('user_order_type')[0]
+                const order_status_container = document.getElementsByName('user_order_status')[0]
+                for(let i = 0; i < json_response.results.length; i++){
+                    const order_title = document.createElement('p')
+                    const order_status = document.createElement('p')
+                    order_title.textContent = 'Order Created ' + json_response.results[i][0]
+                    order_title.classList.add('text-center', 'mb-5')
+                    order_status.textContent = json_response.order_status
+                    order_status.classList.add('text-center', 'mb-5')
+                    order_container.append(order_title)
+                    order_status_container.append(order_status)
+                }
+            }else if(json_response.status === "Failed"){
+                console.log(json_response.errorMsg)
+                document.getElementById('set_variables').classList.add('hidden')
+                document.getElementById('automation_running').classList.add('hidden')
+                document.getElementById('automation_failed').classList.remove('hidden')
+                document.getElementById('automation_failed').classList.add('absolute')
+                document.getElementById('automation_results').classList.remove('hidden')
+                document.getElementById('automation_results').classList.add('content')
+                document.getElementById('main_title').textContent = 'Automation Failed'
+            } 
+            else {
+                await new Promise(resolve => setTimeout(resolve, 10000))
+                pollAutomationStatus()
+            }
+        }catch(err){
+            console.log('There was an error while polling', err)
+        }
+    }
+    
     //Failed run
     /*
     document.getElementById('set_variables').classList.add('hidden')
@@ -214,27 +246,7 @@
     */
     //Success
     /*
-        document.getElementById('set_variables').classList.add('hidden')
-        document.getElementById('automation_running').classList.add('hidden')
-        document.getElementById('automation_results').classList.remove('hidden')
-        document.getElementById('automation_results').classList.add('content')
-        document.getElementById('main_title').textContent = 'Automation Ran Successfully'
         
-        const getEmail = variables.filter((value) => value.type === 'Email')
-        const getOrderStatus = variables.filter((value) => value.type === 'Status')
-        document.getElementsByName('user_email')[0].textContent = getEmail[0].value
-        const order_container = document.getElementsByName('user_order_type')[0]
-        const order_status_container = document.getElementsByName('user_order_status')[0]
-        for(let i = 0; i < responsearr.Order_numbers.length; i++){
-            const order_title = document.createElement('p')
-            const order_status = document.createElement('p')
-            order_title.textContent = 'Order Created ' + responsearr.Order_numbers[i][0]
-            order_title.classList.add('text-center', 'mb-5')
-            order_status.textContent = getOrderStatus[0].value
-            order_status.classList.add('text-center', 'mb-5')
-            order_container.append(order_title)
-            order_status_container.append(order_status)
-        }
     */
 
     </script>
