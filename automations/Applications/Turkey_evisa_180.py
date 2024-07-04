@@ -1,4 +1,4 @@
-import logging, time, re
+import logging, time, re, requests,json
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
@@ -249,8 +249,9 @@ def TR_App_P2(data):
             'order_status' : Global_Variables['Status'],
             'email' : Global_Variables['Email'],
         }
+        requests.post('http://127.0.0.1:5000' + '/check-automation-status',json=automation_results, headers={'Content-type': 'application/json', 'Accept': 'text/plain'})
         return automation_results
     except Exception as e:
-        print(e)
+        requests.post('http://127.0.0.1:5000' + '/check-automation-status',json={'ERROR': str(e).splitlines()[0]}, headers={'Content-type': 'application/json', 'Accept': 'text/plain'})
         logging.debug('Debug message: %s', e)
-        return e
+        return {'Status': e}

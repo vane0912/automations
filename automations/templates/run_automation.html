@@ -187,12 +187,15 @@
             method: 'POST',
             headers: {'Content-Type':'application/json'},
             body: JSON.stringify(variables)
-        }) 
+        })
+        .then(res => res.json()) 
+        .then(data => console.log(data))
     }
     async function pollAutomationStatus(){
         try{
             const response = await fetch(`/check-automation-status`);
             const json_response = await response.json()
+            console.log(json_response)
             if (json_response.status === "Success") {
                 document.getElementById('set_variables').classList.add('hidden')
                 document.getElementById('automation_running').classList.add('hidden')
