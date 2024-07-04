@@ -52,8 +52,6 @@ async def set_variables(app_name=None):
     else:
         update_status({})
         response = make_response(render_template('run_automation.html',app_name=app_name, requirements=requirements, status=status[0]['Status_Available'], goto=url))   
-        response.set_cookie('Status', '')
-        response.set_cookie('error', '')
         return response
 @applications_bp.route('/check-automation-status', methods=['POST', 'GET'])
 def check_automation_status():
@@ -64,35 +62,3 @@ def check_automation_status():
     else:
         status = get_status()
         return jsonify(status)
-    #try:
-    #    get_response_cookie = request.cookies.get('Status')
-    #    if len(get_response_cookie) > 0:
-    #        if get_response_cookie == 'Failed':
-    #            status = request.cookies.get('Status')
-    #            error = request.cookies.get('error')
-    #            check_status = {
-    #                'status': status,
-    #                'errorMsg': error
-    #            }
-    #        else:
-    #            cookie_dict = json.loads(get_response_cookie)
-    #            order_numbers = cookie_dict.get('Order_numbers')
-    #            status = cookie_dict.get('Status')
-    #            email = cookie_dict.get('email')
-    #            order_status = cookie_dict.get('order_status')
-    #            check_status = {
-    #                'status': status,
-    #                'results': order_numbers,
-    #                'email': email,
-    #                'order_status': order_status
-    #            }
-    #    else:
-    #        check_status = {
-    #            'status': '',
-    #            'results': []
-    #        }
-    #    return jsonify(check_status)
-    
-    #except Exception as e:
-    #    print(f"Exception occurred: {str(e)}")
-    #    return jsonify({'error': str(e)})
