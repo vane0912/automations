@@ -1,10 +1,10 @@
-import logging, time, re
+import logging, time, re, requests,json
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import StaleElementReferenceException, NoSuchElementException, ElementClickInterceptedException
+from selenium.common.exceptions import StaleElementReferenceException, NoSuchElementException, ElementClickInterceptedException, TimeoutException
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
@@ -65,7 +65,7 @@ def TR_App_P2(data):
     chrome_options.add_argument('--no-sandbox')
     chrome_options.add_argument('--disable-dev-shm-usage')
     browser = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
-    wait = WebDriverWait(browser, 60, ignored_exceptions=(NoSuchElementException,StaleElementReferenceException))
+    wait = WebDriverWait(browser, 150, ignored_exceptions=(NoSuchElementException,StaleElementReferenceException))
     try:
         for order in range(int(Global_Variables['N. Orders'])):
             browser.get(Global_Variables['url'] + '/turkey/apply-now')
@@ -92,6 +92,7 @@ def TR_App_P2(data):
                 email.send_keys(Global_Variables['Email'])
             continue_sidebar = wait.until(EC.visibility_of_element_located((By.ID, "btnContinueSidebar")))
             continue_sidebar.click() if continue_sidebar.is_enabled() else wait.until(EC.element_to_be_clickable((By.ID, "btnContinueSidebar"))).click()
+            #print('Passed Step 1')
             for x in range(int(Global_Variables['applicants']) - 1):
                 add_traveler_div = wait.until(EC.visibility_of_element_located((By.XPATH, "//div[@data-handle='add-traveler']")))
                 add_traveler_div2 = add_traveler_div.find_elements(By.TAG_NAME, "div")
@@ -116,8 +117,10 @@ def TR_App_P2(data):
                 dob_year.send_keys(Keys.ENTER)
             # step 4
             continue_sidebar.click() if continue_sidebar.is_enabled() else wait.until(EC.element_to_be_clickable((By.ID, "btnContinueSidebar"))).click()
+            #print('Passed Step 2')
             # step 5
             continue_sidebar.click() if continue_sidebar.is_enabled() else wait.until(EC.element_to_be_clickable((By.ID, "btnContinueSidebar"))).click()
+            #print('Passed Step 3')
             for user in range(int(Global_Variables['applicants'])):
                 passport_num = wait.until(EC.element_to_be_clickable((By.NAME, "applicant."+ str(user) +".passport_num")))
                 passport_num.send_keys(Global_Variables['Passport_num'])
@@ -141,20 +144,21 @@ def TR_App_P2(data):
                 passport_issue_year.send_keys(Keys.ENTER)
             time.sleep(3)
             continue_sidebar.click() if continue_sidebar.is_enabled() else wait.until(EC.element_to_be_clickable((By.ID, "btnContinueSidebar"))).click()
+            #print('Passed Step 4')
             time.sleep(3)
             continue_sidebar.click() if continue_sidebar.is_enabled() else wait.until(EC.element_to_be_clickable((By.ID, "btnContinueSidebar"))).click()
+            #print('Passed Step 5')
             time.sleep(3)
             try:
                 continue_sidebar.click() if continue_sidebar.is_enabled() else wait.until(EC.element_to_be_clickable((By.ID, "btnContinueSidebar"))).click()
             except ElementClickInterceptedException:
                 subscription_button = wait.until(EC.visibility_of_element_located((By.XPATH, '//button[@data-handle="no-subscription"]')))
                 subscription_button.click() if subscription_button.is_enabled() else wait.until(EC.element_to_be_clickable((By.XPATH, '//button[@data-handle="no-subscription"]'))).click()
-            time.sleep(3)
-            try:
-                continue_sidebar.click() if continue_sidebar.is_enabled() else wait.until(EC.element_to_be_clickable((By.ID, "btnContinueSidebar"))).click()
-            except ElementClickInterceptedException:
-                subscription_button = wait.until(EC.visibility_of_element_located((By.XPATH, '//button[@data-handle="no-subscription"]')))
-                subscription_button.click() if subscription_button.is_enabled() else wait.until(EC.element_to_be_clickable((By.XPATH, '//button[@data-handle="no-subscription"]'))).click()
+            #print('Passed Step 6')
+            wait.until(EC.text_to_be_present_in_element((By.XPATH, '//div[@data-handle="reviewStepContainer"]'), 'Review your order'))
+            continue_step_6 = (By.ID, "btnContinueSidebar")
+            safe_element_click(browser, continue_step_6) if continue_sidebar.is_enabled() else safe_element_click(browser, continue_step_6)
+            #print('Passed Step 7')
             try:
                 btn_submit_payment = wait.until(EC.element_to_be_clickable((By.ID, "btnSubmitPayment")))
                 btn_submit_payment.click()
@@ -170,6 +174,25 @@ def TR_App_P2(data):
 
                 btn_complete = wait.until(EC.element_to_be_clickable((By.ID, "btnCompleteProcess")))
                 btn_complete.click()
+            except TimeoutException: 
+                btn_disclaimer = wait.until(EC.element_to_be_clickable((By.ID, "btnDisclaimerNext")))
+                btn_disclaimer.click()
+
+                btn_submit_payment = wait.until(EC.element_to_be_clickable((By.ID, "btnSubmitPayment")))
+                btn_submit_payment.click()
+
+                btn_complete = wait.until(EC.element_to_be_clickable((By.ID, "btnCompleteProcess")))
+                btn_complete.click()
+            except NoSuchElementException: 
+                btn_disclaimer = wait.until(EC.element_to_be_clickable((By.ID, "btnDisclaimerNext")))
+                btn_disclaimer.click()
+
+                btn_submit_payment = wait.until(EC.element_to_be_clickable((By.ID, "btnSubmitPayment")))
+                btn_submit_payment.click()
+
+                btn_complete = wait.until(EC.element_to_be_clickable((By.ID, "btnCompleteProcess")))
+                btn_complete.click()
+            #print('Passed Step 8')
             wait.until(EC.element_to_be_clickable((By.ID, 'btnDismissAppDownload'))).click()
             order_number = wait.until(EC.visibility_of_element_located((By.ID, 'h1-tag-container')))
             Global_Variables['Order_Numbers'].append(re.findall(r'\d+', order_number.text))
@@ -181,6 +204,7 @@ def TR_App_P2(data):
                 password_repeat.send_keys('testivisa5!') 
                 browser.find_element(By.XPATH, '//button[@data-handle="updatePasswordBtn"]').click()
                 wait.until(EC.element_to_be_clickable((By.CLASS_NAME, 'swal-button--confirm'))).click()
+            #print('ORDER ' + str(order))
         ## MIN STATUS
         if Global_Variables['Status'] == 'MIN':
             wait.until(EC.element_to_be_clickable((By.ID, 'loggedInUserContainer-chevron'))).click()
@@ -219,8 +243,15 @@ def TR_App_P2(data):
                 wait.until(EC.element_to_be_clickable((By.XPATH, '//button[@data-handle="submitChangeStatus"]'))).click()
                 wait.until_not(EC.visibility_of_element_located((By.XPATH, '//div[@data-vue-component="order-item-editor"]')))
         browser.quit()
-        return Global_Variables['Order_Numbers']
+        automation_results = {
+            'Order_numbers' : Global_Variables['Order_Numbers'],
+            'Status' : 'Success',
+            'order_status' : Global_Variables['Status'],
+            'email' : Global_Variables['Email'],
+        }
+        requests.post('https://costumer-facing1-production.up.railway.app' + '/check-automation-status',json=automation_results, headers={'Content-type': 'application/json', 'Accept': 'text/plain'})
+        return automation_results
     except Exception as e:
+        requests.post('https://costumer-facing1-production.up.railway.app' + '/check-automation-status',json={'ERROR': str(e).splitlines()[0], 'Status' : 'Failed'}, headers={'Content-type': 'application/json', 'Accept': 'text/plain'})
         logging.debug('Debug message: %s', e)
-        return e
-   
+        return {'Status': e}
