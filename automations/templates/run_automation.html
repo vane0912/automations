@@ -196,7 +196,7 @@
             const response = await fetch(`/check-automation-status`);
             const json_response = await response.json()
             console.log(json_response)
-            if (json_response.status === "Success") {
+            if (json_response.Status === "Success") {
                 document.getElementById('set_variables').classList.add('hidden')
                 document.getElementById('automation_running').classList.add('hidden')
                 document.getElementById('automation_results').classList.remove('hidden')
@@ -206,18 +206,17 @@
                 document.getElementsByName('user_email')[0].textContent = json_response.email
                 const order_container = document.getElementsByName('user_order_type')[0]
                 const order_status_container = document.getElementsByName('user_order_status')[0]
-                for(let i = 0; i < json_response.results.length; i++){
+                for(let i = 0; i < json_response.Order_numbers.length; i++){
                     const order_title = document.createElement('p')
                     const order_status = document.createElement('p')
-                    order_title.textContent = 'Order Created ' + json_response.results[i][0]
+                    order_title.textContent = 'Order Created ' + json_response.Order_numbers[i][0]
                     order_title.classList.add('text-center', 'mb-5')
                     order_status.textContent = json_response.order_status
                     order_status.classList.add('text-center', 'mb-5')
                     order_container.append(order_title)
                     order_status_container.append(order_status)
                 }
-            }else if(json_response.status === "Failed"){
-                console.log(json_response.errorMsg)
+            }else if(json_response.Status === "Failed"){
                 document.getElementById('set_variables').classList.add('hidden')
                 document.getElementById('automation_running').classList.add('hidden')
                 document.getElementById('automation_failed').classList.remove('hidden')

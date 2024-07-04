@@ -58,8 +58,7 @@ async def set_variables(app_name=None):
 @applications_bp.route('/check-automation-status', methods=['POST', 'GET'])
 def check_automation_status():
     if request.method == 'POST':
-        re = request
-        data = re.get_json()
+        data = request.get_json()
         update_status(data)
         return jsonify({'message': 'Status Updated'})
     else:
