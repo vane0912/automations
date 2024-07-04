@@ -217,6 +217,7 @@
                     order_status_container.append(order_status)
                 }
             }else if(json_response.Status === "Failed"){
+                console.log(json_response)
                 document.getElementById('set_variables').classList.add('hidden')
                 document.getElementById('automation_running').classList.add('hidden')
                 document.getElementById('automation_failed').classList.remove('hidden')
