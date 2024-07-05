@@ -249,9 +249,9 @@ def TR_App_P2(data):
             'order_status' : Global_Variables['Status'],
             'email' : Global_Variables['Email'],
         }
-        requests.post('https://costumer-facing1-automations-pr-5.up.railway.app' + '/check-automation-status',json=automation_results, headers={'Content-type': 'application/json', 'Accept': 'text/plain'})
+        requests.post('https://costumer-facing1-production.up.railway.app' + '/check-automation-status',json=automation_results, headers={'Content-type': 'application/json', 'Accept': 'text/plain'})
         return automation_results
     except Exception as e:
-        requests.post('https://costumer-facing1-automations-pr-5.up.railway.app' + '/check-automation-status',json={'ERROR': str(e).splitlines()[0], 'Status' : 'Failed'}, headers={'Content-type': 'application/json', 'Accept': 'text/plain'})
+        requests.post('https://costumer-facing1-production.up.railway.app' + '/check-automation-status',json={'ERROR': str(e).splitlines()[0], 'Status' : 'Failed'}, headers={'Content-type': 'application/json', 'Accept': 'text/plain'})
         logging.debug('Debug message: %s', e)
         return {'Status': e}
