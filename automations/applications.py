@@ -1,17 +1,14 @@
-import shelve
 from .automations_list import automations_list
 from flask import Blueprint, render_template, request, current_app, jsonify, make_response
 from threading import Thread
 
-db_file = 'check_status.db'
+check_status = {}
 
 def update_status(data):
-  with shelve.open(db_file) as db:
-    db['check_status'] = data  
+  return check_status.update(data)  
 
 def get_status():
-  with shelve.open(db_file) as db:
-    return db.get('check_status', {})  
+  return check_status.copy()  
 applications_bp = Blueprint('applications', __name__)
 @applications_bp.route('/applications')
 @applications_bp.route('/applications/<app_type>')
@@ -50,7 +47,7 @@ async def set_variables(app_name=None):
         thread.start()
         return jsonify({'message': 'Task Started'})
     else:
-        update_status({})
+        check_status.clear()
         response = make_response(render_template('run_automation.html',app_name=app_name, requirements=requirements, status=status[0]['Status_Available'], goto=url))   
         return response
 @applications_bp.route('/check-automation-status', methods=['POST', 'GET'])
