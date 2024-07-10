@@ -10,15 +10,15 @@ def update_status(data):
 def get_status():
   return check_status.copy()  
 applications_bp = Blueprint('applications', __name__)
-@applications_bp.route('/applications')
 @applications_bp.route('/applications/<app_type>')
-
 def get_app(app_type=None):
     categories = []
     filtered_Array = []
+    print(filtered_Array)
     for x in automations_list:
-        if x['Country'] == app_type or x['Enabled'] == True:
+        if x['Enabled'] == True:
             categories.append(x['Country'])
+        if x['Country'] == app_type:
             filtered_Array.append(x)
     return render_template('applications.html', categories=categories, app_type=app_type, automations=filtered_Array)
 
