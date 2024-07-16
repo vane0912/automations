@@ -1,4 +1,7 @@
 
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
 #url = 'https://deploy-20240610--73a8cdd1.visachinaonline.com'
 #Screen sizes
 #screen_size = pyautogui.size()
@@ -15,11 +18,28 @@
 #passport_num = "123456789"
 
 
-values = {
+Global_Variables = {
+    'url': 'https://deploy-20240619--079f7edd.visachinaonline.com',
+    'applicants': 5,
     'Country': "MX",
-    'Email': "test@mailinator.com",
+    'Email': "",
     'First_name' : 'Pedro',
     'Last_name' : 'Gonzalez',
-    'Passport_num' : '123456789'   
+    'Passport_num' : '123456789',
+    'N. Orders': 0,
+    'Order_Numbers': [],
+    'Status': ''
 }
-
+def safe_element_click(driver, locator):
+    attempts = 0
+    max_attempts = 3  
+    while attempts < max_attempts:
+        try:
+            element = WebDriverWait(driver, 10).until(EC.element_to_be_clickable(locator))
+            element.click()
+            return True  # Click successful, return True
+        except EC.StaleElementReferenceException:
+            print(f"StaleElementReferenceException occurred, retrying attempt {attempts + 1}")
+            attempts += 1
+    print(f"Failed to click element after {max_attempts} attempts")
+    return False 

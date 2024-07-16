@@ -167,47 +167,29 @@
         }
 
     }
-    //function run_test(url,value){
-    //    const inputs = document.getElementsByName(`${value}-input`)
-    //    const variables = []
-    //    for(let i = 0; i < inputs.length; i++){
-    //        const values = {
-    //            type : inputs[i].id,
-    //            value : inputs[i].value
-    //        }
-    //        variables.push(values)
-    //    }
-    //    runpolling()
-    //    automation_started = true;
-    //    document.getElementById('automation_running').classList.remove('hidden')
-    //    document.getElementById('automation_running').classList.add('absolute')
-    //    document.getElementById('user_email_status').textContent = variables.filter((value) => value.type === 'Email')[0].value
-    //    
-    //    fetch(`/run-automation/${value.split('%20').join(' ')}`,{
-    //        method: 'POST',
-    //        headers: {'Content-Type':'application/json'},
-    //        body: JSON.stringify(variables)
-    //    })
-    //    .then(res => res.json()) 
-    //    .then(data => console.log(data))
-    //}
-    function run_test(){
-        fetch(`https://deploy-20240711--086a1fb5.visachinaonline.com/mobile_api/product/10840/product_questions`,{
-            method: 'POST',
-            headers: {
-                'mobile-app-version':'4.5.5',
-                'Device-OS-Version':'13',
-                'Device-Platform':'ios',
-                'Cookie':'remember_web_59ba36addc2b2f9401580f014c7f58ea4e30989d=1693eyJpdiI6IjRnRjFyeUpBb2x1ZkYyeVJzV0J6d3c9PSIsInZhbHVlIjoiMnc3TGtYbmlvbnZ3KzFmSFAzSm4waUY2WWptSkJtMERCM2FPWjA2aFlGYUNrQ1JZandZYW9NRTZKRnEyZWVJRWY0UlQwNGYrMjFTY3d5aGVXNjFta0ZjeFFNVFVjaFdQZE1DVVRSb1BVdkd1WEVwc09qSzAwUk92a2VuaW1MZml2c1JBRVJxUzVSREhFM0J0WjRPQzI1cVgxVzRWeTQvZWdxanNybGVEam4wcW9WcHhXQU1xa3NySHR6RHFrbzUxak5JS0hyK1NlNzArKzVaY2NWOWdVNVZoSU9FVGdoSklLbHFTVU1GMm90QT0iLCJtYWMiOiJlMjQ4MmFiYTgyMWFlODY5YzFlZmRhYWRhYzA2ZDE3YzQ4NWVkZGM1OTdhZTYyOWE5NTY0YzVhZjhmMmUxNDZiIiwidGFnIjoiIn0=',
-                'mobile-app-type':'visa',
-                'Accept':'application/json'
+    function run_test(url,value){
+        const inputs = document.getElementsByName(`${value}-input`)
+        const variables = []
+        for(let i = 0; i < inputs.length; i++){
+            const values = {
+                type : inputs[i].id,
+                value : inputs[i].value
             }
-        }).then((res) => res.json())
-        .then((data) => {
-            const val = Object.values(data.questions)
-            const filter_step1 = val.filter(val => val.multipart_section === 'step_3a')
-            console.log(filter_step1)
+            variables.push(values)
+        }
+        runpolling()
+        automation_started = true;
+        document.getElementById('automation_running').classList.remove('hidden')
+        document.getElementById('automation_running').classList.add('absolute')
+        document.getElementById('user_email_status').textContent = variables.filter((value) => value.type === 'Email')[0].value
+        
+        fetch(`/run-automation/${value.split('%20').join(' ')}`,{
+            method: 'POST',
+            headers: {'Content-Type':'application/json'},
+            body: JSON.stringify(variables)
         })
+        .then(res => res.json()) 
+        .then(data => console.log(data))
     }
     async function pollAutomationStatus(){
         try{
@@ -220,7 +202,6 @@
                 document.getElementById('automation_results').classList.remove('hidden')
                 document.getElementById('automation_results').classList.add('content')
                 document.getElementById('main_title').textContent = 'Automation Ran Successfully'
-
                 document.getElementsByName('user_email')[0].textContent = json_response.email
                 const order_container = document.getElementsByName('user_order_type')[0]
                 const order_status_container = document.getElementsByName('user_order_status')[0]
@@ -253,6 +234,24 @@
         }
     }
 
+    //function run_test(){
+    //    fetch(`https://deploy-20240711--086a1fb5.visachinaonline.com/mobile_api/product/10840/product_questions`,{
+    //        method: 'POST',
+    //        headers: {
+    //            'mobile-app-version':'4.5.5',
+    //            'Device-OS-Version':'13',
+    //            'Device-Platform':'ios',
+    //            'Cookie':'remember_web_59ba36addc2b2f9401580f014c7f58ea4e30989d=1693eyJpdiI6IjRnRjFyeUpBb2x1ZkYyeVJzV0J6d3c9PSIsInZhbHVlIjoiMnc3TGtYbmlvbnZ3KzFmSFAzSm4waUY2WWptSkJtMERCM2FPWjA2aFlGYUNrQ1JZandZYW9NRTZKRnEyZWVJRWY0UlQwNGYrMjFTY3d5aGVXNjFta0ZjeFFNVFVjaFdQZE1DVVRSb1BVdkd1WEVwc09qSzAwUk92a2VuaW1MZml2c1JBRVJxUzVSREhFM0J0WjRPQzI1cVgxVzRWeTQvZWdxanNybGVEam4wcW9WcHhXQU1xa3NySHR6RHFrbzUxak5JS0hyK1NlNzArKzVaY2NWOWdVNVZoSU9FVGdoSklLbHFTVU1GMm90QT0iLCJtYWMiOiJlMjQ4MmFiYTgyMWFlODY5YzFlZmRhYWRhYzA2ZDE3YzQ4NWVkZGM1OTdhZTYyOWE5NTY0YzVhZjhmMmUxNDZiIiwidGFnIjoiIn0=',
+    //            'mobile-app-type':'visa',
+    //            'Accept':'application/json'
+    //        }
+    //    }).then((res) => res.json())
+    //    .then((data) => {
+    //        const val = Object.values(data.questions)
+    //        const filter_step1 = val.filter(val => val.multipart_section === 'step_3a')
+    //        console.log(filter_step1)
+    //    })
+    //}
     </script>
 {% endblock %}
 
