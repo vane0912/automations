@@ -1,12 +1,22 @@
 {% extends "base.html" %}
 {% block title %}Weekly Automations{% endblock %}
 {% block content %}
-   <h1 class="text-5xl font-extrabold">Weekly Automations</h1>
-   {% for key, value in test.items() %}
-        <h1>{{key}}</h1>
-        <h1>"{{ value }}"</h1>
-   {% endfor %}
-   <div>
-    
+   <div class="w-9/12">
+      <h1 class="text-5xl font-extrabold">Weekly Automations</h1>
+      <div class="w-full flex flex-col justify-evenly cursor-pointer mt-14 p-6 rounded-md bg-white h-fit mb-3 border-[#302E2E] border-2">
+          <h1 class="text-2xl font-bold">USPR</h1>
+          <ul class="list-disc">
+               <li class="my-5 ml-5">fdssdf</li>
+          </ul>
+          <div class="flex items-center justify-between">
+            <input 
+               id="URL"
+               placeholder="URL"
+               class="w-3/4 outline-none border-[1px] border-solid border-[#302E2E]/50 font-light h-[40px] px-6 py-5 rounded-lg" 
+               type="text"
+               >
+            <button class="bg-[#4ADE80] w-52 col-start-1 col-end-1 font-semibold rounded-lg h-10">RUN</button>
+          </div>
+      </div>
    </div>
 {% endblock %}
