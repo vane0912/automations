@@ -2,6 +2,14 @@ from .Applications.Turkey_evisa_180 import TR_App_P2
 from .Applications.India_1y_Multiple import India_1y_Multiple
 from .Applications.Egypt_180_Multiple import EG_180_Multiple
 from .Weekly.USPR import USPR_PASSPORT_RENEWAL
+automations_list_weekly = [
+    {
+        'Title': 'USPR Passport Renewal',
+        'Subtitles': ['Creates the 3 applications to check that USPR validations work'],
+        'Type': USPR_PASSPORT_RENEWAL,
+        'Enabled': True
+    }
+]
 automations_list_applications = [
         {
             'Title': 'Turkey-E-Visa-180-Days',
