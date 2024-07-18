@@ -20,6 +20,7 @@ Global_Variables = {
     'Order_Numbers': [],
     'Status': ''
 }
+#Function for safe element Exception
 def safe_element_click(driver, locator):
     attempts = 0
     max_attempts = 3  

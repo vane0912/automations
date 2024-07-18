@@ -40,16 +40,8 @@ automations_list = [
                     'Type': 'default',
                 },
                 {
-                    'Label': 'Applicants',
-                    'Type': 'Number',
-                },
-                {
                     'Label': 'Status',
-                    'Status_Available': ['Received', 'Incomplete']
-                },
-                {
-                    'Label': 'N. Orders',
-                    'Type': 'Number',
+                    'Status_Available': ['Incomplete']
                 },
             ]
         },
