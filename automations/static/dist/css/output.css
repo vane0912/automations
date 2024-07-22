@@ -700,6 +700,14 @@ video {
   margin-top: 1.75rem;
 }
 
+.ml-24{
+  margin-left: 6rem;
+}
+
+.ml-32{
+  margin-left: 8rem;
+}
+
 .block{
   display: block;
 }
@@ -838,6 +846,26 @@ video {
   width: 75%;
 }
 
+.w-1\/4{
+  width: 25%;
+}
+
+.w-1\/5{
+  width: 20%;
+}
+
+.w-3\/5{
+  width: 60%;
+}
+
+.w-4\/5{
+  width: 80%;
+}
+
+.w-5\/6{
+  width: 83.333333%;
+}
+
 .max-w-\[1000px\]{
   max-width: 1000px;
 }
@@ -888,6 +916,10 @@ video {
   align-items: center;
 }
 
+.items-stretch{
+  align-items: stretch;
+}
+
 .justify-start{
   justify-content: flex-start;
 }
@@ -912,6 +944,22 @@ video {
   gap: 2.5rem;
 }
 
+.gap-2{
+  gap: 0.5rem;
+}
+
+.gap-5{
+  gap: 1.25rem;
+}
+
+.gap-11{
+  gap: 2.75rem;
+}
+
+.gap-24{
+  gap: 6rem;
+}
+
 .gap-x-5{
   -moz-column-gap: 1.25rem;
        column-gap: 1.25rem;
@@ -919,6 +967,10 @@ video {
 
 .gap-y-4{
   row-gap: 1rem;
+}
+
+.self-end{
+  align-self: flex-end;
 }
 
 .overflow-x-hidden{

@@ -151,10 +151,7 @@
    <script type="text/javascript" async src="https://tenor.com/embed.js"></script>
    <script type="text/javascript" async src="https://tenor.com/embed.js"></script>
    <script>
-    let automation_started = false
-    let automation_status = false
     function runpolling(){
-        automation_started = true
         pollAutomationStatus()
     }
     function checkLastCharacter(value){
@@ -178,7 +175,6 @@
             variables.push(values)
         }
         runpolling()
-        automation_started = true;
         document.getElementById('automation_running').classList.remove('hidden')
         document.getElementById('automation_running').classList.add('absolute')
         document.getElementById('user_email_status').textContent = variables.filter((value) => value.type === 'Email')[0].value

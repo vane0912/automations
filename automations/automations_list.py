@@ -4,7 +4,7 @@ from .Applications.Egypt_180_Multiple import EG_180_Multiple
 from .Weekly.USPR import USPR_PASSPORT_RENEWAL
 automations_list_weekly = [
     {
-        'Title': 'USPR Passport Renewal',
+        'Title': 'USPR-Passport-Renewal',
         'Subtitles': ['Creates the 3 applications to check that USPR validations work'],
         'Type': USPR_PASSPORT_RENEWAL,
         'Enabled': True
