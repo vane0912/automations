@@ -96,19 +96,12 @@ def India_1y_Multiple(data):
             continue_sidebar.click() if continue_sidebar.is_enabled() else wait.until(EC.element_to_be_clickable((By.ID, "btnContinueSidebar"))).click()
             time.sleep(2)
             continue_sidebar.click() if continue_sidebar.is_enabled() else wait.until(EC.element_to_be_clickable((By.ID, "btnContinueSidebar"))).click()
-            try:
-                WebDriverWait(browser, 10).until(EC.text_to_be_present_in_element((By.ID, 'app'), 'Decline'))
-                subscription_button = wait.until(EC.visibility_of_element_located((By.XPATH, '//button[@data-handle="no-subscription"]')))
-                subscription_button.click() if subscription_button.is_enabled() else wait.until(EC.element_to_be_clickable((By.XPATH, '//button[@data-handle="no-subscription"]'))).click()
-            except:
-                continue_sidebar.click() if continue_sidebar.is_enabled() else wait.until(EC.element_to_be_clickable((By.ID, "btnContinueSidebar"))).click()
+    
+            continue_sidebar.click() if continue_sidebar.is_enabled() else wait.until(EC.element_to_be_clickable((By.ID, "btnContinueSidebar"))).click()
             
-            try:
-                wait.until(EC.text_to_be_present_in_element((By.ID, "btnContinueSidebar"), 'Continue to Payment'))
-                continue_sidebar.click() if continue_sidebar.is_enabled() else wait.until(EC.element_to_be_clickable((By.ID, "btnContinueSidebar"))).click()
-            except ElementClickInterceptedException:
-                subscription_button = wait.until(EC.visibility_of_element_located((By.XPATH, '//button[@data-handle="no-subscription"]')))
-                subscription_button.click() if subscription_button.is_enabled() else wait.until(EC.element_to_be_clickable((By.XPATH, '//button[@data-handle="no-subscription"]'))).click()
+            wait.until(EC.text_to_be_present_in_element((By.ID, "btnContinueSidebar"), 'Continue to Payment'))
+            continue_sidebar.click() if continue_sidebar.is_enabled() else wait.until(EC.element_to_be_clickable((By.ID, "btnContinueSidebar"))).click()
+        
             try:
                 print('waiting')
                 WebDriverWait(browser, 10).until(EC.text_to_be_present_in_element((By.ID, 'app'), 'Possible Duplicate'))

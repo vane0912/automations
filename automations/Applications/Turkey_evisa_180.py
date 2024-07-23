@@ -94,8 +94,6 @@ def TR_App_P2(data):
                 first_name.send_keys(Global_Variables['First_name'])
                 last_name = wait.until(EC.visibility_of_element_located((By.NAME, "applicant." + str(applicant) + ".last_name"))) 
                 last_name.send_keys(Global_Variables['Last_name'])
-                gender_select = Select(wait.until(EC.element_to_be_clickable((By.XPATH, "//select[@data-handle='dropdown-applicant." + str(applicant) + ".gender']"))) ) 
-                gender_select.select_by_index(0)
                 dob_day = wait.until(EC.visibility_of_element_located((By.NAME, "applicant." + str(applicant) + ".dob.day"))) 
                 dob_day.send_keys('23')
                 dob_day.send_keys(Keys.ENTER)
@@ -112,78 +110,103 @@ def TR_App_P2(data):
             continue_sidebar.click() if continue_sidebar.is_enabled() else wait.until(EC.element_to_be_clickable((By.ID, "btnContinueSidebar"))).click()
             #print('Passed Step 3')
             for user in range(int(Global_Variables['applicants'])):
-                passport_num = wait.until(EC.element_to_be_clickable((By.NAME, "applicant."+ str(user) +".passport_num")))
-                passport_num.send_keys(Global_Variables['Passport_num'])
-                passport_day = browser.find_element(By.NAME, "applicant."+ str(user) +".passport_expiration_date.day")
-                passport_day.send_keys('23')
-                passport_day.send_keys(Keys.ENTER)
-                passport_month = browser.find_element(By.NAME, "applicant."+ str(user) +".passport_expiration_date.month")
-                passport_month.send_keys('d')
-                passport_month.send_keys(Keys.ENTER)
-                passport = browser.find_element(By.NAME, "applicant."+ str(user) +".passport_expiration_date.year")
-                passport.send_keys('2032')
-                passport.send_keys(Keys.ENTER)
-                passport_issue_day = browser.find_element(By.NAME, "applicant."+ str(user) +".passport_issued_date.day")
-                passport_issue_day.send_keys('23')
-                passport_issue_day.send_keys(Keys.ENTER)
-                passport_issue_month = browser.find_element(By.NAME, "applicant."+ str(user) + ".passport_issued_date.month")
-                passport_issue_month.send_keys('d')
-                passport_issue_month.send_keys(Keys.ENTER)
-                passport_issue_year = browser.find_element(By.NAME, "applicant."+ str(user) +".passport_issued_date.year")
-                passport_issue_year.send_keys('2020')
-                passport_issue_year.send_keys(Keys.ENTER)
-            time.sleep(3)
-            continue_sidebar.click() if continue_sidebar.is_enabled() else wait.until(EC.element_to_be_clickable((By.ID, "btnContinueSidebar"))).click()
-            #print('Passed Step 4')
-            time.sleep(3)
-            continue_sidebar.click() if continue_sidebar.is_enabled() else wait.until(EC.element_to_be_clickable((By.ID, "btnContinueSidebar"))).click()
-            #print('Passed Step 5')
-            time.sleep(3)
-            try:
-                continue_sidebar.click() if continue_sidebar.is_enabled() else wait.until(EC.element_to_be_clickable((By.ID, "btnContinueSidebar"))).click()
-            except ElementClickInterceptedException:
-                subscription_button = wait.until(EC.visibility_of_element_located((By.XPATH, '//button[@data-handle="no-subscription"]')))
-                subscription_button.click() if subscription_button.is_enabled() else wait.until(EC.element_to_be_clickable((By.XPATH, '//button[@data-handle="no-subscription"]'))).click()
-            #print('Passed Step 6')
-            wait.until(EC.text_to_be_present_in_element((By.XPATH, '//div[@data-handle="reviewStepContainer"]'), 'Review your order'))
+                try:
+                    passport_num = WebDriverWait(browser, 5).until(EC.element_to_be_clickable((By.NAME, "applicant."+ str(user) +".passport_num")))
+                    passport_num.send_keys(Global_Variables['Passport_num'])
+                    passport_day = Select(WebDriverWait(browser, 5).until(EC.element_to_be_clickable((By.NAME, "applicant."+ str(user) +".passport_expiration_date.day")))) 
+                    passport_day.select_by_value('23')
+                    passport_month = Select(WebDriverWait(browser, 5).until(EC.element_to_be_clickable((By.NAME, "applicant."+ str(user) +".passport_expiration_date.month")))) 
+                    passport_month.select_by_value('10')
+                    passport_year = Select(WebDriverWait(browser, 5).until(EC.element_to_be_clickable((By.NAME, "applicant."+ str(user) +".passport_expiration_date.year")))) 
+                    passport_year.select_by_value('2032')
+
+                    passport_issue_day = Select(WebDriverWait(browser, 5).until(EC.element_to_be_clickable((By.NAME, "applicant."+ str(user) +".passport_issued_date.day")))) 
+                    passport_issue_day.select_by_value('23')
+                    passport_issue_month = Select(WebDriverWait(browser, 5).until(EC.element_to_be_clickable((By.NAME, "applicant."+ str(user) +".passport_issued_date.month")))) 
+                    passport_issue_month.select_by_value('10')
+                    passport_issue_year = Select(WebDriverWait(browser, 5).until(EC.element_to_be_clickable((By.NAME, "applicant."+ str(user) +".passport_issued_date.year")))) 
+                    passport_issue_year.select_by_value('2020')
+
+                    if user == int(Global_Variables['applicants']) - 1:
+                        continue_sidebar.click() if continue_sidebar.is_enabled() else wait.until(EC.element_to_be_clickable((By.ID, "btnContinueSidebar"))).click()
+                except StaleElementReferenceException:
+                    print('ERROR')
+                    wait.until(EC.element_to_be_clickable((By.ID, 'btnPreviousSidebar'))).click()
+                    passport_num = WebDriverWait(browser, 5).until(EC.element_to_be_clickable((By.NAME, "applicant."+ str(user) +".passport_num")))
+                    passport_num.send_keys(Global_Variables['Passport_num'])
+                    passport_day = Select(WebDriverWait(browser, 5).until(EC.element_to_be_clickable((By.NAME, "applicant."+ str(user) +".passport_expiration_date.day")))) 
+                    passport_day.select_by_value('23')
+                    passport_month = Select(WebDriverWait(browser, 5).until(EC.element_to_be_clickable((By.NAME, "applicant."+ str(user) +".passport_expiration_date.month")))) 
+                    passport_month.select_by_value('10')
+                    passport_year = Select(WebDriverWait(browser, 5).until(EC.element_to_be_clickable((By.NAME, "applicant."+ str(user) +".passport_expiration_date.year")))) 
+                    passport_year.select_by_value('2032')
+
+                    passport_issue_day = Select(WebDriverWait(browser, 5).until(EC.element_to_be_clickable((By.NAME, "applicant."+ str(user) +".passport_issued_date.day")))) 
+                    passport_issue_day.select_by_value('23')
+                    passport_issue_month = Select(WebDriverWait(browser, 5).until(EC.element_to_be_clickable((By.NAME, "applicant."+ str(user) +".passport_issued_date.month")))) 
+                    passport_issue_month.select_by_value('10')
+                    passport_issue_year = Select(WebDriverWait(browser, 5).until(EC.element_to_be_clickable((By.NAME, "applicant."+ str(user) +".passport_issued_date.year")))) 
+                    passport_issue_year.select_by_value('2020')
+                    if user == int(Global_Variables['applicants']) - 1:
+                        continue_sidebar.click() if continue_sidebar.is_enabled() else wait.until(EC.element_to_be_clickable((By.ID, "btnContinueSidebar"))).click()
+                except TimeoutException:
+                    print('ERROR2')
+                    wait.until(EC.element_to_be_clickable((By.ID, 'btnPreviousSidebar'))).click()
+                    passport_num = WebDriverWait(browser, 5).until(EC.element_to_be_clickable((By.NAME, "applicant."+ str(user) +".passport_num")))
+                    passport_num.send_keys(Global_Variables['Passport_num'])
+                    passport_day = Select(WebDriverWait(browser, 5).until(EC.element_to_be_clickable((By.NAME, "applicant."+ str(user) +".passport_expiration_date.day")))) 
+                    passport_day.select_by_value('23')
+                    passport_month = Select(WebDriverWait(browser, 5).until(EC.element_to_be_clickable((By.NAME, "applicant."+ str(user) +".passport_expiration_date.month")))) 
+                    passport_month.select_by_value('10')
+                    passport_year = Select(WebDriverWait(browser, 5).until(EC.element_to_be_clickable((By.NAME, "applicant."+ str(user) +".passport_expiration_date.year")))) 
+                    passport_year.select_by_value('2032')
+
+                    passport_issue_day = Select(WebDriverWait(browser, 5).until(EC.element_to_be_clickable((By.NAME, "applicant."+ str(user) +".passport_issued_date.day")))) 
+                    passport_issue_day.select_by_value('23')
+                    passport_issue_month = Select(WebDriverWait(browser, 5).until(EC.element_to_be_clickable((By.NAME, "applicant."+ str(user) +".passport_issued_date.month")))) 
+                    passport_issue_month.select_by_value('10')
+                    passport_issue_year = Select(WebDriverWait(browser, 5).until(EC.element_to_be_clickable((By.NAME, "applicant."+ str(user) +".passport_issued_date.year")))) 
+                    passport_issue_year.select_by_value('2020')
+                    if user == int(Global_Variables['applicants']) - 1:
+                        continue_sidebar.click() if continue_sidebar.is_enabled() else wait.until(EC.element_to_be_clickable((By.ID, "btnContinueSidebar"))).click()
+                
             continue_step_6 = (By.ID, "btnContinueSidebar")
-            safe_element_click(browser, continue_step_6) if continue_sidebar.is_enabled() else safe_element_click(browser, continue_step_6)
-            #print('Passed Step 7')
+            print('before speeds')
+            wait.until(EC.text_to_be_present_in_element((By.ID, "app"), '+ Standard, 24 hours'))
+            safe_element_click(browser, continue_step_6) 
+            print('after speeds')
+            wait.until(EC.text_to_be_present_in_element((By.XPATH, '//div[@data-handle="reviewStepContainer"]'), 'Review your order'))
+            wait.until(EC.text_to_be_present_in_element((By.ID, "btnContinueSidebar"), 'Continue to Payment'))
+            safe_element_click(browser, continue_step_6) 
             try:
+                WebDriverWait(browser, 10).until(EC.text_to_be_present_in_element((By.ID, 'app'), 'Possible Duplicate'))
+                btn_disclaimer = wait.until(EC.element_to_be_clickable((By.ID, "btnDisclaimerNext")))
+                btn_disclaimer.click()
+
                 btn_submit_payment = wait.until(EC.element_to_be_clickable((By.ID, "btnSubmitPayment")))
                 btn_submit_payment.click()
             
                 btn_complete = wait.until(EC.element_to_be_clickable((By.ID, "btnCompleteProcess")))
+
                 btn_complete.click()
-            except ElementClickInterceptedException: 
-                btn_disclaimer = wait.until(EC.element_to_be_clickable((By.ID, "btnDisclaimerNext")))
-                btn_disclaimer.click()
-
-                btn_submit_payment = wait.until(EC.element_to_be_clickable((By.ID, "btnSubmitPayment")))
-                btn_submit_payment.click()
-
-                btn_complete = wait.until(EC.element_to_be_clickable((By.ID, "btnCompleteProcess")))
-                btn_complete.click()
-            except TimeoutException: 
-                btn_disclaimer = wait.until(EC.element_to_be_clickable((By.ID, "btnDisclaimerNext")))
-                btn_disclaimer.click()
-
-                btn_submit_payment = wait.until(EC.element_to_be_clickable((By.ID, "btnSubmitPayment")))
-                btn_submit_payment.click()
-
-                btn_complete = wait.until(EC.element_to_be_clickable((By.ID, "btnCompleteProcess")))
-                btn_complete.click()
-            except NoSuchElementException: 
-                btn_disclaimer = wait.until(EC.element_to_be_clickable((By.ID, "btnDisclaimerNext")))
-                btn_disclaimer.click()
-
+            except: 
                 btn_submit_payment = wait.until(EC.element_to_be_clickable((By.ID, "btnSubmitPayment")))
                 btn_submit_payment.click()
 
                 btn_complete = wait.until(EC.element_to_be_clickable((By.ID, "btnCompleteProcess")))
                 btn_complete.click()
             #print('Passed Step 8')
-            wait.until(EC.element_to_be_clickable((By.ID, 'btnDismissAppDownload'))).click()
+            for post_payment_user in range(int(Global_Variables['applicants'])):    
+                gender_select = Select(wait.until(EC.element_to_be_clickable((By.XPATH, "//select[@data-handle='dropdown-applicant." + str(post_payment_user) + ".gender']"))) ) 
+                gender_select.select_by_index(0)
+                print(post_payment_user)
+                if post_payment_user == int(Global_Variables['applicants']) - 1:
+                    print('here 2')
+                    wait.until(EC.element_to_be_clickable((By.ID, 'btnSubmitApplication'))).click()
+                    wait.until(EC.element_to_be_clickable((By.ID, 'btnDismissAppDownload'))).click()
+                else:
+                    print('here')
+                    wait.until(EC.element_to_be_clickable((By.ID, 'btnContinueUnderSection'))).click()
             order_number = wait.until(EC.visibility_of_element_located((By.ID, 'h1-tag-container')))
             Global_Variables['Order_Numbers'].append(re.findall(r'\d+', order_number.text))
             if order == 0:
@@ -240,10 +263,13 @@ def TR_App_P2(data):
             'email' : Global_Variables['Email'],
         }
         ##https://costumer-facing1-production.up.railway.app
+        ##https://costumer-facing1-automations-pr-6.up.railway.app
         ##http://127.0.0.1:5000
-        requests.post('https://costumer-facing1-automations-pr-6.up.railway.app' + '/check-automation-status',json=automation_results, headers={'Content-type': 'application/json', 'Accept': 'text/plain'})
+        requests.post('http://127.0.0.1:5000' + '/check-automation-status',json=automation_results, headers={'Content-type': 'application/json', 'Accept': 'text/plain'})
         return automation_results
     except Exception as e:
-        requests.post('https://costumer-facing1-automations-pr-6.up.railway.app' + '/check-automation-status',json={'ERROR': str(e).splitlines()[0], 'Status' : 'Failed'}, headers={'Content-type': 'application/json', 'Accept': 'text/plain'})
+        requests.post('http://127.0.0.1:5000' + '/check-automation-status',json={'ERROR': str(e).splitlines()[0], 'Status' : 'Failed'}, headers={'Content-type': 'application/json', 'Accept': 'text/plain'})
         logging.debug('Debug message: %s', e)
+        logging.error('Error occurred: %s', traceback.format_exc())
+        print(str(e).splitlines()[0])
         return {'Status': e}

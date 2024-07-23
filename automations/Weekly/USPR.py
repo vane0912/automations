@@ -90,6 +90,13 @@ def USPR_PASSPORT_RENEWAL(url, email):
                 
                 btn_complete = wait.until(EC.element_to_be_clickable((By.ID, "btnCompleteProcess")))
                 btn_complete.click()
+            if x == 0:
+                browser.get(url + '/account/settings/security')
+                password = wait.until(EC.element_to_be_clickable((By.ID, "new_password")))
+                password.send_keys('testivisa5!')
+                password_repeat = wait.until(EC.element_to_be_clickable((By.ID, "password_repeat")))
+                password_repeat.send_keys('testivisa5!') 
+                browser.find_element(By.XPATH, '//button[@data-handle="updatePasswordBtn"]').click()
         automation_results = {
             'Order_numbers' : Order_numbers,
             'Status' : 'Success',

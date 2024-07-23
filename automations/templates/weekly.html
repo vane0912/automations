@@ -101,31 +101,33 @@
           </div> 
       </div>
    </div>
-   <div id="automation_results" class="w-9/12 h-fit hidden">
-      <div class="w-full bg-white h-fit flex justify-between px-12 py-8 rounded-xl border-solid border-[#4ADE80] border-2 ">
-          <div class="w-2/6 h-full">
-              <h2 class="text-2xl font-bold">Credentials</h2>
-              <div class="w-full mt-5">
-                  <div class="flex w-full justify-between">
-                      <p class="mb-6">Log in Email:</p>
-                      <p name="user_email"></p>
+   <div id="automation_results" class="w-full bg-[#302E2E]/50 absolute h-screen top-0 hidden">
+        <div class="w-full h-full flex justify-center items-center">
+            <div class="w-5/6 bg-white h-fit flex flex-col justify-between px-12 py-14 rounded-xl border-solid border-[#4ADE80] border-2 ">
+                <div class="flex justify-between">
+                    <h1 class="text-5xl w-full mb-8 font-bold">Automation ran Successfully</h1> 
+                    <h2 class="font-bold text-xl cursor-pointer" onclick="location.reload()">X</h2>
+                </div>
+                <div class="flex">
+                  <div class="w-4/6 h-full">
+                      <h2 class="text-2xl font-bold">Credentials</h2>
+                      <div class="w-4/6 mt-5">
+                          <div class="flex w-full justify-between">
+                              <p class="mb-6">Log in Email:</p>
+                              <p name="user_email"></p>
+                          </div>
+                          <div class="flex w-full justify-between">
+                              <p>Password:</p>
+                              <p>testivisa5!</p>
+                          </div>
+                      </div>
                   </div>
-                  <div class="flex w-full justify-between">
-                      <p>Password:</p>
-                      <p>testivisa5!</p>
+                  <div name="user_order_type" class="w-2/5 flex flex-col items-center justify-center">
+                        <h2 class="text-2xl font-bold mb-5">Automations Ran</h2>
                   </div>
-              </div>
-          </div>
-          <div class="flex w-2/5 justify-between">
-              <div name="user_order_type" class="flex flex-col">
-                  <h2 class="text-2xl font-bold mb-5">Automations Ran</h2>
-              </div>
-              <div name="user_order_status">
-                  <h2 class="text-2xl font-bold mb-5">Status</h2>
-              </div>
-          </div>
-      </div>
-  </div>
+            </div>
+        </div>
+    </div>
    <script type="text/javascript" async src="https://tenor.com/embed.js"></script>
    <script>
       function runpolling(){
@@ -151,21 +153,19 @@
          console.log(json_response)
          if (json_response.Status === "Success") {
             console.log(json_response)
-            document.getElementById('set_variables').classList.add('hidden')
             document.getElementById('automation_running').classList.add('hidden')
             document.getElementById('automation_results').classList.remove('hidden')
-            document.getElementById('automation_results').classList.add('content')
-            document.getElementById('main_title').textContent = 'Automation Ran Successfully'
+            document.getElementById('automation_results').classList.add('absolute')
             document.getElementsByName('user_email')[0].textContent = json_response.email
             const order_container = document.getElementsByName('user_order_type')[0]
             const order_status_container = document.getElementsByName('user_order_status')[0]
-            //for(let i = 0; i < json_response.Order_numbers.length; i++){
-            //    const order_title = document.createElement('p')
-            //    const order_status = document.createElement('p')
-            //    order_title.textContent = 'Order Created ' + json_response.Order_numbers[i][0]
-            //    order_title.classList.add('text-center', 'mb-5')
-            //    order_container.append(order_title)
-            //}
+            for(let i = 0; i < json_response.Order_numbers.length; i++){
+                const order_title = document.createElement('p')
+                const order_status = document.createElement('p')
+                order_title.textContent = 'Order Created ' + json_response.Order_numbers[i][0]
+                order_title.classList.add('text-center', 'mb-5')
+                order_container.append(order_title)
+            }
          }else if(json_response.Status === "Failed"){
              console.log(json_response)
              console.log('failed')
