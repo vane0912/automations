@@ -4,23 +4,31 @@ FROM python:3.10
 # Install necessary packages
 RUN apt-get update && apt-get install -y \
     wget \
-    gnupg2 \
     curl \
     unzip \
-    xvfb \
-    libgbm1 \
-    libappindicator3-1 \
+    libglib2.0-0 \
+    libnss3 \
+    libx11-6 \
+    libx11-xcb1 \
+    libxcb1 \
+    libxcomposite1 \
+    libxcursor1 \
+    libxdamage1 \
+    libxext6 \
+    libxfixes3 \
+    libxi6 \
+    libxrandr2 \
+    libxrender1 \
+    libxss1 \
+    libxtst6 \
+    ca-certificates \
+    fonts-liberation \
+    libappindicator1 \
     libasound2 \
     libatk-bridge2.0-0 \
-    libnspr4 \
-    libnss3 \
+    libgtk-3-0 \
     lsb-release \
     xdg-utils \
-    libxss1 \
-    libdbus-glib-1-2 \
-    fonts-liberation \
-    libu2f-udev \
-    libvulkan1 \
     --no-install-recommends
 
 # Install Chrome browser
@@ -46,5 +54,5 @@ RUN pip install -r requirements.txt
 # Copy the rest of the application code
 COPY . .
 
-# Command to run the application
+# Command to run the applicatio
 CMD ["python", "main.py"]
