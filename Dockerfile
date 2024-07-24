@@ -25,11 +25,11 @@ RUN apt-get update && apt-get install -y \
     && echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list \
     && apt-get update \
     && apt-get install -y google-chrome-stable \
-    && CHROMEDRIVER_VERSION=$(curl -sS https://chromedriver.storage.googleapis.com/LATEST_RELEASE) \
+    && CHROMEDRIVER_VERSION="103.0.5060.134" \
     && wget -O /tmp/chromedriver.zip https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip \
     && unzip /tmp/chromedriver.zip -d /usr/local/bin \
     && rm /tmp/chromedriver.zip \
-    && chmod +x /usr/local/bin/chromedriver \
+    && chmod +x /usr/local/bin/chromedriver && ls -l /usr/local/bin/chromedriver \
     && rm -rf /root/.wdm  # Remove any remaining Chromedriver files
 
 # Set working directory
