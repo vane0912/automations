@@ -54,5 +54,8 @@ RUN pip install -r requirements.txt
 # Copy the rest of the application code
 COPY . .
 
-# Command to run the applicatio
+# Set executable permissions for manage.py (if needed)
+RUN chmod +x api/manage.py
+
+# Command to run the application
 CMD ["python", "main.py"]
