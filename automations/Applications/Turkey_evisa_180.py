@@ -247,10 +247,10 @@ def TR_App_P2(data):
         ##https://costumer-facing1-production.up.railway.app
         ##https://costumer-facing1-automations-pr-6.up.railway.app
         ##http://127.0.0.1:5000
-        requests.post('https://costumer-facing1-automations-pr-6.up.railway.app' + '/check-automation-status',json=automation_results, headers={'Content-type': 'application/json', 'Accept': 'text/plain'})
+        requests.post('https://costumer-facing1-automations-pr-1.up.railway.app' + '/check-automation-status',json=automation_results, headers={'Content-type': 'application/json', 'Accept': 'text/plain'})
         return automation_results
     except Exception as e:
-        requests.post('https://costumer-facing1-automations-pr-6.up.railway.app' + '/check-automation-status',json={'ERROR': str(e).splitlines()[0], 'Status' : 'Failed'}, headers={'Content-type': 'application/json', 'Accept': 'text/plain'})
+        requests.post('https://costumer-facing1-automations-pr-1.up.railway.app' + '/check-automation-status',json={'ERROR': str(e).splitlines()[0], 'Status' : 'Failed'}, headers={'Content-type': 'application/json', 'Accept': 'text/plain'})
         logging.debug('Debug message: %s', e)
         logging.error('Error occurred: %s', traceback.format_exc())
         print(str(e).splitlines()[0])
