@@ -29,11 +29,13 @@ RUN curl -fsSL https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key a
     && apt-get install -y google-chrome-stable
 
 # Install ChromeDriver
-RUN CHROMEDRIVER_VERSION=$(curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE) \
+RUN CHROMEDRIVER_VERSION="93.0.4577.63" \
+    && rm -rf /root/.wdm \
     && wget -O /tmp/chromedriver.zip https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip \
-    && unzip /tmp/chromedriver.zip -d /usr/bin \
+    && unzip /tmp/chromedriver.zip -d /usr/local/bin \
     && rm /tmp/chromedriver.zip \
-    && chmod +x /usr/bin/chromedriver
+    && chmod +x /usr/local/bin/chromedriver \
+    && ls -l /usr/local/bin/chromedriver
 
 # Set working directory
 WORKDIR /app
