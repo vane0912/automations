@@ -30,7 +30,7 @@ RUN apt-get update && apt-get install -y \
     && unzip /tmp/chromedriver.zip -d /usr/local/bin \
     && rm /tmp/chromedriver.zip \
     && chmod +x /usr/local/bin/chromedriver \
-    && ls -l /usr/local/bin/chromedriver
+    && rm -rf /root/.wdm  # Remove any remaining Chromedriver files
 
 # Set working directory
 WORKDIR /app
