@@ -37,8 +37,9 @@ RUN curl -fsSL https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key a
     && apt-get update \
     && apt-get install -y google-chrome-stable
 
-# Install Chromedriver (adjust version as needed)
+# Install Chromedriver (clear cache and install)
 RUN CHROMEDRIVER_VERSION="93.0.4577.63" \
+    && rm -rf /root/.wdm \
     && wget -O /tmp/chromedriver.zip https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip \
     && unzip /tmp/chromedriver.zip -d /usr/local/bin \
     && rm /tmp/chromedriver.zip \
