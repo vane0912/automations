@@ -10,7 +10,7 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.alert import Alert
 from selenium.webdriver.support.ui import Select
-from .Applications.Global_Variables import Global_Variables
+from .Global_Variables import Global_Variables
 
 def setArguments(data):
     for x in data:

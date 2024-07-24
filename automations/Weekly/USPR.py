@@ -1,4 +1,4 @@
-from ..imports import *
+from .imports import *
 def USPR_PASSPORT_RENEWAL(url, email):
     Order_numbers = []
     chrome_options = Options()
@@ -66,7 +66,7 @@ def USPR_PASSPORT_RENEWAL(url, email):
             get_li = get_options[0].find_elements(By.TAG_NAME, 'li')
             wait.until(EC.element_to_be_clickable((get_li[1]))).click() if x == 0 else wait.until(EC.element_to_be_clickable((get_li[0]))).click()
             wait.until(EC.element_to_be_clickable((By.ID, 'btnContinueSidebar'))).click()
-            wait.until(EC.text_to_be_present_in_element((By.ID, 'question-container'), 'Review your order'))
+            wait.until(EC.text_to_be_present_in_element((By.TAG_NAME, 'h1'), 'Review your order'))
             wait.until(EC.element_to_be_clickable((By.ID, 'btnContinueSidebar'))).click()
             try:
                 WebDriverWait(browser, 8).until(EC.text_to_be_present_in_element((By.ID, 'app'), 'Possible Duplicate'))
