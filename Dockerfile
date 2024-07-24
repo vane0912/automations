@@ -1,34 +1,25 @@
-# Use Railway's base Python image
 FROM python:3.10
 
 # Install necessary packages
 RUN apt-get update && apt-get install -y \
     wget \
+    gnupg2 \
     curl \
     unzip \
-    libglib2.0-0 \
-    libnss3 \
-    libx11-6 \
-    libx11-xcb1 \
-    libxcb1 \
-    libxcomposite1 \
-    libxcursor1 \
-    libxdamage1 \
-    libxext6 \
-    libxfixes3 \
-    libxi6 \
-    libxrandr2 \
-    libxrender1 \
-    libxss1 \
-    libxtst6 \
-    ca-certificates \
-    fonts-liberation \
-    libappindicator1 \
+    xvfb \
+    libgbm1 \
+    libappindicator3-1 \
     libasound2 \
     libatk-bridge2.0-0 \
-    libgtk-3-0 \
+    libnspr4 \
+    libnss3 \
     lsb-release \
     xdg-utils \
+    libxss1 \
+    libdbus-glib-1-2 \
+    fonts-liberation \
+    libu2f-udev \
+    libvulkan1 \
     --no-install-recommends
 
 # Install Chrome browser
@@ -37,13 +28,12 @@ RUN curl -fsSL https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key a
     && apt-get update \
     && apt-get install -y google-chrome-stable
 
-# Install Chromedriver (clear cache and install)
-RUN CHROMEDRIVER_VERSION="93.0.4577.63" \
-    && rm -rf /root/.wdm \
+# Install ChromeDriver
+RUN CHROMEDRIVER_VERSION=$(curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE) \
     && wget -O /tmp/chromedriver.zip https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip \
-    && unzip /tmp/chromedriver.zip -d /usr/local/bin \
+    && unzip /tmp/chromedriver.zip -d /usr/bin \
     && rm /tmp/chromedriver.zip \
-    && chmod +x /usr/local/bin/chromedriver
+    && chmod +x /usr/bin/chromedriver
 
 # Set working directory
 WORKDIR /app
