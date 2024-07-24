@@ -55,7 +55,7 @@ RUN pip install -r requirements.txt
 COPY . .
 
 # Set executable permissions for manage.py (if needed)
-RUN chmod +x api/manage.py
+RUN chmod +x /root/.wdm/drivers/chromedriver/linux64/127.0.6533.72/chromedriver-linux64/THIRD_PARTY_NOTICES.chromedriver
 
 # Command to run the application
 CMD ["python", "main.py"]
