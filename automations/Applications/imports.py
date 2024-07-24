@@ -1,5 +1,6 @@
 from .Global_Variables import Global_Variables
-
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 def setArguments(data):
     for x in data:
         if x['type'] == 'ULR':
