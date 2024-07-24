@@ -8,46 +8,9 @@ formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
 console_handler.setFormatter(formatter)
 
 logging.getLogger().addHandler(console_handler)
-Global_Variables = {
-    'url': 'https://deploy-20240619--079f7edd.visachinaonline.com',
-    'applicants': 5,
-    'Country': "MX",
-    'Email': "",
-    'First_name' : 'Pedro',
-    'Last_name' : 'Gonzalez',
-    'Passport_num' : '123456789',
-    'N. Orders': 0,
-    'Order_Numbers': [],
-    'Status': ''
-}
-#Function for safe element Exception
-def safe_element_click(driver, locator):
-    attempts = 0
-    max_attempts = 3  
-    while attempts < max_attempts:
-        try:
-            element = WebDriverWait(driver, 10).until(EC.element_to_be_clickable(locator))
-            element.click()
-            return True  # Click successful, return True
-        except EC.StaleElementReferenceException:
-            print(f"StaleElementReferenceException occurred, retrying attempt {attempts + 1}")
-            attempts += 1
-    print(f"Failed to click element after {max_attempts} attempts")
-    return False  
 
 def TR_App_P2(data):
-    for x in data:
-        if x['type'] == 'ULR':
-            Global_Variables['url'] = x['value']
-        if x['type'] == 'Email':
-            Global_Variables['Email'] = x['value']
-        if x['type'] == 'Applicants':
-            Global_Variables['applicants'] = x['value']
-        if x['type'] == 'Status':
-            Global_Variables['Status'] = x['value']
-        if x['type'] == 'N. Orders':
-            Global_Variables['N. Orders'] = x['value']
-    
+    setArguments(data)
     Global_Variables['Order_Numbers'] = []
     chrome_options = Options()
     chrome_options.add_argument('--headless') 
@@ -129,6 +92,25 @@ def TR_App_P2(data):
 
                     if user == int(Global_Variables['applicants']) - 1:
                         continue_sidebar.click() if continue_sidebar.is_enabled() else wait.until(EC.element_to_be_clickable((By.ID, "btnContinueSidebar"))).click()
+                except ElementNotInteractableException:
+                    wait.until(EC.element_to_be_clickable((By.ID, 'btnPreviousSidebar'))).click()
+                    passport_num = WebDriverWait(browser, 5).until(EC.element_to_be_clickable((By.NAME, "applicant."+ str(user) +".passport_num")))
+                    passport_num.send_keys(Global_Variables['Passport_num'])
+                    passport_day = Select(WebDriverWait(browser, 5).until(EC.element_to_be_clickable((By.NAME, "applicant."+ str(user) +".passport_expiration_date.day")))) 
+                    passport_day.select_by_value('23')
+                    passport_month = Select(WebDriverWait(browser, 5).until(EC.element_to_be_clickable((By.NAME, "applicant."+ str(user) +".passport_expiration_date.month")))) 
+                    passport_month.select_by_value('10')
+                    passport_year = Select(WebDriverWait(browser, 5).until(EC.element_to_be_clickable((By.NAME, "applicant."+ str(user) +".passport_expiration_date.year")))) 
+                    passport_year.select_by_value('2032')
+
+                    passport_issue_day = Select(WebDriverWait(browser, 5).until(EC.element_to_be_clickable((By.NAME, "applicant."+ str(user) +".passport_issued_date.day")))) 
+                    passport_issue_day.select_by_value('23')
+                    passport_issue_month = Select(WebDriverWait(browser, 5).until(EC.element_to_be_clickable((By.NAME, "applicant."+ str(user) +".passport_issued_date.month")))) 
+                    passport_issue_month.select_by_value('10')
+                    passport_issue_year = Select(WebDriverWait(browser, 5).until(EC.element_to_be_clickable((By.NAME, "applicant."+ str(user) +".passport_issued_date.year")))) 
+                    passport_issue_year.select_by_value('2020')
+                    if user == int(Global_Variables['applicants']) - 1:
+                        continue_sidebar.click() if continue_sidebar.is_enabled() else wait.until(EC.element_to_be_clickable((By.ID, "btnContinueSidebar"))).click()
                 except StaleElementReferenceException:
                     print('ERROR')
                     wait.until(EC.element_to_be_clickable((By.ID, 'btnPreviousSidebar'))).click()
@@ -175,7 +157,7 @@ def TR_App_P2(data):
             wait.until(EC.text_to_be_present_in_element((By.ID, "app"), '+ Standard, 24 hours'))
             safe_element_click(browser, continue_step_6) 
             print('after speeds')
-            wait.until(EC.text_to_be_present_in_element((By.XPATH, '//div[@data-handle="reviewStepContainer"]'), 'Review your order'))
+            wait.until(EC.text_to_be_present_in_element((By.TAG_NAME, 'h1'), 'Review your order'))
             wait.until(EC.text_to_be_present_in_element((By.ID, "btnContinueSidebar"), 'Continue to Payment'))
             safe_element_click(browser, continue_step_6) 
             try:
@@ -265,10 +247,10 @@ def TR_App_P2(data):
         ##https://costumer-facing1-production.up.railway.app
         ##https://costumer-facing1-automations-pr-6.up.railway.app
         ##http://127.0.0.1:5000
-        requests.post('http://127.0.0.1:5000' + '/check-automation-status',json=automation_results, headers={'Content-type': 'application/json', 'Accept': 'text/plain'})
+        requests.post('https://costumer-facing1-automations-pr-6.up.railway.app' + '/check-automation-status',json=automation_results, headers={'Content-type': 'application/json', 'Accept': 'text/plain'})
         return automation_results
     except Exception as e:
-        requests.post('http://127.0.0.1:5000' + '/check-automation-status',json={'ERROR': str(e).splitlines()[0], 'Status' : 'Failed'}, headers={'Content-type': 'application/json', 'Accept': 'text/plain'})
+        requests.post('https://costumer-facing1-automations-pr-6.up.railway.app' + '/check-automation-status',json={'ERROR': str(e).splitlines()[0], 'Status' : 'Failed'}, headers={'Content-type': 'application/json', 'Accept': 'text/plain'})
         logging.debug('Debug message: %s', e)
         logging.error('Error occurred: %s', traceback.format_exc())
         print(str(e).splitlines()[0])

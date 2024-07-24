@@ -5,7 +5,7 @@ logging.basicConfig(level=logging.ERROR)
 def India_1y_Multiple(data):
     setArguments(data)
     chrome_options = Options()
-    chrome_options.add_argument('--headless') 
+    #chrome_options.add_argument('--headless') 
     chrome_options.add_argument('window-size=1920,1080')
     chrome_options.add_argument('--no-sandbox')
     chrome_options.add_argument('--disable-dev-shm-usage')
@@ -56,8 +56,6 @@ def India_1y_Multiple(data):
                 first_name.send_keys(Global_Variables['First_name'])
                 last_name = wait.until(EC.visibility_of_element_located((By.NAME, "applicant." + str(applicant) + ".last_name"))) 
                 last_name.send_keys(Global_Variables['Last_name'])
-                gender_select = Select(wait.until(EC.element_to_be_clickable((By.XPATH, "//select[@data-handle='dropdown-applicant." + str(applicant) + ".gender']"))) ) 
-                gender_select.select_by_index(0)
                 dob_day = wait.until(EC.visibility_of_element_located((By.NAME, "applicant." + str(applicant) + ".dob.day"))) 
                 dob_day.send_keys('23')
                 dob_day.send_keys(Keys.ENTER)
@@ -207,10 +205,10 @@ def India_1y_Multiple(data):
             'email' : Global_Variables['Email'],
         }
         ##https://costumer-facing1-automations-pr-6.up.railway.app
-        requests.post('https://costumer-facing1-automations-pr-6.up.railway.app' + '/check-automation-status',json=automation_results, headers={'Content-type': 'application/json', 'Accept': 'text/plain'})
+        requests.post('http://127.0.0.1:5000' + '/check-automation-status',json=automation_results, headers={'Content-type': 'application/json', 'Accept': 'text/plain'})
         return automation_results
     except Exception as e:
-        requests.post('https://costumer-facing1-automations-pr-6.up.railway.app' + '/check-automation-status',json={'ERROR': str(e).splitlines()[0], 'Status' : 'Failed'}, headers={'Content-type': 'application/json', 'Accept': 'text/plain'})
+        requests.post('http://127.0.0.1:5000' + '/check-automation-status',json={'ERROR': str(e).splitlines()[0], 'Status' : 'Failed'}, headers={'Content-type': 'application/json', 'Accept': 'text/plain'})
         logging.debug('Debug message: %s', e)
         logging.error('Error occurred: %s', traceback.format_exc())
         print(str(e).splitlines()[0])

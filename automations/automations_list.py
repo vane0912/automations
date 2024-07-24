@@ -37,7 +37,7 @@ automations_list_applications = [
             'Subtitles': ['Only for MX citizens'],
             'Country' : 'India',
             'Type': India_1y_Multiple,
-            'Enabled': True,
+            'Enabled': False,
             'Requirements': [
                 {
                     'Label': 'ULR',
