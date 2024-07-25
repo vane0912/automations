@@ -32,7 +32,7 @@ RUN curl -fsSL https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key a
 RUN CHROMEDRIVER_VERSION=`curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE` \
     TMPDIR=$(mktemp -d) && \
     wget -v https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip -O $TMPDIR/chromedriver_linux64.zip && \
-    unzip -l $TMPDIR/chromedriver_linux64.zip &&  # List files in the ZIP\
+    unzip -l $TMPDIR/chromedriver_linux64.zip &&\
     unzip $TMPDIR/chromedriver_linux64.zip -d /usr/bin && \
     chmod +x /usr/bin/chromedriver && \
     rm -rf $TMPDIR
