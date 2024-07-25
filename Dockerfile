@@ -29,7 +29,7 @@ dpkg -i $CHROME_SETUP && \
 apt-get install -y -f && \
 rm $CHROME_SETUP
 # Install ChromeDriver
-RUN CHROMEDRIVER_VERSION=`curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE` && \
+RUN CHROMEDRIVER_VERSION=`111.0.5563.64` && \
     wget https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip && \
     unzip chromedriver_linux64.zip -d /usr/bin && \
     chmod +x /usr/bin/chromedriver && \
@@ -40,8 +40,7 @@ WORKDIR /app
 
 COPY . .
 # Copy requirements and install Python dependencies
-RUN --mount=type=cache,target=/root/.cache/pip \
-    pip3 install -r requirements.txt
+RUN pip3 install -r requirements.txt
 # Copy the rest of the application code
 
 # Command to run the application
