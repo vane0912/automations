@@ -1,7 +1,9 @@
 FROM python:3.10-slim-buster
 
 # Install system dependencies
-RUN apt-get update && apt-get install -y wget \
+RUN apt-get update && apt-get install -y \
+    wget \
+    curl \
     xvfb \
     libgbm1 \
     libappindicator3-1 \
@@ -16,12 +18,14 @@ RUN apt-get update && apt-get install -y wget \
     fonts-liberation \
     libu2f-udev \
     libvulkan1 \
+    libcurl4 \ 
     --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Chrome
 RUN wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb \
-  && apt-get install -y ./google-chrome-stable_current_amd64.deb
+  && apt-get install -y ./google-chrome-stable_current_amd64.deb \
+  && rm -rf ./google-chrome-stable_current_amd64.deb
 
 # Install ChromeDriver (replace with your desired version)
 RUN wget https://chromedriver.storage.googleapis.com/120.0.6099.71/chromedriver_linux64.zip \
