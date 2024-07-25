@@ -32,7 +32,9 @@ RUN set -eux; \
     RESPONSE=$(curl -sSL "https://googlechromelabs.github.io/chrome-for-testing/last-known-good-versions.json") \
     && LATEST_STABLE_VERSION=$(echo "$RESPONSE" | grep -oP '"Stable":\s*\{\s*"channel":.*?"version":\s*"\K[^"]+') \
     && CHROMEDRIVER_URL="https://storage.googleapis.com/chrome-for-testing-public/${LATEST_STABLE_VERSION}/linux64/chromedriver_linux64.zip" \
+    && echo "Downloading ChromeDriver from $CHROMEDRIVER_URL" \
     && curl -sSL "$CHROMEDRIVER_URL" -o /tmp/chromedriver_linux64.zip \
+    && echo "Downloaded file size: $(du -h /tmp/chromedriver_linux64.zip | cut -f1)" \
     && unzip -q /tmp/chromedriver_linux64.zip -d /usr/local/bin \
     && rm /tmp/chromedriver_linux64.zip \
     && chmod +x /usr/local/bin/chromedriver
