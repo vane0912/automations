@@ -10,6 +10,7 @@ blinker==1.8.2
 build==1.2.1
 certifi==2024.6.2
 charset-normalizer==3.3.2
+chromedriver-autoinstaller==0.6.4
 chromedriver-binary==128.0.6542.0.0
 chromedriver-binary-auto==0.3.1
 click==8.1.7
@@ -21,7 +22,6 @@ fastjsonschema==2.20.0
 Flask==3.0.3
 Flask-Cors==4.0.1
 Flask-SocketIO==5.3.6
-flask-restful==0.3.9
 gunicorn==22.0.0
 h11==0.14.0
 idna==3.6
@@ -60,7 +60,6 @@ pure-eval==0.2.2
 PyGetWindow==0.0.9
 Pygments==2.18.0
 PyMsgBox==1.0.9
-
 pyperclip==1.8.2
 pyproject_hooks==1.1.0
 PyRect==0.2.0
@@ -71,7 +70,6 @@ python-docx==1.1.2
 python-dotenv==1.0.1
 python-engineio==4.9.1
 python-socketio==5.11.2
-
 pytweening==1.2.0
 pyzmq==26.0.3
 referencing==0.35.1

@@ -13,6 +13,7 @@ def TR_App_P2(data):
     setArguments(data)
     Global_Variables['Order_Numbers'] = []
     chrome_options = Options()
+    chromedriver_autoinstaller.install()
     chrome_options.add_argument(('--headless=new')) 
     chrome_options.add_argument('window-size=1920,1080')
     chrome_options.add_argument('--no-sandbox')
