@@ -1,4 +1,3 @@
-# Use a lean Python base image
 FROM python:3.10-slim-buster
 
 # Install system dependencies
@@ -20,22 +19,32 @@ RUN apt-get update && apt-get install -y \
     --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
-# Set the working directory
+# Install Chrome
+RUN wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb \
+  && apt-get install -y ./google-chrome-stable_current_amd64.deb
+
+# Install ChromeDriver (replace with your desired version)
+RUN wget https://chromedriver.storage.googleapis.com/120.0.6099.71/chromedriver_linux64.zip \
+  && unzip chromedriver_linux64.zip && rm -rf chromedriver_linux64.zip \
+  && mv chromedriver /usr/local/bin \
+  && chmod +x /usr/local/bin/chromedriver
+
+# Install Python dependencies
+COPY requirements.txt requirements.txt
+RUN pip install -r requirements.txt
+
+# Set working directory
 WORKDIR /app
 
-# Copy requirements and install dependencies
-COPY requirements.txt requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Copy the application code
+# Copy application code
 COPY . .
 
-# Start Xvfb to run headless Chrome
+# Start Xvfb
 RUN echo '#!/bin/bash\n\
 Xvfb :99 -screen 0 1280x1024x24 &\n\
 export DISPLAY=:99\n\
 exec "$@"' > /usr/local/bin/start-xvfb.sh \
     && chmod +x /usr/local/bin/start-xvfb.sh
 
-# Set the default command to start Xvfb and the application
+# Command to start the application
 CMD ["/usr/local/bin/start-xvfb.sh", "python", "main.py"]
