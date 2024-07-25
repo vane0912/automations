@@ -1,10 +1,9 @@
 # Use the official Python image as a base
-FROM python:3.10
+FROM python:3.10-slim-buster
 
 # Install necessary system packages
 RUN apt-get update && apt-get install -y \
     wget \
-    gnupg2 \
     curl \
     unzip \
     xvfb \
@@ -35,9 +34,11 @@ RUN curl -fsSL https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key a
 RUN CHROMEDRIVER_VERSION=127.0.6533.72 \
     && wget -O /tmp/chromedriver-linux64.zip https://storage.googleapis.com/chrome-for-testing-public/$CHROMEDRIVER_VERSION/linux64/chromedriver-linux64.zip \
     && unzip /tmp/chromedriver-linux64.zip -d /tmp/chromedriver \
-    # Ignore the removal of THIRD_PARTY_NOTICES.chromedriver
-    && rm /tmp/chromedriver/chromedriver-linux64/THIRD_PARTY_NOTICES.chromedriver &> /dev/null || true \
-    && mv /tmp/chromedriver/chromedriver-linux64/chromedriver /usr/local/bin/chromedriver \
+    && ls -l /tmp/chromedriver/chromedriver-linux64  # Verify ChromeDriver existence\
+    # Move ChromeDriver to /usr/local/bin only if it exists
+    && if [ -f "/tmp/chromedriver/chromedriver-linux64/chromedriver" ]; then \
+        mv /tmp/chromedriver/chromedriver-linux64/chromedriver /usr/local/bin/chromedriver; \
+    fi\
     && rm -rf /tmp/chromedriver-linux64.zip /tmp/chromedriver \
     && chmod +x /usr/local/bin/chromedriver
 
