@@ -18,6 +18,7 @@ def TR_App_P2(data):
     chrome_options.add_argument('--no-sandbox')
     chrome_options.add_argument('--disable-dev-shm-usage')
     chrome_options.add_argument('log-level=3')
+    chrome_options.add_argument("--disable-search-engine-choice-screen")
     browser = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
     wait = WebDriverWait(browser, 150, ignored_exceptions=(NoSuchElementException,StaleElementReferenceException))
     try:
