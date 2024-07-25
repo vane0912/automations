@@ -28,13 +28,16 @@ RUN curl -fsSL https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key a
     && apt-get update \
     && apt-get install -y google-chrome-stable
 
-# Install ChromeDriver (with temporary directory and cleanup)
+# Install ChromeDriver
 RUN CHROMEDRIVER_VERSION=114.0.5735.90 && \
     TMPDIR=$(mktemp -d) && \
     wget -v https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip -O $TMPDIR/chromedriver_linux64.zip && \
     unzip $TMPDIR/chromedriver_linux64.zip -d /usr/bin && \
     chmod +x /usr/bin/chromedriver && \
     rm -rf $TMPDIR
+
+# Clean up webdriver_manager files
+RUN rm -rf /root/.wdm*
 
 # Set working directory
 WORKDIR /app
