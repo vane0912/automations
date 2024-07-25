@@ -29,7 +29,7 @@ dpkg -i $CHROME_SETUP && \
 apt-get install -y -f && \
 rm $CHROME_SETUP
 # Install ChromeDriver
-RUN CHROMEDRIVER_VERSION=`111.0.5563.64` && \
+RUN CHROMEDRIVER_VERSION=111.0.5563.64 && \
     wget https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip && \
     unzip chromedriver_linux64.zip -d /usr/bin && \
     chmod +x /usr/bin/chromedriver && \
