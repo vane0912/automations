@@ -20,6 +20,7 @@ RUN apt-get update && apt-get install -y \
     fonts-liberation \
     libu2f-udev \
     libvulkan1 \
+    gnupg2 \
     --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
