@@ -34,11 +34,10 @@ RUN curl -fsSL https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key a
 # Install ChromeDriver
 RUN CHROMEDRIVER_VERSION=127.0.6533.72 \
     && wget -O /tmp/chromedriver-linux64.zip https://storage.googleapis.com/chrome-for-testing-public/$CHROMEDRIVER_VERSION/linux64/chromedriver-linux64.zip \
-    && mkdir -p /tmp/chromedriver \
     && unzip /tmp/chromedriver-linux64.zip -d /tmp/chromedriver \
-    && ls -l /tmp/chromedriver \
+    && rm /tmp/chromedriver/chromedriver-linux64/THIRD_PARTY_NOTICES.chromedriver \
     && mv /tmp/chromedriver/chromedriver-linux64/chromedriver /usr/local/bin/chromedriver \
-    && rm /tmp/chromedriver-linux64.zip \
+    && rm -rf /tmp/chromedriver-linux64.zip /tmp/chromedriver \
     && chmod +x /usr/local/bin/chromedriver
 
 # Set up a working directory
