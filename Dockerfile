@@ -29,7 +29,7 @@ RUN curl -fsSL https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key a
     && apt-get install -y google-chrome-stable
 
 # Install ChromeDriver
-RUN CHROMEDRIVER_VERSION=$(114.0.5735.90) \
+RUN CHROMEDRIVER_VERSION=114.0.5735.90\
     && wget -O /tmp/chromedriver.zip https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip \
     && unzip /tmp/chromedriver.zip -d /usr/bin \
     && rm /tmp/chromedriver.zip \
