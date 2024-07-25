@@ -31,7 +31,7 @@ RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key
 RUN set -eux; \
     RESPONSE=$(curl -sSL "https://googlechromelabs.github.io/chrome-for-testing/last-known-good-versions.json") \
     && LATEST_STABLE_VERSION=$(echo "$RESPONSE" | grep -oP '"Stable":\s*\{\s*"channel":.*?"version":\s*"\K[^"]+') \
-    && CHROMEDRIVER_URL="https://storage.googleapis.com/chrome-for-testing-public/${LATEST_STABLE_VERSION}/linux64/chromedriver_linux64.zip" \
+    && CHROMEDRIVER_URL="https://storage.googleapis.com/chrome-for-testing-public/127.0.6533.57/linux64/chromedriver-linux64.zip" \
     && echo "Downloading ChromeDriver from $CHROMEDRIVER_URL" \
     && curl -sSL "$CHROMEDRIVER_URL" -o /tmp/chromedriver_linux64.zip \
     && echo "Downloaded file size: $(du -h /tmp/chromedriver_linux64.zip | cut -f1)" \
