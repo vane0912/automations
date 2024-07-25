@@ -60,6 +60,7 @@ pure-eval==0.2.2
 PyGetWindow==0.0.9
 Pygments==2.18.0
 PyMsgBox==1.0.9
+
 pyperclip==1.8.2
 pyproject_hooks==1.1.0
 PyRect==0.2.0
@@ -70,6 +71,7 @@ python-docx==1.1.2
 python-dotenv==1.0.1
 python-engineio==4.9.1
 python-socketio==5.11.2
+
 pytweening==1.2.0
 pyzmq==26.0.3
 referencing==0.35.1
@@ -91,7 +93,7 @@ trio-websocket==0.11.1
 typing_extensions==4.10.0
 urllib3==2.2.1
 wcwidth==0.2.13
-webdriver-manager==4.0.1
+webdriver-manager==4.0.2
 webencodings==0.5.1
 Werkzeug==3.0.3
 wsproto==1.2.0
