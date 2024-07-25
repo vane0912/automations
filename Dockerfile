@@ -1,11 +1,8 @@
-# Use the official Python image as a base
+# Use a lean Python base image
 FROM python:3.10-slim-buster
 
-# Install necessary system packages
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
-    wget \
-    curl \
-    unzip \
     xvfb \
     libgbm1 \
     libappindicator3-1 \
@@ -20,34 +17,14 @@ RUN apt-get update && apt-get install -y \
     fonts-liberation \
     libu2f-udev \
     libvulkan1 \
-    gnupg2 \
     --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Google Chrome
-RUN curl -fsSL https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
-    && echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list \
-    && apt-get update \
-    && apt-get install -y google-chrome-stable \
-    && rm -rf /var/lib/apt/lists/*
-
-# Install ChromeDriver
-RUN CHROMEDRIVER_VERSION=127.0.6533.72 \
-    && wget -O /tmp/chromedriver-linux64.zip https://storage.googleapis.com/chrome-for-testing-public/$CHROMEDRIVER_VERSION/linux64/chromedriver-linux64.zip \
-    && unzip /tmp/chromedriver-linux64.zip -d /tmp/chromedriver \
-    && ls -l /tmp/chromedriver/chromedriver-linux64\
-    # Move ChromeDriver to /usr/local/bin only if it exists
-    && if [ -f "/tmp/chromedriver/chromedriver-linux64/chromedriver" ]; then \
-        mv /tmp/chromedriver/chromedriver-linux64/chromedriver /usr/local/bin/chromedriver; \
-    fi\
-    && rm -rf /tmp/chromedriver-linux64.zip /tmp/chromedriver \
-    && chmod +x /usr/local/bin/chromedriver
-
-# Set up a working directory
+# Set the working directory
 WORKDIR /app
 
-# Copy requirements and install Python dependencies
-COPY requirements.txt .
+# Copy requirements and install dependencies
+COPY requirements.txt requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the application code
