@@ -28,12 +28,13 @@ RUN curl -fsSL https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key a
     && apt-get update \
     && apt-get install -y google-chrome-stable
 
-# Install ChromeDriver
+# Install ChromeDriver (using temporary directory)
 RUN CHROMEDRIVER_VERSION=114.0.5735.90\
-    && wget -O /tmp/chromedriver.zip https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip \
-    && unzip /tmp/chromedriver.zip -d /usr/bin \
-    && rm /tmp/chromedriver.zip \
-    && chmod +x /usr/bin/chromedriver
+    && TMPDIR=$(mktemp -d)  # Create temporary directory\
+    && wget -v https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip -O $TMPDIR/chromedriver_linux64.zip \
+    && unzip $TMPDIR/chromedriver_linux64.zip -d /usr/bin \
+    && chmod +x /usr/bin/chromedriver \
+    && rm -rf $TMPDIR  # Remove temporary directory
 
 # Set working directory
 WORKDIR /app
