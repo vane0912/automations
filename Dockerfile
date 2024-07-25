@@ -33,9 +33,9 @@ RUN curl -fsSL https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key a
 
 # Install ChromeDriver
 RUN CHROMEDRIVER_VERSION=127.0.6533.72 \
-    && wget -O /tmp/chromedriver.zip https://storage.googleapis.com/chrome-for-testing-public/$CHROMEDRIVER_VERSION/linux64/chromedriver-linux64.zip	 \
-    && unzip /tmp/chromedriver.zip -d /usr/local/bin \
-    && rm /tmp/chromedriver.zip \
+    && wget -O /tmp/chromedriver-linux64.zip https://storage.googleapis.com/chrome-for-testing-public/$CHROMEDRIVER_VERSION/linux64/chromedriver-linux64.zip	 \
+    && unzip /tmp/chromedriver-linux64.zip -d /usr/local/bin \
+    && rm /tmp/chromedriver-linux64.zip \
     && chmod +x /usr/local/bin/chromedriver
 
 # Set up a working directory
