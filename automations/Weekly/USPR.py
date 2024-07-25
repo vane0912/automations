@@ -1,4 +1,4 @@
-from .imports import *
+from ..imports import *
 
 
 def USPR_PASSPORT_RENEWAL(url, email):

@@ -1,4 +1,4 @@
-from .imports import *
+from ..imports import *
 logging.basicConfig(level=logging.ERROR)
 
 console_handler = logging.StreamHandler()

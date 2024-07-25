@@ -35,7 +35,7 @@ RUN curl -fsSL https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key a
 RUN CHROMEDRIVER_VERSION=127.0.6533.72 \
     && wget -O /tmp/chromedriver-linux64.zip https://storage.googleapis.com/chrome-for-testing-public/$CHROMEDRIVER_VERSION/linux64/chromedriver-linux64.zip \
     && unzip /tmp/chromedriver-linux64.zip -d /tmp/chromedriver \
-    && rm /tmp/chromedriver/chromedriver-linux64/THIRD_PARTY_NOTICES.chromedriver \
+    && rm /tmp/chromedriver/chromedriver-linux64/THIRD_PARTY_NOTICES.chromedriver || true \
     && mv /tmp/chromedriver/chromedriver-linux64/chromedriver /usr/local/bin/chromedriver \
     && rm -rf /tmp/chromedriver-linux64.zip /tmp/chromedriver \
     && chmod +x /usr/local/bin/chromedriver
