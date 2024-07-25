@@ -22,25 +22,28 @@ RUN apt-get update && apt-get install -y \
     libvulkan1 \
     --no-install-recommends
 
-RUN CHROME_SETUP=google-chrome.deb && \
-wget -O $CHROME_SETUP "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb" && \
-dpkg -i $CHROME_SETUP && \
-# apt install $CHROME_SETUP && \
-apt-get install -y -f && \
-rm $CHROME_SETUP
+# Install Chrome browser
+RUN curl -fsSL https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
+    && echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list \
+    && apt-get update \
+    && apt-get install -y google-chrome-stable
+
 # Install ChromeDriver
-RUN CHROMEDRIVER_VERSION=111.0.5563.64 && \
-    wget -v https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip && \
-    unzip chromedriver_linux64.zip -d /usr/bin && \
-    chmod +x /usr/bin/chromedriver && \
-    rm chromedriver_linux64.zip
+RUN CHROMEDRIVER_VERSION=$(114.0.5735.90) \
+    && wget -O /tmp/chromedriver.zip https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip \
+    && unzip /tmp/chromedriver.zip -d /usr/bin \
+    && rm /tmp/chromedriver.zip \
+    && chmod +x /usr/bin/chromedriver
+
 # Set working directory
 WORKDIR /app
 
-COPY . .
 # Copy requirements and install Python dependencies
-RUN pip3 install -r requirements.txt
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+
 # Copy the rest of the application code
+COPY . .
 
 # Command to run the application
 CMD ["python", "main.py"]
