@@ -22,25 +22,22 @@ RUN apt-get update && apt-get install -y \
     libvulkan1 \
     --no-install-recommends
 
-# Install Chrome browser
-RUN curl -fsSL https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
+# Install Chrome browser and ChromeDriver
+RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
     && echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list \
     && apt-get update \
-    && apt-get install -y google-chrome-stable
-
-# Install ChromeDriver
-RUN CHROMEDRIVER_VERSION=`curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE` \
-    TMPDIR=$(mktemp -d) && \
-    wget -v https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip -O $TMPDIR/chromedriver_linux64.zip && \
-    unzip -l $TMPDIR/chromedriver_linux64.zip &&\
-    unzip $TMPDIR/chromedriver_linux64.zip -d /usr/bin && \
-    chmod +x /usr/bin/chromedriver && \
-    rm -rf $TMPDIR
+    && apt-get install -y google-chrome-stable \
+    && CHROMEDRIVER_VERSION=$(curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE) \
+    && wget -q -O /tmp/chromedriver.zip https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip \
+    && unzip /tmp/chromedriver.zip -d /usr/bin \
+    && rm /tmp/chromedriver.zip \
+    && chmod +x /usr/bin/chromedriver
 
 ENV LANG C.UTF-8
 ENV LC_ALL C.UTF-8
 ENV PYTHONUNBUFFERED=1
 ENV PATH="$PATH:/bin:/usr/bin"
+
 # Clean up webdriver_manager files
 RUN rm -rf /root/.wdm*
 
