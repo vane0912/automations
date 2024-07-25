@@ -13,15 +13,13 @@ def TR_App_P2(data):
     setArguments(data)
     Global_Variables['Order_Numbers'] = []
     chrome_options = Options()
-    chromedriver_autoinstaller.install()
     chrome_options.add_argument(('--headless=new')) 
     chrome_options.add_argument('window-size=1920,1080')
     chrome_options.add_argument('--no-sandbox')
     chrome_options.add_argument('--disable-dev-shm-usage')
     chrome_options.add_argument('log-level=3')
     chrome_options.add_argument("--disable-search-engine-choice-screen")
-    chrome_options = webdriver.ChromeOptions()
-    browser = webdriver.Chrome(options=chrome_options)
+    browser = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
     wait = WebDriverWait(browser, 150, ignored_exceptions=(NoSuchElementException,StaleElementReferenceException))
     try:
         for order in range(int(Global_Variables['N. Orders'])):

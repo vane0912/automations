@@ -9,10 +9,7 @@ def USPR_PASSPORT_RENEWAL(url, email):
     chrome_options.add_argument('--no-sandbox')
     chrome_options.add_argument('--disable-dev-shm-usage')
     #chrome_options.add_argument("--incognito")
-    chromedriver_autoinstaller.install()
-    chrome_options = webdriver.ChromeOptions()
-
-    browser = webdriver.Chrome(options=chrome_options)
+    browser = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
     wait = WebDriverWait(browser, 200, ignored_exceptions=(NoSuchElementException,StaleElementReferenceException))
     
     try: 
