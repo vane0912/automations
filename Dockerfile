@@ -28,11 +28,12 @@ RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key
     && apt-get install -y google-chrome-stable
 
 # Fetch the latest stable version of ChromeDriver and install
-RUN RESPONSE=$(curl -sSL "https://googlechromelabs.github.io/chrome-for-testing/last-known-good-versions.json") \
+RUN set -eux; \
+    RESPONSE=$(curl -sSL "https://googlechromelabs.github.io/chrome-for-testing/last-known-good-versions.json") \
     && LATEST_STABLE_VERSION=$(echo "$RESPONSE" | grep -oP '"Stable":\s*\{\s*"channel":.*?"version":\s*"\K[^"]+') \
     && CHROMEDRIVER_URL="https://storage.googleapis.com/chrome-for-testing-public/${LATEST_STABLE_VERSION}/linux64/chromedriver_linux64.zip" \
     && curl -sSL "$CHROMEDRIVER_URL" -o /tmp/chromedriver_linux64.zip \
-    && unzip /tmp/chromedriver_linux64.zip -d /usr/local/bin \
+    && unzip -q /tmp/chromedriver_linux64.zip -d /usr/local/bin \
     && rm /tmp/chromedriver_linux64.zip \
     && chmod +x /usr/local/bin/chromedriver
 
