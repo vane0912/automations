@@ -34,7 +34,7 @@ RUN curl -fsSL https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key a
 RUN CHROMEDRIVER_VERSION=127.0.6533.72 \
     && wget -O /tmp/chromedriver-linux64.zip https://storage.googleapis.com/chrome-for-testing-public/$CHROMEDRIVER_VERSION/linux64/chromedriver-linux64.zip \
     && unzip /tmp/chromedriver-linux64.zip -d /tmp/chromedriver \
-    && ls -l /tmp/chromedriver/chromedriver-linux64  # Verify ChromeDriver existence\
+    && ls -l /tmp/chromedriver/chromedriver-linux64\
     # Move ChromeDriver to /usr/local/bin only if it exists
     && if [ -f "/tmp/chromedriver/chromedriver-linux64/chromedriver" ]; then \
         mv /tmp/chromedriver/chromedriver-linux64/chromedriver /usr/local/bin/chromedriver; \
