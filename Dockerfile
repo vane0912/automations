@@ -38,12 +38,11 @@ RUN CHROMEDRIVER_VERSION=`curl -sS chromedriver.storage.googleapis.com/LATEST_RE
 # Set working directory
 WORKDIR /app
 
-# Copy requirements and install Python dependencies
-COPY requirements.txt .
-RUN pip install -r requirements.txt
-
-# Copy the rest of the application code
 COPY . .
+# Copy requirements and install Python dependencies
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip3 install -r requirements.txt
+# Copy the rest of the application code
 
 # Command to run the application
 CMD ["python", "main.py"]
