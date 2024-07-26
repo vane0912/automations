@@ -103,10 +103,10 @@ def USPR_PASSPORT_RENEWAL(url, email):
             'Status' : 'Success',
             'email' : email,
         }
-        requests.post('https://costumer-facing1-automations-pr-6.up.railway.app' + '/check-automation-status',json=automation_results, headers={'Content-type': 'application/json', 'Accept': 'text/plain'})
+        requests.post('https://costumer-facing1-production.up.railway.app' + '/check-automation-status',json=automation_results, headers={'Content-type': 'application/json', 'Accept': 'text/plain'})
         return automation_results
     except Exception as e:
-        requests.post('https://costumer-facing1-automations-pr-6.up.railway.app' + '/check-automation-status',json={'ERROR': str(e).splitlines()[0], 'Status' : 'Failed'}, headers={'Content-type': 'application/json', 'Accept': 'text/plain'})
+        requests.post('https://costumer-facing1-production.up.railway.app' + '/check-automation-status',json={'ERROR': str(e).splitlines()[0], 'Status' : 'Failed'}, headers={'Content-type': 'application/json', 'Accept': 'text/plain'})
         logging.debug('Debug message: %s', e)
         logging.error('Error occurred: %s', traceback.format_exc())
         return {'Status': e}
