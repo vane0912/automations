@@ -45,7 +45,7 @@ def TR_App_P2(data):
                 email.send_keys(Global_Variables['Email'])
             continue_sidebar = wait.until(EC.visibility_of_element_located((By.ID, "btnContinueSidebar")))
             continue_sidebar.click() if continue_sidebar.is_enabled() else wait.until(EC.element_to_be_clickable((By.ID, "btnContinueSidebar"))).click()
-            #print('Passed Step 1')
+            
             for x in range(int(Global_Variables['applicants']) - 1):
                 add_traveler_div = wait.until(EC.visibility_of_element_located((By.XPATH, "//div[@data-handle='add-traveler']")))
                 add_traveler_div2 = add_traveler_div.find_elements(By.TAG_NAME, "div")
@@ -68,10 +68,10 @@ def TR_App_P2(data):
                 dob_year.send_keys(Keys.ENTER)
             # step 4
             continue_sidebar.click() if continue_sidebar.is_enabled() else wait.until(EC.element_to_be_clickable((By.ID, "btnContinueSidebar"))).click()
-            #print('Passed Step 2')
+            
             # step 5
             continue_sidebar.click() if continue_sidebar.is_enabled() else wait.until(EC.element_to_be_clickable((By.ID, "btnContinueSidebar"))).click()
-            #print('Passed Step 3')
+            
             for user in range(int(Global_Variables['applicants'])):
                 try:
                     passport_num = WebDriverWait(browser, 5).until(EC.element_to_be_clickable((By.NAME, "applicant."+ str(user) +".passport_num")))
@@ -112,7 +112,7 @@ def TR_App_P2(data):
                     if user == int(Global_Variables['applicants']) - 1:
                         continue_sidebar.click() if continue_sidebar.is_enabled() else wait.until(EC.element_to_be_clickable((By.ID, "btnContinueSidebar"))).click()
                 except StaleElementReferenceException:
-                    print('ERROR')
+                   
                     wait.until(EC.element_to_be_clickable((By.ID, 'btnPreviousSidebar'))).click()
                     passport_num = WebDriverWait(browser, 5).until(EC.element_to_be_clickable((By.NAME, "applicant."+ str(user) +".passport_num")))
                     passport_num.send_keys(Global_Variables['Passport_num'])
@@ -132,7 +132,7 @@ def TR_App_P2(data):
                     if user == int(Global_Variables['applicants']) - 1:
                         continue_sidebar.click() if continue_sidebar.is_enabled() else wait.until(EC.element_to_be_clickable((By.ID, "btnContinueSidebar"))).click()
                 except TimeoutException:
-                    print('ERROR2')
+                    
                     wait.until(EC.element_to_be_clickable((By.ID, 'btnPreviousSidebar'))).click()
                     passport_num = WebDriverWait(browser, 5).until(EC.element_to_be_clickable((By.NAME, "applicant."+ str(user) +".passport_num")))
                     passport_num.send_keys(Global_Variables['Passport_num'])
@@ -153,10 +153,9 @@ def TR_App_P2(data):
                         continue_sidebar.click() if continue_sidebar.is_enabled() else wait.until(EC.element_to_be_clickable((By.ID, "btnContinueSidebar"))).click()
                 
             continue_step_6 = (By.ID, "btnContinueSidebar")
-            print('before speeds')
+           
             wait.until(EC.text_to_be_present_in_element((By.ID, "app"), '+ Standard, 24 hours'))
             safe_element_click(browser, continue_step_6) 
-            print('after speeds')
             wait.until(EC.text_to_be_present_in_element((By.TAG_NAME, 'h1'), 'Review your order'))
             wait.until(EC.text_to_be_present_in_element((By.ID, "btnContinueSidebar"), 'Continue to Payment'))
             safe_element_click(browser, continue_step_6) 
@@ -177,17 +176,13 @@ def TR_App_P2(data):
 
                 btn_complete = wait.until(EC.element_to_be_clickable((By.ID, "btnCompleteProcess")))
                 btn_complete.click()
-            #print('Passed Step 8')
             for post_payment_user in range(int(Global_Variables['applicants'])):    
                 gender_select = Select(wait.until(EC.element_to_be_clickable((By.XPATH, "//select[@data-handle='dropdown-applicant." + str(post_payment_user) + ".gender']"))) ) 
                 gender_select.select_by_index(0)
-                print(post_payment_user)
                 if post_payment_user == int(Global_Variables['applicants']) - 1:
-                    print('here 2')
                     wait.until(EC.element_to_be_clickable((By.ID, 'btnSubmitApplication'))).click()
                     wait.until(EC.element_to_be_clickable((By.ID, 'btnDismissAppDownload'))).click()
                 else:
-                    print('here')
                     wait.until(EC.element_to_be_clickable((By.ID, 'btnContinueUnderSection'))).click()
             order_number = wait.until(EC.visibility_of_element_located((By.ID, 'h1-tag-container')))
             Global_Variables['Order_Numbers'].append(re.findall(r'\d+', order_number.text))
@@ -199,7 +194,6 @@ def TR_App_P2(data):
                 password_repeat.send_keys('testivisa5!') 
                 browser.find_element(By.XPATH, '//button[@data-handle="updatePasswordBtn"]').click()
                 wait.until(EC.element_to_be_clickable((By.CLASS_NAME, 'swal-button--confirm'))).click()
-            #print('ORDER ' + str(order))
         ## MIN STATUS
         if Global_Variables['Status'] == 'MIN':
             wait.until(EC.element_to_be_clickable((By.ID, 'loggedInUserContainer-chevron'))).click()
