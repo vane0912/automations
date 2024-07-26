@@ -1,4 +1,4 @@
-from .automations_list import automations_list
+from .automations_list import automations_list_applications
 from flask import Blueprint, render_template, request, current_app, jsonify, make_response
 from threading import Thread
 
@@ -10,15 +10,15 @@ def update_status(data):
 def get_status():
   return check_status.copy()  
 applications_bp = Blueprint('applications', __name__)
-@applications_bp.route('/applications')
 @applications_bp.route('/applications/<app_type>')
-
 def get_app(app_type=None):
     categories = []
     filtered_Array = []
-    for x in automations_list:
-        if x['Country'] == app_type or x['Enabled'] == True:
+    print(filtered_Array)
+    for x in automations_list_applications:
+        if x['Enabled'] == True:
             categories.append(x['Country'])
+        if x['Country'] == app_type:
             filtered_Array.append(x)
     return render_template('applications.html', categories=categories, app_type=app_type, automations=filtered_Array)
 
@@ -30,7 +30,7 @@ async def set_variables(app_name=None):
     else: 
         url = 'http://127.0.0.1:5000'
     filtered_Array = []
-    for x in automations_list:
+    for x in automations_list_applications:
         if x['Title'] == app_name:
             filtered_Array.append(x)
     status = []

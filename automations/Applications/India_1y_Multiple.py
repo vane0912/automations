@@ -1,63 +1,16 @@
-import os
-import logging
-from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import NoSuchElementException, StaleElementReferenceException, TimeoutException, ElementClickInterceptedException
-import time
-from webdriver_manager.chrome import ChromeDriverManager
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.support.ui import Select
-
+from ..imports import *
 logging.basicConfig(level=logging.ERROR)
-Global_Variables = {
-    'url': '',
-    'applicants': 5,
-    'Country': "MX",
-    'Email': "",
-    'First_name' : 'Pedro',
-    'Last_name' : 'Gonzalez',
-    'Passport_num' : '123456789',
-    'N. Orders': '0',
-    'Status': ''
-}
-def safe_element_click(driver, locator):
-    attempts = 0
-    max_attempts = 3  
-    while attempts < max_attempts:
-        try:
-            element = WebDriverWait(driver, 10).until(EC.element_to_be_clickable(locator))
-            element.click()
-            return True  # Click successful, return True
-        except EC.StaleElementReferenceException:
-            print(f"StaleElementReferenceException occurred, retrying attempt {attempts + 1}")
-            attempts += 1
-    print(f"Failed to click element after {max_attempts} attempts")
-    return False  
 
 def India_1y_Multiple(data):
-    for x in data:
-        if x['type'] == 'ULR':
-            Global_Variables['url'] = x['value']
-        if x['type'] == 'Email':
-            Global_Variables['Email'] = x['value']
-        if x['type'] == 'Applicants':
-            Global_Variables['applicants'] = x['value']
-        if x['type'] == 'N. Orders':
-            Global_Variables['N. Orders'] = x['value']
-        if x['type'] == 'Status':
-            Global_Variables['Status'] = x['value']
-        chrome_options = Options()
-        chrome_options.add_argument('--headless') 
-        chrome_options.add_argument('window-size=1920,1080')
-        chrome_options.add_argument('--no-sandbox')
-        chrome_options.add_argument('--disable-dev-shm-usage')
-        chrome_options.add_argument("--incognito")
-        browser = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
-        wait = WebDriverWait(browser, 150, ignored_exceptions=(NoSuchElementException,StaleElementReferenceException))
+    setArguments(data)
+    chrome_options = Options()
+    chrome_options.add_argument('--headless') 
+    chrome_options.add_argument('window-size=1920,1080')
+    chrome_options.add_argument('--no-sandbox')
+    chrome_options.add_argument('--disable-dev-shm-usage')
+    #chrome_options.add_argument("--incognito")
+    browser = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
+    wait = WebDriverWait(browser, 200, ignored_exceptions=(NoSuchElementException,StaleElementReferenceException))
     try:
         for order in range(int(Global_Variables['N. Orders'])):
             browser.get(Global_Variables['url'] + '/india/apply-now')
@@ -67,18 +20,15 @@ def India_1y_Multiple(data):
                 nationality_values = wait.until(EC.element_to_be_clickable((By.XPATH, "//input[@data-handle='dropdown-general.common_nationality_country']")))
                 nationality_values.send_keys(Global_Variables['Country'], Keys.ENTER)
             product = Select(wait.until(EC.element_to_be_clickable((By.XPATH, "//select[@data-handle='dropdown-general.visa_type_id']"))))
-            product.select_by_index(1)
+            product.select_by_value("21")
 
             div_continue_btn = wait.until(EC.visibility_of_element_located((By.ID, "btnContinueUnderSection")))
-            if div_continue_btn.find_element(By.TAG_NAME, 'button').is_enabled():
-                div_continue_btn.find_element(By.TAG_NAME, 'button').click()
-            else:
-                continue_button_step1 = wait.until(EC.element_to_be_clickable((div_continue_btn.find_element(By.TAG_NAME, 'button'))))
-                continue_button_step1.click()
+            
+            div_continue_btn.find_element(By.TAG_NAME, 'button').click() if div_continue_btn.find_element(By.TAG_NAME, 'button').is_enabled() else wait.until(EC.element_to_be_clickable((div_continue_btn.find_element(By.TAG_NAME, 'button')))).click()
 
             arrival_date = wait.until(EC.element_to_be_clickable((By.NAME, "general.arrival_date")))
             arrival_date.click()
-            print('Got here')
+        
             svg_locator = (By.CSS_SELECTOR, "div.is-right svg")
             day_month = (By.CSS_SELECTOR, "div.day-13")
             safe_element_click(browser, svg_locator)
@@ -91,8 +41,8 @@ def India_1y_Multiple(data):
             if order == 0:
                 email = browser.find_element(By.NAME,"general.email")
                 email.send_keys(Global_Variables['Email'])
-            continue_btn_sidebar = wait.until(EC.element_to_be_clickable((By.ID, "btnContinueSidebar")))
-            continue_btn_sidebar.click()
+            continue_sidebar = wait.until(EC.visibility_of_element_located((By.ID, "btnContinueSidebar")))
+            continue_sidebar.click() if continue_sidebar.is_enabled() else wait.until(EC.element_to_be_clickable((By.ID, "btnContinueSidebar"))).click()
             
             for x in range(int(Global_Variables['applicants']) - 1):
                 add_traveler_div = wait.until(EC.visibility_of_element_located((By.XPATH, "//div[@data-handle='add-traveler']")))
@@ -101,25 +51,21 @@ def India_1y_Multiple(data):
                 add_traveler_btn.click()
 
             for applicant in range(int(Global_Variables['applicants'])):
-                first_name = wait.until(EC.visibility_of((browser.find_element(By.NAME, 'applicant.' + str(applicant) + '.first_name'))))
+                first_name = wait.until(EC.visibility_of_element_located((By.NAME, 'applicant.' + str(applicant) + '.first_name')))
                 first_name.send_keys(Global_Variables['First_name'])
-                last_name = browser.find_element(By.NAME, "applicant." + str(applicant) + ".last_name")
+                last_name = wait.until(EC.visibility_of_element_located((By.NAME, "applicant." + str(applicant) + ".last_name"))) 
                 last_name.send_keys(Global_Variables['Last_name'])
-                gender_select = browser.find_element(By.XPATH, "//select[@data-handle='dropdown-applicant." + str(applicant) + ".gender']")
-                gender_select.click()
-                gender_select.send_keys('f')
-                gender_select.send_keys(Keys.ENTER)
-                dob_day = browser.find_element(By.NAME, "applicant." + str(applicant) + ".dob.day")
+                dob_day = wait.until(EC.visibility_of_element_located((By.NAME, "applicant." + str(applicant) + ".dob.day"))) 
                 dob_day.send_keys('23')
                 dob_day.send_keys(Keys.ENTER)
-                dob_month = browser.find_element(By.NAME, "applicant." + str(applicant) + ".dob.month")
+                dob_month = wait.until(EC.visibility_of_element_located((By.NAME, "applicant." + str(applicant) + ".dob.month")))  
                 dob_month.send_keys('d')
                 dob_month.send_keys(Keys.ENTER)
-                dob_year = browser.find_element(By.NAME, "applicant." + str(applicant) + ".dob.year")
+                dob_year = wait.until(EC.visibility_of_element_located((By.NAME, "applicant." + str(applicant) + ".dob.year")))
                 dob_year.send_keys('1997')
                 dob_year.send_keys(Keys.ENTER)
-            wait.until(EC.element_to_be_clickable((continue_btn_sidebar))).click()
-            wait.until(EC.element_to_be_clickable((continue_btn_sidebar))).click()
+            continue_sidebar.click() if continue_sidebar.is_enabled() else wait.until(EC.element_to_be_clickable((By.ID, "btnContinueSidebar"))).click()
+            continue_sidebar.click() if continue_sidebar.is_enabled() else wait.until(EC.element_to_be_clickable((By.ID, "btnContinueSidebar"))).click()
             for user in range(int(Global_Variables['applicants'])):
                 passport_num = wait.until(EC.element_to_be_clickable((By.NAME, "applicant."+ str(user) +".passport_num")))
                 passport_num.send_keys(Global_Variables['Passport_num'])
@@ -142,26 +88,41 @@ def India_1y_Multiple(data):
                 passport_issue_year.send_keys('2020')
                 passport_issue_year.send_keys(Keys.ENTER)
                 pakistan_parents_select = Select(browser.find_element(By.XPATH, "//select[@data-handle='dropdown-applicant." + str(user) + ".pakistan_parents']"))
-                pakistan_parents_select.select_by_index(1)
-            wait.until(EC.element_to_be_clickable((continue_btn_sidebar))).click()
+                pakistan_parents_select.select_by_value("No")
             time.sleep(2)
-            wait.until(EC.element_to_be_clickable((continue_btn_sidebar))).click()
-            print('subscription popup')
-            subscription_button = wait.until(EC.element_to_be_clickable((By.XPATH, '//button[@data-handle="no-subscription"]')))
-            subscription_button.click()
+            continue_sidebar.click() if continue_sidebar.is_enabled() else wait.until(EC.element_to_be_clickable((By.ID, "btnContinueSidebar"))).click()
             time.sleep(2)
-            wait.until(EC.element_to_be_clickable((continue_btn_sidebar))).click()
+            continue_sidebar.click() if continue_sidebar.is_enabled() else wait.until(EC.element_to_be_clickable((By.ID, "btnContinueSidebar"))).click()
+    
+            continue_sidebar.click() if continue_sidebar.is_enabled() else wait.until(EC.element_to_be_clickable((By.ID, "btnContinueSidebar"))).click()
+            
+            wait.until(EC.text_to_be_present_in_element((By.ID, "btnContinueSidebar"), 'Continue to Payment'))
+            continue_sidebar.click() if continue_sidebar.is_enabled() else wait.until(EC.element_to_be_clickable((By.ID, "btnContinueSidebar"))).click()
+        
             try:
-                btn_disclaimer = WebDriverWait(browser, 5).until(EC.element_to_be_clickable((By.ID, "btnDisclaimerNext")))
+                print('waiting')
+                WebDriverWait(browser, 10).until(EC.text_to_be_present_in_element((By.ID, 'app'), 'Possible Duplicate'))
+                btn_disclaimer = wait.until(EC.element_to_be_clickable((By.ID, "btnDisclaimerNext")))
                 btn_disclaimer.click()
-                wait.until(EC.element_to_be_clickable((By.ID, "btnSubmitPayment"))).click()
-                wait.until(EC.element_to_be_clickable((By.ID, "btnCompleteProcess"))).click()
-                print('ORDER DONE ' + str(order + 1))
-            except TimeoutException: 
-                wait.until(EC.element_to_be_clickable((By.ID, "btnSubmitPayment"))).click()
-                wait.until(EC.element_to_be_clickable((By.ID, "btnCompleteProcess"))).click()
-                print('ORDER DONE ' + str(order + 1))
 
+                btn_submit_payment = wait.until(EC.element_to_be_clickable((By.ID, "btnSubmitPayment")))
+                btn_submit_payment.click()
+            
+                btn_complete = wait.until(EC.element_to_be_clickable((By.ID, "btnCompleteProcess")))
+                order_number = wait.until(EC.visibility_of_element_located((By.XPATH, '//h3[@data-handle="order-id"]')))
+                Global_Variables['Order_Numbers'].append(re.findall(r'\d+', order_number.text))
+
+                btn_complete.click()
+            except: 
+                print('exception')
+                btn_submit_payment = wait.until(EC.element_to_be_clickable((By.ID, "btnSubmitPayment")))
+                btn_submit_payment.click()
+
+                btn_complete = wait.until(EC.element_to_be_clickable((By.ID, "btnCompleteProcess")))
+                order_number = wait.until(EC.visibility_of_element_located((By.XPATH, '//h3[@data-handle="order-id"]')))
+                Global_Variables['Order_Numbers'].append(re.findall(r'\d+', order_number.text))
+
+                btn_complete.click()
             ## RECEIVED STATUS
             if Global_Variables['Status'] == 'Received':
                 number_input = wait.until(EC.visibility_of_element_located((By.NAME, 'telephone')))
@@ -236,7 +197,19 @@ def India_1y_Multiple(data):
                 password_repeat = wait.until(EC.element_to_be_clickable((By.ID, "password_repeat")))
                 password_repeat.send_keys('testivisa5!') 
                 browser.find_element(By.XPATH, '//button[@data-handle="updatePasswordBtn"]').click()
-    except NameError as e :
-        print(e)
-        print(logging.error("An error occurred:" + str(e)))
+        automation_results = {
+            'Order_numbers' : Global_Variables['Order_Numbers'],
+            'Status' : 'Success',
+            'order_status' : Global_Variables['Status'],
+            'email' : Global_Variables['Email'],
+        }
+        ##https://costumer-facing1-automations-pr-6.up.railway.app
+        requests.post('http://127.0.0.1:5000' + '/check-automation-status',json=automation_results, headers={'Content-type': 'application/json', 'Accept': 'text/plain'})
+        return automation_results
+    except Exception as e:
+        requests.post('http://127.0.0.1:5000' + '/check-automation-status',json={'ERROR': str(e).splitlines()[0], 'Status' : 'Failed'}, headers={'Content-type': 'application/json', 'Accept': 'text/plain'})
+        logging.debug('Debug message: %s', e)
+        logging.error('Error occurred: %s', traceback.format_exc())
+        print(str(e).splitlines()[0])
+        return {'Status': e}
 

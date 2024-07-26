@@ -1,4 +1,3 @@
-# Use Railway's base Python image
 FROM python:3.10
 
 # Install necessary packages
@@ -48,4 +47,3 @@ COPY . .
 
 # Command to run the application
 CMD ["python", "main.py"]
-
