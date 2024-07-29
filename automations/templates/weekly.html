@@ -150,7 +150,6 @@
       async function pollAutomationStatus(){
          const response = await fetch(`/check-automation-status`);
          const json_response = await response.json();
-         console.log(json_response)
          if (json_response.Status === "Success") {
             console.log(json_response)
             document.getElementById('automation_running').classList.add('hidden')

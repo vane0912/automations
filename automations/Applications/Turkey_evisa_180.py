@@ -231,20 +231,8 @@ def TR_App_P2(data):
                 wait.until(EC.element_to_be_clickable((By.XPATH, '//button[@data-handle="submitChangeStatus"]'))).click()
                 wait.until_not(EC.visibility_of_element_located((By.XPATH, '//div[@data-vue-component="order-item-editor"]')))
         browser.quit()
-        automation_results = {
-            'Order_numbers' : Global_Variables['Order_Numbers'],
-            'Status' : 'Success',
-            'order_status' : Global_Variables['Status'],
-            'email' : Global_Variables['Email'],
-        }
-        ##https://costumer-facing1-production.up.railway.app
-        ##https://costumer-facing1-automations-pr-6.up.railway.app
-        ##http://127.0.0.1:5000
-        requests.post('https://costumer-facing1-production.up.railway.app' + '/check-automation-status',json=automation_results, headers={'Content-type': 'application/json', 'Accept': 'text/plain'})
-        return automation_results
+        success_request()
+        return 'Success'
     except Exception as e:
-        requests.post('https://costumer-facing1-production.up.railway.app' + '/check-automation-status',json={'ERROR': str(e).splitlines()[0], 'Status' : 'Failed'}, headers={'Content-type': 'application/json', 'Accept': 'text/plain'})
-        logging.debug('Debug message: %s', e)
-        logging.error('Error occurred: %s', traceback.format_exc())
-        print(str(e).splitlines()[0])
-        return {'Status': e}
+        failed_request(e)
+        return 'Failed'

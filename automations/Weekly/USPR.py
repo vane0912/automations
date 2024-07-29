@@ -2,7 +2,8 @@ from ..imports import *
 
 
 def USPR_PASSPORT_RENEWAL(url, email):
-    Order_numbers = []
+    Global_Variables['Order_Numbers'] = []
+    Global_Variables['Email'] = email
     chrome_options = Options()
     chrome_options.add_argument('--headless') 
     chrome_options.add_argument('window-size=1920,1080')
@@ -10,7 +11,6 @@ def USPR_PASSPORT_RENEWAL(url, email):
     chrome_options.add_argument('--disable-dev-shm-usage')
     browser = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
     wait = WebDriverWait(browser, 200, ignored_exceptions=(NoSuchElementException,StaleElementReferenceException))
-    
     try: 
         for x in range(3):
             browser.get(url + '/passport-renewal/united-states/application')
@@ -78,7 +78,7 @@ def USPR_PASSPORT_RENEWAL(url, email):
                 btn_submit_payment.click()
                 
                 order_number = wait.until(EC.visibility_of_element_located((By.XPATH, '//h2[@data-handle="order-id"]')))
-                Order_numbers.append(re.findall(r'\d+', order_number.text))
+                Global_Variables['Order_Numbers'].append(re.findall(r'\d+', order_number.text))
                 
                 btn_complete = wait.until(EC.element_to_be_clickable((By.ID, "btnCompleteProcess")))
                 btn_complete.click()
@@ -87,7 +87,7 @@ def USPR_PASSPORT_RENEWAL(url, email):
                 btn_submit_payment.click()
 
                 order_number = wait.until(EC.visibility_of_element_located((By.XPATH, '//h2[@data-handle="order-id"]')))
-                Order_numbers.append(re.findall(r'\d+', order_number.text))
+                Global_Variables['Order_Numbers'].append(re.findall(r'\d+', order_number.text))
                 
                 btn_complete = wait.until(EC.element_to_be_clickable((By.ID, "btnCompleteProcess")))
                 btn_complete.click()
@@ -98,15 +98,8 @@ def USPR_PASSPORT_RENEWAL(url, email):
                 password_repeat = wait.until(EC.element_to_be_clickable((By.ID, "password_repeat")))
                 password_repeat.send_keys('testivisa5!') 
                 browser.find_element(By.XPATH, '//button[@data-handle="updatePasswordBtn"]').click()
-        automation_results = {
-            'Order_numbers' : Order_numbers,
-            'Status' : 'Success',
-            'email' : email,
-        }
-        requests.post('https://costumer-facing1-production.up.railway.app' + '/check-automation-status',json=automation_results, headers={'Content-type': 'application/json', 'Accept': 'text/plain'})
-        return automation_results
+        success_request()
+        return 'Success'
     except Exception as e:
-        requests.post('https://costumer-facing1-production.up.railway.app' + '/check-automation-status',json={'ERROR': str(e).splitlines()[0], 'Status' : 'Failed'}, headers={'Content-type': 'application/json', 'Accept': 'text/plain'})
-        logging.debug('Debug message: %s', e)
-        logging.error('Error occurred: %s', traceback.format_exc())
-        return {'Status': e}
+        failed_request(e)
+        return 'Failed'
