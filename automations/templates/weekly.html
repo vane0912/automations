@@ -122,9 +122,6 @@
                           </div>
                       </div>
                   </div>
-                  <div name="user_order_type" class="w-2/5 flex flex-col items-center justify-center">
-                        <h2 class="text-2xl font-bold mb-5">Automations Ran</h2>
-                  </div>
             </div>
         </div>
     </div>
@@ -157,7 +154,6 @@
             document.getElementById('automation_results').classList.remove('hidden')
             document.getElementById('automation_results').classList.add('absolute')
             document.getElementsByName('user_email')[0].textContent = json_response.email
-            const order_container = document.getElementsByName('user_order_type')[0]
             const order_status_container = document.getElementsByName('user_order_status')[0]
             for(let i = 0; i < json_response.Order_numbers.length; i++){
                 const order_title = document.createElement('p')

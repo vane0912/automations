@@ -47,9 +47,8 @@ def TR_App_P2(data):
             
             for x in range(int(Global_Variables['applicants']) - 1):
                 add_traveler_div = wait.until(EC.visibility_of_element_located((By.XPATH, "//div[@data-handle='add-traveler']")))
-                add_traveler_div2 = add_traveler_div.find_elements(By.TAG_NAME, "div")
-                add_traveler_btn = add_traveler_div2[1].find_element(By.TAG_NAME, 'button')
-                add_traveler_btn.click()
+                add_traveler_div2 = add_traveler_div.find_elements(By.TAG_NAME, 'button')
+                wait.until(EC.element_to_be_clickable((add_traveler_div2[1]))).click()
             
             for applicant in range(int(Global_Variables['applicants'])):
                 first_name = wait.until(EC.visibility_of_element_located((By.NAME, 'applicant.' + str(applicant) + '.first_name')))
@@ -176,8 +175,9 @@ def TR_App_P2(data):
                 btn_complete = wait.until(EC.element_to_be_clickable((By.ID, "btnCompleteProcess")))
                 btn_complete.click()
             for post_payment_user in range(int(Global_Variables['applicants'])):    
-                gender_select = Select(wait.until(EC.element_to_be_clickable((By.XPATH, "//select[@data-handle='dropdown-applicant." + str(post_payment_user) + ".gender']"))) ) 
-                gender_select.select_by_index(0)
+                div_gender_select = wait.until(EC.visibility_of_element_located((By.XPATH, "//div[@name='applicant."+ str(post_payment_user) +".gender']"))) 
+                buttons_gender = div_gender_select.find_elements(By.TAG_NAME, 'button')
+                buttons_gender[0].click()
                 if post_payment_user == int(Global_Variables['applicants']) - 1:
                     wait.until(EC.element_to_be_clickable((By.ID, 'btnSubmitApplication'))).click()
                     wait.until(EC.element_to_be_clickable((By.ID, 'btnDismissAppDownload'))).click()
