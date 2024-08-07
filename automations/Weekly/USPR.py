@@ -35,8 +35,9 @@ def USPR_PASSPORT_RENEWAL(url, email):
             passport_expiration_year = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'general.passport_expiration_date.year'))))
             passport_expiration_year.select_by_value("2024")
           
-            upcoming_trip = Select(wait.until(EC.element_to_be_clickable((By.XPATH, '//select[@data-handle="dropdown-general.upcoming_trip_exists"]'))))
-            upcoming_trip.select_by_value('No')
+            upocoming_trips = wait.until(EC.visibility_of_element_located((By.XPATH, '//div[@name="general.upcoming_trip_exists"]')))
+            no_trips = upocoming_trips.find_elements(By.TAG_NAME, 'button')
+            no_trips[1].click()
             
             wait.until(EC.element_to_be_clickable((By.ID, 'btnContinueUnderSection'))).click()
 
