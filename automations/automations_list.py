@@ -1,6 +1,7 @@
 from .Applications.Turkey_evisa_180 import TR_App_P2
 from .Applications.India_1y_Multiple import India_1y_Multiple
 from .Applications.Egypt_180_Multiple import EG_180_Multiple
+from .Applications.china_90_days import CHINA_90_DAYS
 from .Weekly.USPR import USPR_PASSPORT_RENEWAL
 automations_list_weekly = [
     {
@@ -30,6 +31,31 @@ automations_list_applications = [
                     'Label': 'Status',
                     'Status_Available': ['Received', 'MIN']
                 },
+            ]
+        },
+        {
+            'Title': 'China-Tourist-Visa-90-Days',
+            'Subtitles': ['Only for US citizens'],
+            'Country' : 'China',
+            'Type': CHINA_90_DAYS,
+            'Enabled': True,
+            'Requirements': [
+                {
+                    'Label': 'ULR',
+                    'Type': 'default',
+                },
+                {
+                    'Label': 'Email',
+                    'Type': 'default',
+                },
+                {
+                    'Label': 'Status',
+                    'Status_Available': ['Incomplete']
+                },
+                {
+                    'Label': 'App',
+                    'Type': 'default'
+                }
             ]
         },
         {
