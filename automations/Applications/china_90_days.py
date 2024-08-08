@@ -28,10 +28,11 @@ def CHINA_90_DAYS(data):
             for key,value in questions['questions'].items():
                 values_arr.append(value)
                 sections_arr.append(value.get('multipart_section'))
-            for section in set(sections_arr):
-                current_url = browser.current_url.split("=")[1]
-                arr_section_questions = [item for item in values_arr if item["multipart_section"] == current_url]
+            for section in sections_arr:
+                current_url = browser.current_url
+                arr_section_questions = [item for item in values_arr if item["multipart_section"] in current_url]
                 for question in arr_section_questions:
+                    print(question['slug'])
                     if question['slug'] == 'arrival_date':
                         arrival_date = wait.until(EC.element_to_be_clickable((By.NAME, "general." + question['slug'])))
                         arrival_date.click()
@@ -72,9 +73,9 @@ def CHINA_90_DAYS(data):
                         time.sleep(3)
                         input_field_speciality.send_keys(Keys.ARROW_DOWN)
                         input_field_speciality.send_keys(Keys.ENTER)
-                        runner_pilot = Select(wait.until(EC.element_to_be_clickable((By.XPATH, '//select[@data-handle="dropdown-applicant.0.runner_pilot"]'))))
-                        runner_pilot.select_by_value('No')
-                if current_url == "payment":
+                        runner_pilot = wait.until(EC.element_to_be_clickable((By.XPATH, '//button[@data-handle="boolean-No, I want to go to the embassy myself"]')))
+                        runner_pilot.click()
+                if "payment" in current_url:
                     try:
                         WebDriverWait(browser, 10).until(EC.text_to_be_present_in_element((By.ID, 'app'), 'Possible Duplicate'))
                         btn_disclaimer = wait.until(EC.element_to_be_clickable((By.ID, "btnDisclaimerNext")))
@@ -86,16 +87,18 @@ def CHINA_90_DAYS(data):
                         btn_complete = wait.until(EC.element_to_be_clickable((By.ID, "btnCompleteProcess")))
 
                         btn_complete.click()
+                        time.sleep(4)
                     except: 
                         btn_submit_payment = wait.until(EC.element_to_be_clickable((By.ID, "btnSubmitPayment")))
                         btn_submit_payment.click()
 
                         btn_complete = wait.until(EC.element_to_be_clickable((By.ID, "btnCompleteProcess")))
                         btn_complete.click()
+                        time.sleep(4)
                 else:
                     continue_sidebar = wait.until(EC.visibility_of_element_located((By.ID, "btnContinueSidebar")))
                     continue_sidebar.click() if continue_sidebar.is_enabled() else wait.until(EC.element_to_be_clickable((By.ID, "btnContinueSidebar"))).click()
-                    wait.until(lambda driver: driver.current_url.split("=")[1] != current_url) 
+                    wait.until(lambda driver: driver.current_url != current_url) 
             time.sleep(5)
 
     except:
