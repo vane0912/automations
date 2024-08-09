@@ -165,15 +165,10 @@ def TR_App_P2(data):
                 btn_submit_payment = wait.until(EC.element_to_be_clickable((By.ID, "btnSubmitPayment")))
                 btn_submit_payment.click()
             
-                btn_complete = wait.until(EC.element_to_be_clickable((By.ID, "btnCompleteProcess")))
-
-                btn_complete.click()
             except: 
                 btn_submit_payment = wait.until(EC.element_to_be_clickable((By.ID, "btnSubmitPayment")))
                 btn_submit_payment.click()
 
-                btn_complete = wait.until(EC.element_to_be_clickable((By.ID, "btnCompleteProcess")))
-                btn_complete.click()
             for post_payment_user in range(int(Global_Variables['applicants'])):    
                 div_gender_select = wait.until(EC.visibility_of_element_located((By.XPATH, "//div[@name='applicant."+ str(post_payment_user) +".gender']"))) 
                 buttons_gender = div_gender_select.find_elements(By.TAG_NAME, 'button')

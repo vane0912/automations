@@ -77,21 +77,11 @@ def USPR_PASSPORT_RENEWAL(url, email):
 
                 btn_submit_payment = wait.until(EC.element_to_be_clickable((By.ID, "btnSubmitPayment")))
                 btn_submit_payment.click()
-                
-                order_number = wait.until(EC.visibility_of_element_located((By.XPATH, '//h2[@data-handle="order-id"]')))
-                Order_numbers.append(re.findall(r'\d+', order_number.text))
-                
-                btn_complete = wait.until(EC.element_to_be_clickable((By.ID, "btnCompleteProcess")))
-                btn_complete.click()
+                wait.until(EC.text_to_be_present_in_element((By.ID, 'question-container'), 'General Information'))
             except: 
                 btn_submit_payment = wait.until(EC.element_to_be_clickable((By.ID, "btnSubmitPayment")))
                 btn_submit_payment.click()
-
-                order_number = wait.until(EC.visibility_of_element_located((By.XPATH, '//h2[@data-handle="order-id"]')))
-                Order_numbers.append(re.findall(r'\d+', order_number.text))
-                
-                btn_complete = wait.until(EC.element_to_be_clickable((By.ID, "btnCompleteProcess")))
-                btn_complete.click()
+                wait.until(EC.text_to_be_present_in_element((By.ID, 'question-container'), 'General Information'))
             if x == 0:
                 browser.get(url + '/account/settings/security')
                 password = wait.until(EC.element_to_be_clickable((By.ID, "new_password")))
