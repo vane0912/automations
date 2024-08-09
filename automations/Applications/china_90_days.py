@@ -30,9 +30,13 @@ def CHINA_90_DAYS(data):
                 sections_arr.append(value.get('multipart_section'))
             for section in sections_arr:
                 current_url = browser.current_url
-                arr_section_questions = [item for item in values_arr if item["multipart_section"] in current_url]
+                if "=" in current_url:
+                    arr_section_questions = [item for item in values_arr if item["multipart_section"] in current_url]
+                else:
+                    arr_section_questions = [item for item in values_arr if item["multipart_section"] in "general_after_payment"]
                 for question in arr_section_questions:
                     print(question['slug'])
+                    print(question['field_type'])
                     if question['slug'] == 'arrival_date':
                         arrival_date = wait.until(EC.element_to_be_clickable((By.NAME, "general." + question['slug'])))
                         arrival_date.click()
@@ -59,7 +63,10 @@ def CHINA_90_DAYS(data):
                         dob_year.select_by_value("2000") 
                     elif question['field_type'] == 'textbox':
                         input_field = wait.until(EC.element_to_be_clickable((By.NAME, 'applicant.0.' + question['slug'])))
-                        input_field.send_keys('aaaaa') 
+                        input_field.send_keys('aaaaa')
+                    elif question['field_type'] == 'phone':
+                        input_field = wait.until(EC.element_to_be_clickable((By.NAME, 'applicant.0.' + question['slug'])))
+                        input_field.send_keys('11111111') 
                     elif 'expiration' in question['slug']:
                         passport_expiration_day = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'applicant.0.' + question['slug'] + '.day'))))
                         passport_expiration_day.select_by_value('10')
@@ -73,8 +80,12 @@ def CHINA_90_DAYS(data):
                         time.sleep(3)
                         input_field_speciality.send_keys(Keys.ARROW_DOWN)
                         input_field_speciality.send_keys(Keys.ENTER)
-                        runner_pilot = wait.until(EC.element_to_be_clickable((By.XPATH, '//button[@data-handle="boolean-No, I want to go to the embassy myself"]')))
-                        runner_pilot.click()
+                        try:
+                            runner_pilot = WebDriverWait(browser, 5).until(EC.element_to_be_clickable((By.XPATH, '//button[@data-handle="boolean-No, I want to go to the embassy myself"]')))
+                            runner_pilot.click()
+                        except:
+                            passport_expiration_year = Select(wait.until(EC.element_to_be_clickable((By.XPATH, '//select[@data-handle="dropdown-applicant.0.runner_pilot"]'))))
+                            passport_expiration_year.select_by_value("No") 
                 if "payment" in current_url:
                     try:
                         WebDriverWait(browser, 10).until(EC.text_to_be_present_in_element((By.ID, 'app'), 'Possible Duplicate'))
@@ -94,7 +105,9 @@ def CHINA_90_DAYS(data):
 
                         btn_complete = wait.until(EC.element_to_be_clickable((By.ID, "btnCompleteProcess")))
                         btn_complete.click()
-                        time.sleep(4)
+
+                elif "continue" in current_url:
+                    wait.until(EC.element_to_be_clickable((By.ID, "btnContinueUnderSection"))).click() 
                 else:
                     continue_sidebar = wait.until(EC.visibility_of_element_located((By.ID, "btnContinueSidebar")))
                     continue_sidebar.click() if continue_sidebar.is_enabled() else wait.until(EC.element_to_be_clickable((By.ID, "btnContinueSidebar"))).click()
@@ -103,52 +116,3 @@ def CHINA_90_DAYS(data):
 
     except:
         failed_request()
-
-
-"""
-if value['slug'] == 'arrival_date':
-                            arrival_date = wait.until(EC.element_to_be_clickable((By.NAME, "general." + value['slug'])))
-                            arrival_date.click()
-                            svg_locator = (By.CSS_SELECTOR, "div.is-right svg")
-                            day_month = (By.CSS_SELECTOR, "div.day-13")
-                            safe_element_click(browser, svg_locator)
-                            safe_element_click(browser, day_month)
-                        if value['slug'] == 'departure_date': 
-                            departure_date = wait.until(EC.element_to_be_clickable((By.NAME, "general." + value['slug'])))
-                            departure_date.click()
-                            svg_locator = (By.CSS_SELECTOR, "div.is-right svg")
-                            day_month = (By.CSS_SELECTOR, "div.day-13")
-                            safe_element_click(browser, svg_locator)
-                            safe_element_click(browser, day_month)
-                        if value['slug'] == 'email' and order == 0:
-                            email = wait.until(EC.element_to_be_clickable((By.NAME, 'general.' + value['slug'])))
-                            email.send_keys(Global_Variables['Email'])
-                        if value['field_type'] == 'textbox':
-                            print(value['slug'])
-                            input_field = wait.until(EC.element_to_be_clickable((By.NAME, 'applicant.0.' + value['slug'])))
-                            input_field.send_keys('Pedro')
-                            print(input_field)
-if value.get('multipart_section') == browser.current_url.split("=")[1]:
-                    if value['slug'] == 'arrival_date':
-                        arrival_date = wait.until(EC.element_to_be_clickable((By.NAME, "general." + value['slug'])))
-                        arrival_date.click()
-
-                        svg_locator = (By.CSS_SELECTOR, "div.is-right svg")
-                        day_month = (By.CSS_SELECTOR, "div.day-13")
-                        safe_element_click(browser, svg_locator)
-                        safe_element_click(browser, day_month)
-                    if value['slug'] == 'departure_date': 
-                        departure_date = wait.until(EC.element_to_be_clickable((By.NAME, "general." + value['slug'])))
-                        departure_date.click()
-
-                        svg_locator = (By.CSS_SELECTOR, "div.is-right svg")
-                        day_month = (By.CSS_SELECTOR, "div.day-13")
-                        safe_element_click(browser, svg_locator)
-                        safe_element_click(browser, day_month)
-                    if value['slug'] == 'email' and order == 0:
-                        email = wait.until(EC.element_to_be_clickable((By.NAME, 'general.' + value['slug'])))
-                        email.send_keys(Global_Variables['Email'])
-                    continue_sidebar = wait.until(EC.visibility_of_element_located((By.ID, "btnContinueSidebar")))
-                    continue_sidebar.click() if continue_sidebar.is_enabled() else wait.until(EC.element_to_be_clickable((By.ID, "btnContinueSidebar"))).click()
-                    print(value['slug'])
-"""
