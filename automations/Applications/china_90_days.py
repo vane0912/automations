@@ -9,7 +9,7 @@ def CHINA_90_DAYS(data):
     chrome_options.add_argument('--no-sandbox')
     chrome_options.add_argument('--disable-dev-shm-usage')
     browser = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
-    wait = WebDriverWait(browser, 150, ignored_exceptions=(NoSuchElementException,StaleElementReferenceException))
+    wait = WebDriverWait(browser, 60, ignored_exceptions=(NoSuchElementException,StaleElementReferenceException))
     try:
         for order in range(int(Global_Variables['N. Orders'])):
             browser.get(Global_Variables['url'] + '/china/apply-now')
@@ -35,8 +35,8 @@ def CHINA_90_DAYS(data):
                 else:
                     arr_section_questions = [item for item in values_arr if item["multipart_section"] in "general_after_payment"]
                 for question in arr_section_questions:
-                    print(question['slug'])
-                    print(question['field_type'])
+                    #print(question['slug'])
+                    #print(question['field_type'])
                     if question['slug'] == 'arrival_date':
                         arrival_date = wait.until(EC.element_to_be_clickable((By.NAME, "general." + question['slug'])))
                         arrival_date.click()
@@ -65,8 +65,12 @@ def CHINA_90_DAYS(data):
                         input_field = wait.until(EC.element_to_be_clickable((By.NAME, 'applicant.0.' + question['slug'])))
                         input_field.send_keys('aaaaa')
                     elif question['field_type'] == 'phone':
-                        input_field = wait.until(EC.element_to_be_clickable((By.NAME, 'applicant.0.' + question['slug'])))
+                        wait.until(EC.visibility_of_element_located((By.NAME, "general." + question['slug'])))
+                        input_field = wait.until(EC.element_to_be_clickable((By.NAME, 'telephone')))
                         input_field.send_keys('11111111') 
+                        wait.until(EC.element_to_be_clickable((By.XPATH, '//button[@data-handle="boolean-I do not wish to receive text messages"]'))).click()
+                    elif question['field_type'] == 'dropdown' and question['show_if'] is None:
+                        wait.until(EC.element_to_be_clickable((By.NAME, 'general.' + question['slug']))).click()
                     elif 'expiration' in question['slug']:
                         passport_expiration_day = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'applicant.0.' + question['slug'] + '.day'))))
                         passport_expiration_day.select_by_value('10')
@@ -87,6 +91,7 @@ def CHINA_90_DAYS(data):
                             passport_expiration_year = Select(wait.until(EC.element_to_be_clickable((By.XPATH, '//select[@data-handle="dropdown-applicant.0.runner_pilot"]'))))
                             passport_expiration_year.select_by_value("No") 
                 if "payment" in current_url:
+                    print('hello')
                     try:
                         WebDriverWait(browser, 10).until(EC.text_to_be_present_in_element((By.ID, 'app'), 'Possible Duplicate'))
                         btn_disclaimer = wait.until(EC.element_to_be_clickable((By.ID, "btnDisclaimerNext")))
@@ -94,20 +99,14 @@ def CHINA_90_DAYS(data):
 
                         btn_submit_payment = wait.until(EC.element_to_be_clickable((By.ID, "btnSubmitPayment")))
                         btn_submit_payment.click()
-
-                        btn_complete = wait.until(EC.element_to_be_clickable((By.ID, "btnCompleteProcess")))
-
-                        btn_complete.click()
-                        time.sleep(4)
+                        wait.until(lambda driver: driver.current_url != current_url) 
                     except: 
                         btn_submit_payment = wait.until(EC.element_to_be_clickable((By.ID, "btnSubmitPayment")))
                         btn_submit_payment.click()
-
-                        btn_complete = wait.until(EC.element_to_be_clickable((By.ID, "btnCompleteProcess")))
-                        btn_complete.click()
-
+                        wait.until(lambda driver: driver.current_url != current_url) 
                 elif "continue" in current_url:
                     wait.until(EC.element_to_be_clickable((By.ID, "btnContinueUnderSection"))).click() 
+                    wait.until(lambda driver: driver.current_url != current_url) 
                 else:
                     continue_sidebar = wait.until(EC.visibility_of_element_located((By.ID, "btnContinueSidebar")))
                     continue_sidebar.click() if continue_sidebar.is_enabled() else wait.until(EC.element_to_be_clickable((By.ID, "btnContinueSidebar"))).click()
