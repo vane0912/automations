@@ -39,7 +39,9 @@ def USPR_PASSPORT_RENEWAL(url, email):
             no_trips = upocoming_trips.find_elements(By.TAG_NAME, 'button')
             no_trips[1].click()
             
-            wait.until(EC.element_to_be_clickable((By.ID, 'btnContinueUnderSection'))).click()
+            continue_btn = wait.until(EC.visibility_of_element_located((By.ID, 'btnContinueUnderSection')))
+            click_btn = continue_btn.find_elements(By.TAG_NAME, 'button')
+            wait.until(EC.element_to_be_clickable(click_btn[0])).click()
 
             passport_num = wait.until(EC.element_to_be_clickable((By.NAME, 'general.passport_num')))
             passport_num.send_keys('1111111111')
@@ -69,16 +71,17 @@ def USPR_PASSPORT_RENEWAL(url, email):
             wait.until(EC.element_to_be_clickable((get_li[1]))).click() if x == 0 else wait.until(EC.element_to_be_clickable((get_li[0]))).click()
             wait.until(EC.element_to_be_clickable((By.ID, 'btnContinueSidebar'))).click()
             wait.until(EC.text_to_be_present_in_element((By.TAG_NAME, 'h1'), 'Review your order'))
-            wait.until(EC.element_to_be_clickable((By.ID, 'btnContinueSidebar'))).click()
             try:
                 WebDriverWait(browser, 8).until(EC.text_to_be_present_in_element((By.ID, 'app'), 'Possible Duplicate'))
                 btn_disclaimer = wait.until(EC.element_to_be_clickable((By.ID, "btnDisclaimerNext")))
                 btn_disclaimer.click()
+                wait.until(EC.element_to_be_clickable((By.ID, 'btnContinueSidebar'))).click()
 
                 btn_submit_payment = wait.until(EC.element_to_be_clickable((By.ID, "btnSubmitPayment")))
                 btn_submit_payment.click()
                 wait.until(EC.text_to_be_present_in_element((By.ID, 'question-container'), 'General Information'))
             except: 
+                wait.until(EC.element_to_be_clickable((By.ID, 'btnContinueSidebar'))).click()
                 btn_submit_payment = wait.until(EC.element_to_be_clickable((By.ID, "btnSubmitPayment")))
                 btn_submit_payment.click()
                 wait.until(EC.text_to_be_present_in_element((By.ID, 'question-container'), 'General Information'))
