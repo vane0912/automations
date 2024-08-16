@@ -36,7 +36,7 @@ def CHINA_90_DAYS(data):
                     arr_section_questions = [item for item in values_arr if item["multipart_section"] in "general_after_payment"]
                 for question in arr_section_questions:
                     #print(question['slug'])
-                    #print(question['field_type'])
+                    print(question['field_type'])
                     if question['slug'] == 'arrival_date':
                         arrival_date = wait.until(EC.element_to_be_clickable((By.NAME, "general." + question['slug'])))
                         arrival_date.click()
@@ -68,9 +68,14 @@ def CHINA_90_DAYS(data):
                         wait.until(EC.visibility_of_element_located((By.NAME, "general." + question['slug'])))
                         input_field = wait.until(EC.element_to_be_clickable((By.NAME, 'telephone')))
                         input_field.send_keys('11111111') 
+                        input_field.send_keys(Keys.ENTER)
                         wait.until(EC.element_to_be_clickable((By.XPATH, '//button[@data-handle="boolean-I do not wish to receive text messages"]'))).click()
                     elif question['field_type'] == 'dropdown' and question['show_if'] is None:
-                        wait.until(EC.element_to_be_clickable((By.NAME, 'general.' + question['slug']))).click()
+                        dropdown_general = wait.until(EC.element_to_be_clickable((By.NAME, 'general.' + question['slug'])))
+                        dropdown_general.click()
+                        dropdown_input = wait.until(EC.visibility_of_element_located((By.XPATH, '//input[@data-handle="dropdown-general.' + question['slug'] + '"]')))
+                        dropdown_input.send_keys(Keys.ARROW_DOWN)
+                        dropdown_input.send_keys(Keys.ENTER)
                     elif 'expiration' in question['slug']:
                         passport_expiration_day = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'applicant.0.' + question['slug'] + '.day'))))
                         passport_expiration_day.select_by_value('10')
@@ -90,17 +95,19 @@ def CHINA_90_DAYS(data):
                         except:
                             passport_expiration_year = Select(wait.until(EC.element_to_be_clickable((By.XPATH, '//select[@data-handle="dropdown-applicant.0.runner_pilot"]'))))
                             passport_expiration_year.select_by_value("No") 
-                if "payment" in current_url:
-                    print('hello')
+                if "review" in current_url:
                     try:
                         WebDriverWait(browser, 10).until(EC.text_to_be_present_in_element((By.ID, 'app'), 'Possible Duplicate'))
                         btn_disclaimer = wait.until(EC.element_to_be_clickable((By.ID, "btnDisclaimerNext")))
                         btn_disclaimer.click()
-
+                        continue_sidebar = wait.until(EC.visibility_of_element_located((By.ID, "btnContinueSidebar")))
+                        continue_sidebar.click() if continue_sidebar.is_enabled() else wait.until(EC.element_to_be_clickable((By.ID, "btnContinueSidebar"))).click()
                         btn_submit_payment = wait.until(EC.element_to_be_clickable((By.ID, "btnSubmitPayment")))
                         btn_submit_payment.click()
                         wait.until(lambda driver: driver.current_url != current_url) 
                     except: 
+                        continue_sidebar = wait.until(EC.visibility_of_element_located((By.ID, "btnContinueSidebar")))
+                        continue_sidebar.click() if continue_sidebar.is_enabled() else wait.until(EC.element_to_be_clickable((By.ID, "btnContinueSidebar"))).click()
                         btn_submit_payment = wait.until(EC.element_to_be_clickable((By.ID, "btnSubmitPayment")))
                         btn_submit_payment.click()
                         wait.until(lambda driver: driver.current_url != current_url) 
@@ -108,6 +115,7 @@ def CHINA_90_DAYS(data):
                     wait.until(EC.element_to_be_clickable((By.ID, "btnContinueUnderSection"))).click() 
                     wait.until(lambda driver: driver.current_url != current_url) 
                 else:
+        
                     continue_sidebar = wait.until(EC.visibility_of_element_located((By.ID, "btnContinueSidebar")))
                     continue_sidebar.click() if continue_sidebar.is_enabled() else wait.until(EC.element_to_be_clickable((By.ID, "btnContinueSidebar"))).click()
                     wait.until(lambda driver: driver.current_url != current_url) 
