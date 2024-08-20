@@ -92,6 +92,104 @@ def form_XPATH(type, slug):
     else:
         string = 'hello'
     print(string)
+def questions_loop(product_num, browser, wait, num_order_loop):
+    questions = app_questions(Global_Variables['url'], product_num, Global_Variables['App_Version'])
+    sections_arr = []
+    values_arr = []
+    for key,value in questions['questions'].items():
+        values_arr.append(value)
+        sections_arr.append(value.get('multipart_section'))
+    for section in sections_arr:
+        current_url = browser.current_url
+        if "=" in current_url:
+            arr_section_questions = [item for item in values_arr if item["multipart_section"] in current_url]
+        else:
+            arr_section_questions = [item for item in values_arr if item["multipart_section"] in "general_after_payment"]
+        for question in arr_section_questions:
+            #print(question['slug'])
+            print(question['field_type'])
+            if question['slug'] == 'arrival_date':
+                arrival_date = wait.until(EC.element_to_be_clickable((By.NAME, "general." + question['slug'])))
+                arrival_date.click()
+                svg_locator = (By.CSS_SELECTOR, "div.is-right svg")
+                day_month = (By.CSS_SELECTOR, "div.day-13")
+                safe_element_click(browser, svg_locator)
+                safe_element_click(browser, day_month)
+            elif question['slug'] == 'departure_date': 
+                departure_date = wait.until(EC.element_to_be_clickable((By.NAME, "general." + question['slug'])))
+                departure_date.click()
+                svg_locator = (By.CSS_SELECTOR, "div.is-right svg")
+                day_month = (By.CSS_SELECTOR, "div.day-13")
+                safe_element_click(browser, svg_locator)
+                safe_element_click(browser, day_month)
+            elif question['slug'] == 'email' and num_order_loop == 0:
+                email = wait.until(EC.element_to_be_clickable((By.NAME, 'general.' + question['slug'])))
+                email.send_keys(Global_Variables['Email'])
+            elif question['slug'] == 'dob':
+                dob_day = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'applicant.0.' + question['slug'] + '.day'))))
+                dob_day.select_by_value('10')
+                dob_month = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'applicant.0.' + question['slug'] + '.month'))))
+                dob_month.select_by_value('10')
+                dob_year = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'applicant.0.' + question['slug'] + '.year'))))
+                dob_year.select_by_value("2000") 
+            elif question['field_type'] == 'textbox':
+                input_field = wait.until(EC.element_to_be_clickable((By.NAME, 'applicant.0.' + question['slug'])))
+                input_field.send_keys('aaaaa')
+            elif question['field_type'] == 'phone':
+                wait.until(EC.visibility_of_element_located((By.NAME, "general." + question['slug'])))
+                input_field = wait.until(EC.element_to_be_clickable((By.NAME, 'telephone')))
+                input_field.send_keys('11111111') 
+                input_field.send_keys(Keys.ENTER)
+                wait.until(EC.element_to_be_clickable((By.XPATH, '//button[@data-handle="boolean-I do not wish to receive text messages"]'))).click()
+            elif question['field_type'] == 'dropdown' and question['show_if'] is None:
+                dropdown_general = wait.until(EC.element_to_be_clickable((By.NAME, 'general.' + question['slug'])))
+                dropdown_general.click()
+                dropdown_input = wait.until(EC.visibility_of_element_located((By.XPATH, '//input[@data-handle="dropdown-general.' + question['slug'] + '"]')))
+                dropdown_input.send_keys(Keys.ARROW_DOWN)
+                dropdown_input.send_keys(Keys.ENTER)
+            elif 'expiration' in question['slug']:
+                passport_expiration_day = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'applicant.0.' + question['slug'] + '.day'))))
+                passport_expiration_day.select_by_value('10')
+                passport_expiration_month = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'applicant.0.' + question['slug'] + '.month'))))
+                passport_expiration_month.select_by_value('10')
+                passport_expiration_year = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'applicant.0.' + question['slug'] + '.year'))))
+                passport_expiration_year.select_by_value("2028") 
+            elif question['slug'] == 'appointment_location_id':
+                input_field_speciality = wait.until(EC.element_to_be_clickable((By.NAME, 'applicant.0.' + question['slug'] + '_autocomplete')))
+                input_field_speciality.send_keys('Nueva York, EE. UU') 
+                time.sleep(3)
+                input_field_speciality.send_keys(Keys.ARROW_DOWN)
+                input_field_speciality.send_keys(Keys.ENTER)
+                try:
+                    runner_pilot = WebDriverWait(browser, 5).until(EC.element_to_be_clickable((By.XPATH, '//button[@data-handle="boolean-No, I want to go to the embassy myself"]')))
+                    runner_pilot.click()
+                except:
+                    passport_expiration_year = Select(wait.until(EC.element_to_be_clickable((By.XPATH, '//select[@data-handle="dropdown-applicant.0.runner_pilot"]'))))
+                    passport_expiration_year.select_by_value("No") 
+        if "review" in current_url:
+            try:
+                WebDriverWait(browser, 10).until(EC.text_to_be_present_in_element((By.ID, 'app'), 'Possible Duplicate'))
+                btn_disclaimer = wait.until(EC.element_to_be_clickable((By.ID, "btnDisclaimerNext")))
+                btn_disclaimer.click()
+                continue_sidebar = wait.until(EC.visibility_of_element_located((By.ID, "btnContinueSidebar")))
+                continue_sidebar.click() if continue_sidebar.is_enabled() else wait.until(EC.element_to_be_clickable((By.ID, "btnContinueSidebar"))).click()
+                btn_submit_payment = wait.until(EC.element_to_be_clickable((By.ID, "btnSubmitPayment")))
+                btn_submit_payment.click()
+                wait.until(lambda driver: driver.current_url != current_url) 
+            except: 
+                continue_sidebar = wait.until(EC.visibility_of_element_located((By.ID, "btnContinueSidebar")))
+                continue_sidebar.click() if continue_sidebar.is_enabled() else wait.until(EC.element_to_be_clickable((By.ID, "btnContinueSidebar"))).click()
+                btn_submit_payment = wait.until(EC.element_to_be_clickable((By.ID, "btnSubmitPayment")))
+                btn_submit_payment.click()
+                wait.until(lambda driver: driver.current_url != current_url) 
+        elif "continue" in current_url:
+            wait.until(EC.element_to_be_clickable((By.ID, "btnContinueUnderSection"))).click() 
+            wait.until(lambda driver: driver.current_url != current_url) 
+        else:
+
+            continue_sidebar = wait.until(EC.visibility_of_element_located((By.ID, "btnContinueSidebar")))
+            continue_sidebar.click() if continue_sidebar.is_enabled() else wait.until(EC.element_to_be_clickable((By.ID, "btnContinueSidebar"))).click()
+            wait.until(lambda driver: driver.current_url != current_url) 
 ##https://costumer-facing1-production.up.railway.app
 ##https://costumer-facing1-automations-pr-6.up.railway.app
 ##http://127.0.0.1:5000
