@@ -82,16 +82,7 @@ def app_questions(url, product_num, app_version):
     data = json.loads(response.content)
     return data
 
-def form_XPATH(type, slug):
-    string = ''
-    print(slug)
-    if 'dropdown' in type:
-        string = '//select[@data-handle="dropdown-general.' + slug + '"]'
-    elif 'textbox' in type:
-        string = "applicant." + slug 
-    else:
-        string = 'hello'
-    print(string)
+
 def questions_loop(product_num, browser, wait, num_order_loop):
     questions = app_questions(Global_Variables['url'], product_num, Global_Variables['App_Version'])
     sections_arr = []
@@ -106,8 +97,6 @@ def questions_loop(product_num, browser, wait, num_order_loop):
         else:
             arr_section_questions = [item for item in values_arr if item["multipart_section"] in "general_after_payment"]
         for question in arr_section_questions:
-            #print(question['slug'])
-            print(question['field_type'])
             if question['slug'] == 'arrival_date':
                 arrival_date = wait.until(EC.element_to_be_clickable((By.NAME, "general." + question['slug'])))
                 arrival_date.click()
@@ -142,11 +131,13 @@ def questions_loop(product_num, browser, wait, num_order_loop):
                 input_field.send_keys(Keys.ENTER)
                 wait.until(EC.element_to_be_clickable((By.XPATH, '//button[@data-handle="boolean-I do not wish to receive text messages"]'))).click()
             elif question['field_type'] == 'dropdown' and question['show_if'] is None:
-                dropdown_general = wait.until(EC.element_to_be_clickable((By.NAME, 'general.' + question['slug'])))
-                dropdown_general.click()
-                dropdown_input = wait.until(EC.visibility_of_element_located((By.XPATH, '//input[@data-handle="dropdown-general.' + question['slug'] + '"]')))
-                dropdown_input.send_keys(Keys.ARROW_DOWN)
-                dropdown_input.send_keys(Keys.ENTER)
+                if len(question['options']) > 5:
+                    dropdown_general = wait.until(EC.element_to_be_clickable((By.NAME, 'general.' + question['slug'])))
+                    dropdown_general.click()
+                    dropdown_input = wait.until(EC.visibility_of_element_located((By.XPATH, '//input[@data-handle="dropdown-general.' + question['slug'] + '"]')))
+                    dropdown_input.send_keys(Keys.ARROW_DOWN)
+                    dropdown_input.send_keys(Keys.ENTER)
+               
             elif 'expiration' in question['slug']:
                 passport_expiration_day = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'applicant.0.' + question['slug'] + '.day'))))
                 passport_expiration_day.select_by_value('10')
@@ -186,7 +177,6 @@ def questions_loop(product_num, browser, wait, num_order_loop):
             wait.until(EC.element_to_be_clickable((By.ID, "btnContinueUnderSection"))).click() 
             wait.until(lambda driver: driver.current_url != current_url) 
         else:
-
             continue_sidebar = wait.until(EC.visibility_of_element_located((By.ID, "btnContinueSidebar")))
             continue_sidebar.click() if continue_sidebar.is_enabled() else wait.until(EC.element_to_be_clickable((By.ID, "btnContinueSidebar"))).click()
             wait.until(lambda driver: driver.current_url != current_url) 
