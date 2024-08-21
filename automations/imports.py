@@ -137,7 +137,7 @@ def questions_loop(product_num, browser, wait, num_order_loop):
                     dropdown_input = wait.until(EC.visibility_of_element_located((By.XPATH, '//input[@data-handle="dropdown-general.' + question['slug'] + '"]')))
                     dropdown_input.send_keys(Keys.ARROW_DOWN)
                     dropdown_input.send_keys(Keys.ENTER)
-               
+                
             elif 'expiration' in question['slug']:
                 passport_expiration_day = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'applicant.0.' + question['slug'] + '.day'))))
                 passport_expiration_day.select_by_value('10')
