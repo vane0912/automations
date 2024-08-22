@@ -23,7 +23,6 @@ def CHINA_90_DAYS(data):
             product.select_by_value('5500')
             #wait.until(EC.element_to_be_clickable((By.ID, "btnContinueUnderSection"))).click() 
             wait.until(lambda driver: driver.current_url != current_url) 
-            time.sleep(5)
             questions_loop(10845, browser, wait, order)
     except:
         failed_request()

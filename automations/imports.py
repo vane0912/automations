@@ -146,11 +146,14 @@ def questions_loop(product_num, browser, wait, num_order_loop):
                 passport_expiration_year = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'applicant.0.' + question['slug'] + '.year'))))
                 passport_expiration_year.select_by_value("2028") 
             elif question['slug'] == 'appointment_location_id':
-                input_field_speciality = wait.until(EC.element_to_be_clickable((By.NAME, 'applicant.0.' + question['slug'] + '_autocomplete')))
-                input_field_speciality.send_keys('Nueva York, EE. UU') 
                 time.sleep(3)
-                input_field_speciality.send_keys(Keys.ARROW_DOWN)
-                input_field_speciality.send_keys(Keys.ENTER)
+                input_field_speciality = wait.until(EC.element_to_be_clickable((By.NAME, 'applicant.0.' + question['slug'] + '_autocomplete')))
+                browser.execute_script("arguments[0].value = 'New York, EE. UU';", input_field_speciality)
+                input_field_speciality.click()
+                input_field_speciality.send_keys(Keys.SPACE)
+                api_google = wait.until(EC.visibility_of_element_located((By.ID, 'autocomplete_results')))
+                select_option = api_google.find_elements(By.TAG_NAME, 'li')
+                select_option[0].click()
                 try:
                     runner_pilot = WebDriverWait(browser, 5).until(EC.element_to_be_clickable((By.XPATH, '//button[@data-handle="boolean-No, I want to go to the embassy myself"]')))
                     runner_pilot.click()
