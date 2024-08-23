@@ -12,7 +12,7 @@ def TR_App_P2(data):
     setArguments(data)
     Global_Variables['Order_Numbers'] = []
     chrome_options = Options()
-    chrome_options.add_argument('--headless') 
+    #chrome_options.add_argument('--headless') 
     chrome_options.add_argument('window-size=1920,1080')
     chrome_options.add_argument('--no-sandbox')
     chrome_options.add_argument('--disable-dev-shm-usage')
@@ -154,7 +154,7 @@ def TR_App_P2(data):
            
             #wait.until(EC.text_to_be_present_in_element((By.ID, "app"), '+ Standard, 24 hours'))
             safe_element_click(browser, continue_step_6) 
-            wait.until(EC.text_to_be_present_in_element((By.TAG_NAME, 'h1'), 'Review your order')) 
+            #wait.until(EC.text_to_be_present_in_element((By.TAG_NAME, 'h1'), 'Review your order')) 
             try:
                 WebDriverWait(browser, 10).until(EC.text_to_be_present_in_element((By.ID, 'app'), 'Possible Duplicate'))
                 btn_disclaimer = wait.until(EC.element_to_be_clickable((By.ID, "btnDisclaimerNext")))
