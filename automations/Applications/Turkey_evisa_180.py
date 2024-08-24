@@ -152,7 +152,7 @@ def TR_App_P2(data):
                 
             continue_step_6 = (By.ID, "btnContinueSidebar")
            
-            #wait.until(EC.text_to_be_present_in_element((By.ID, "app"), '+ Standard, 24 hours'))
+            wait.until(EC.text_to_be_present_in_element((By.ID, "app"), '+ Standard, 24 hours'))
             safe_element_click(browser, continue_step_6) 
             wait.until(EC.text_to_be_present_in_element((By.TAG_NAME, 'h1'), 'Review your order')) 
             try:
