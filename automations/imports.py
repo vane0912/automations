@@ -124,10 +124,35 @@ def questions_loop(product_num, browser, wait, num_order_loop):
             elif question['field_type'] == 'textbox':
                 input_field = wait.until(EC.element_to_be_clickable((By.NAME, 'applicant.0.' + question['slug'])))
                 input_field.send_keys('aaaaa')
+            elif question['field_type'] == 'fieldset_repeat':
+                for field in question['fieldset']:
+                    if field['field_type'] == 'textbox':
+                        input_field = wait.until(EC.element_to_be_clickable((By.NAME, 'general.' + question['slug'] + '.0.'+ field['slug'])))
+                        input_field.send_keys('aaaaa')
+                    if field['field_type'] == 'dropdown':
+                        dropdown_general = wait.until(EC.element_to_be_clickable((By.NAME, 'general.' + question['slug'] + '.0.'+ field['slug'])))
+                        dropdown_general.click()
+                        dropdown_input = wait.until(EC.visibility_of_element_located((By.XPATH, '//input[@data-handle="dropdown-general.' + question['slug'] + '.0.'+ field['slug'] + '"]')))
+                        dropdown_input.send_keys(Keys.ARROW_DOWN)
+                        dropdown_input.send_keys(Keys.ENTER)
+                    if field['field_type'] == 'datepicker' and 'start' in field['slug']:
+                        start_day = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'general.' + question['slug'] + '.0.'+ field['slug'] + '.day'))))
+                        start_day.select_by_value('10')
+                        start_month = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'general.' + question['slug'] + '.0.'+ field['slug'] + '.month'))))
+                        start_month.select_by_value('10')
+                        start_year = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'general.' + question['slug'] + '.0.'+ field['slug'] + '.year'))))
+                        start_year.select_by_value("2028") 
+                    if field['field_type'] == 'datepicker' and 'end' in field['slug']:
+                        start_day = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'general.' + question['slug'] + '.0.'+ field['slug'] + '.day'))))
+                        start_day.select_by_value('20')
+                        start_month = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'general.' + question['slug'] + '.0.'+ field['slug'] + '.month'))))
+                        start_month.select_by_value('10')
+                        start_year = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'general.' + question['slug'] + '.0.'+ field['slug'] + '.year'))))
+                        start_year.select_by_value("2028") 
             elif question['field_type'] == 'phone':
                 wait.until(EC.visibility_of_element_located((By.NAME, "general." + question['slug'])))
                 input_field = wait.until(EC.element_to_be_clickable((By.NAME, 'telephone')))
-                input_field.send_keys('11111111') 
+                input_field.send_keys('11111111 ') 
                 input_field.send_keys(Keys.ENTER)
                 wait.until(EC.element_to_be_clickable((By.XPATH, '//button[@data-handle="boolean-I do not wish to receive text messages"]'))).click()
             elif question['field_type'] == 'dropdown' and question['show_if'] is None:
@@ -137,7 +162,10 @@ def questions_loop(product_num, browser, wait, num_order_loop):
                     dropdown_input = wait.until(EC.visibility_of_element_located((By.XPATH, '//input[@data-handle="dropdown-general.' + question['slug'] + '"]')))
                     dropdown_input.send_keys(Keys.ARROW_DOWN)
                     dropdown_input.send_keys(Keys.ENTER)
-                
+                else:
+                    div_dropdown = wait.until(EC.visibility_of_element_located((By.XPATH, '//div[@data-ivisa-question-selector="general.' + question['slug'] + '"]')))
+                    options_inside = div_dropdown.find_elements(By.TAG_NAME, 'button')
+                    options_inside[0].click()
             elif 'expiration' in question['slug']:
                 passport_expiration_day = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'applicant.0.' + question['slug'] + '.day'))))
                 passport_expiration_day.select_by_value('10')
