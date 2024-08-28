@@ -83,7 +83,7 @@ def app_questions(url, product_num, app_version):
     return data
 
 
-def questions_loop(product_num, browser, wait, num_order_loop):
+def questions_loop(product_num, browser, wait, num_order_loop, applicants):
     questions = app_questions(Global_Variables['url'], product_num, Global_Variables['App_Version'])
     sections_arr = []
     values_arr = []
@@ -96,6 +96,12 @@ def questions_loop(product_num, browser, wait, num_order_loop):
             arr_section_questions = [item for item in values_arr if item["multipart_section"] in current_url]
         else:
             arr_section_questions = [item for item in values_arr if item["multipart_section"] in "general_after_payment"]
+        if "step=step_3a" in current_url and applicants > 1:
+            for x in range(applicants - 1):
+                print(applicants)
+                add_traveler_div = wait.until(EC.visibility_of_element_located((By.XPATH, "//div[@data-handle='add-traveler']")))
+                add_traveler_btn = add_traveler_div.find_elements(By.TAG_NAME, 'button')
+                wait.until(EC.element_to_be_clickable((add_traveler_btn[1]))).click()
         for question in arr_section_questions:
             if question['slug'] == 'arrival_date':
                 arrival_date = wait.until(EC.element_to_be_clickable((By.NAME, "general." + question['slug'])))
@@ -115,16 +121,22 @@ def questions_loop(product_num, browser, wait, num_order_loop):
                 email = wait.until(EC.element_to_be_clickable((By.NAME, 'general.' + question['slug'])))
                 email.send_keys(Global_Variables['Email'])
             elif question['slug'] == 'dob':
-                dob_day = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'applicant.0.' + question['slug'] + '.day'))))
-                dob_day.select_by_value('10')
-                dob_month = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'applicant.0.' + question['slug'] + '.month'))))
-                dob_month.select_by_value('10')
-                dob_year = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'applicant.0.' + question['slug'] + '.year'))))
-                dob_year.select_by_value("2000") 
-            elif question['field_type'] == 'textbox':
-                input_field = wait.until(EC.element_to_be_clickable((By.NAME, 'applicant.0.' + question['slug'])))
-                input_field.send_keys('aaaaa')
-            elif question['field_type'] == 'fieldset_repeat':
+                for user in range(applicants):
+                    dob_day = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'applicant' + '.' + str(user) + '.' + question['slug'] + '.day'))))
+                    dob_day.select_by_value('10')
+                    dob_month = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'applicant' + '.' + str(user) + '.' + question['slug'] + '.month'))))
+                    dob_month.select_by_value('10')
+                    dob_year = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'applicant' + '.' + str(user) + '.' + question['slug'] + '.year'))))
+                    dob_year.select_by_value("2000") 
+            elif question['field_type'] == 'textbox' and question['show_if'] is None:
+                for user_textbox in range(applicants):
+                    input_field = wait.until(EC.element_to_be_clickable((By.NAME, 'applicant' + '.' + str(user_textbox) + '.' + question['slug'])))
+                    input_field.send_keys('aaaaa')
+            elif question['slug'] == 'passport_num':
+                for user_passport in range(applicants):
+                    input_field = wait.until(EC.element_to_be_clickable((By.NAME, 'applicant' + '.' + str(user_passport) + '.' + question['slug'])))
+                    input_field.send_keys('aaaaa')
+            elif question['field_type'] == 'fieldset_repeat' and question['show_if'] is None:
                 for field in question['fieldset']:
                     if field['field_type'] == 'textbox':
                         input_field = wait.until(EC.element_to_be_clickable((By.NAME, 'general.' + question['slug'] + '.0.'+ field['slug'])))
@@ -149,7 +161,7 @@ def questions_loop(product_num, browser, wait, num_order_loop):
                         start_month.select_by_value('10')
                         start_year = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'general.' + question['slug'] + '.0.'+ field['slug'] + '.year'))))
                         start_year.select_by_value("2028") 
-            elif question['field_type'] == 'phone':
+            elif question['field_type'] == 'phone' and question['show_if'] is None:
                 wait.until(EC.visibility_of_element_located((By.NAME, "general." + question['slug'])))
                 input_field = wait.until(EC.element_to_be_clickable((By.NAME, 'telephone')))
                 input_field.send_keys('11111111 ') 
@@ -167,12 +179,13 @@ def questions_loop(product_num, browser, wait, num_order_loop):
                     options_inside = div_dropdown.find_elements(By.TAG_NAME, 'button')
                     options_inside[0].click()
             elif 'expiration' in question['slug']:
-                passport_expiration_day = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'applicant.0.' + question['slug'] + '.day'))))
-                passport_expiration_day.select_by_value('10')
-                passport_expiration_month = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'applicant.0.' + question['slug'] + '.month'))))
-                passport_expiration_month.select_by_value('10')
-                passport_expiration_year = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'applicant.0.' + question['slug'] + '.year'))))
-                passport_expiration_year.select_by_value("2028") 
+                for user_expiration in range(applicants):
+                    passport_expiration_day = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'applicant' + '.' + str(user_expiration) + '.' + question['slug'] + '.day'))))
+                    passport_expiration_day.select_by_value('10')
+                    passport_expiration_month = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'applicant' + '.' + str(user_expiration) + '.' + question['slug'] + '.month'))))
+                    passport_expiration_month.select_by_value('10')
+                    passport_expiration_year = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'applicant' + '.' + str(user_expiration) + '.' + question['slug'] + '.year'))))
+                    passport_expiration_year.select_by_value("2028") 
             elif question['slug'] == 'appointment_location_id':
                 time.sleep(3)
                 input_field_speciality = wait.until(EC.element_to_be_clickable((By.NAME, 'applicant.0.' + question['slug'] + '_autocomplete')))
@@ -205,6 +218,7 @@ def questions_loop(product_num, browser, wait, num_order_loop):
                 btn_submit_payment.click()
                 wait.until(lambda driver: driver.current_url != current_url) 
         elif "continue" in current_url:
+            print('hello')
             wait.until(EC.element_to_be_clickable((By.ID, "btnContinueUnderSection"))).click() 
             wait.until(lambda driver: driver.current_url != current_url) 
         else:
