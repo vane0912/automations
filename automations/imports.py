@@ -109,7 +109,7 @@ def questions_loop(product_num, browser, wait, num_order_loop, applicants):
                 day_month = (By.CSS_SELECTOR, "div.day-13")
                 safe_element_click(browser, svg_locator)
                 safe_element_click(browser, day_month)
-            elif question['slug'] == 'departure_date': 
+            elif 'departure_date' in question['slug']: 
                 departure_date = wait.until(EC.element_to_be_clickable((By.NAME, "general." + question['slug'])))
                 departure_date.click()
                 svg_locator = (By.CSS_SELECTOR, "div.is-right svg")
@@ -186,14 +186,13 @@ def questions_loop(product_num, browser, wait, num_order_loop, applicants):
                                 try:
                                     WebDriverWait(browser, 2).until(EC.visibility_of_element_located((By.XPATH, '//div[@data-ivisa-question-selector="applicant' + '.0.' + question['slug'] + '"]')))
                                     for field in question['fieldset']:
-                                        print(field)
                                         if field['field_type'] == 'textbox':
                                             input_field = wait.until(EC.element_to_be_clickable((By.NAME, 'applicant.0.' + question['slug'] + '.0.'+ field['slug'])))
                                             input_field.send_keys('aaaaa')
-                                        if field['field_type'] == 'dropdown':
+                                        if field['field_type'] == 'dropdown' or field['field_type'] == 'dropdown_country':
                                             dropdown_general = wait.until(EC.element_to_be_clickable((By.NAME, 'applicant.0.' + question['slug'] + '.0.'+ field['slug'])))
                                             dropdown_general.click()
-                                            dropdown_input = wait.until(EC.visibility_of_element_located((By.XPATH, '//input[@data-handle="dropdown-general.' + question['slug'] + '.0.'+ field['slug'] + '"]')))
+                                            dropdown_input = wait.until(EC.visibility_of_element_located((By.XPATH, '//input[@data-handle="dropdown-applicant.' + '0.' + question['slug'] + '.0.'+ field['slug'] + '"]')))
                                             dropdown_input.send_keys(Keys.ARROW_DOWN)
                                             dropdown_input.send_keys(Keys.ENTER)
                                         if field['field_type'] == 'datepicker' and 'start' in field['slug']:
@@ -219,14 +218,18 @@ def questions_loop(product_num, browser, wait, num_order_loop, applicants):
                                             input_field = wait.until(EC.element_to_be_clickable((By.NAME, 'telephone')))
                                             input_field.send_keys('11111111') 
                                             input_field.send_keys(Keys.ENTER)
+                                        elif 'dob' in field['slug']:
+                                            dob_day = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'applicant' + '.0.' + question['slug'] + '.0.' + field['slug'] + '.day'))))
+                                            dob_day.select_by_value('10')
+                                            dob_month = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'applicant' + '.0.' + question['slug'] + '.0.' + field['slug'] + '.month'))))
+                                            dob_month.select_by_value('10')
+                                            dob_year = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'applicant' + '.0.' + question['slug'] + '.0.' + field['slug'] +'.year'))))
+                                            dob_year.select_by_value("2000") 
                                     attempts = 2 
                                 except:
                                     attempts += 1
                             elif attempts == 1:
-                                try:
-                                    WebDriverWait(browser, 2).until(EC.visibility_of_element_located((By.XPATH, '//div[@data-ivisa-question-selector="general.' + question['slug'] + '"]')))
-                                except:
-                                    attempts += 1
+                                attempts = 2
                     except:
                         pass
             elif question['field_type'] == 'phone':
@@ -351,18 +354,20 @@ def questions_loop(product_num, browser, wait, num_order_loop, applicants):
             elif question['slug'] == 'appointment_location_id':
                 time.sleep(2)
                 input_field_speciality = wait.until(EC.element_to_be_clickable((By.NAME, 'applicant.0.' + question['slug'] + '_autocomplete')))
-                browser.execute_script("arguments[0].value = 'New York, EE. UU';", input_field_speciality)
+                input_field_speciality.send_keys('New York, EE. UU')
                 input_field_speciality.click()
                 input_field_speciality.send_keys(Keys.SPACE)
                 api_google = wait.until(EC.visibility_of_element_located((By.ID, 'autocomplete_results')))
                 select_option = api_google.find_elements(By.TAG_NAME, 'li')
                 select_option[0].click()
-                try:
-                    runner_pilot = WebDriverWait(browser, 5).until(EC.element_to_be_clickable((By.XPATH, '//button[@data-handle="boolean-No, I want to go to the embassy myself"]')))
-                    runner_pilot.click()
-                except:
-                    passport_expiration_year = Select(wait.until(EC.element_to_be_clickable((By.XPATH, '//select[@data-handle="dropdown-applicant.0.runner_pilot"]'))))
-                    passport_expiration_year.select_by_value("No") 
+                time.sleep(2)
+                # Runner Pilot code
+                ## try:
+                ##    runner_pilot = WebDriverWait(browser, 5).until(EC.element_to_be_clickable((By.XPATH, '//button[@data-handle="boolean-No, I want to go to the embassy myself"]')))
+                ##    runner_pilot.click()
+                ## except:
+                ##    passport_expiration_year = Select(wait.until(EC.element_to_be_clickable((By.XPATH, '//select[@data-handle="dropdown-applicant.0.runner_pilot"]'))))
+                ##    passport_expiration_year.select_by_value("No") 
             elif question['field_type'] == "boolean":
                 try:
                     boolean = WebDriverWait(browser, 2).until(EC.visibility_of_element_located((By.NAME, "applicant.0." + question["slug"])))
