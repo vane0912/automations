@@ -109,7 +109,7 @@ def questions_loop(product_num, browser, wait, num_order_loop, applicants):
                 day_month = (By.CSS_SELECTOR, "div.day-13")
                 safe_element_click(browser, svg_locator)
                 safe_element_click(browser, day_month)
-            elif 'departure_date' in question['slug']: 
+            elif question['slug'] == 'departure_date': 
                 departure_date = wait.until(EC.element_to_be_clickable((By.NAME, "general." + question['slug'])))
                 departure_date.click()
                 svg_locator = (By.CSS_SELECTOR, "div.is-right svg")
@@ -308,15 +308,19 @@ def questions_loop(product_num, browser, wait, num_order_loop, applicants):
                 div_dropdown = wait.until(EC.visibility_of_element_located((By.XPATH, '//div[@data-ivisa-question-selector="applicant' + '.0.' + question['slug'] + '"]')))
                 options_inside = div_dropdown.find_elements(By.TAG_NAME, 'button')
                 options_inside[0].click()
-            elif 'expiration' in question['slug']:
+            elif 'expiration' in question['slug'] or 'departure_date' in question['slug']:
                 if question['show_if'] is None:
-                    for user_expiration in range(applicants):
-                        passport_expiration_day = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'applicant' + '.' + str(user_expiration) + '.' + question['slug'] + '.day'))))
-                        passport_expiration_day.select_by_value('10')
-                        passport_expiration_month = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'applicant' + '.' + str(user_expiration) + '.' + question['slug'] + '.month'))))
-                        passport_expiration_month.select_by_value('10')
-                        passport_expiration_year = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'applicant' + '.' + str(user_expiration) + '.' + question['slug'] + '.year'))))
-                        passport_expiration_year.select_by_value("2028") 
+                    try:
+                        WebDriverWait(browser, 3).until(EC.visibility_of_element_located((By.NAME, 'applicant.0.' + question['slug'] + '.day')))
+                        for user_expiration in range(applicants):
+                            passport_expiration_day = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'applicant' + '.' + str(user_expiration) + '.' + question['slug'] + '.day'))))
+                            passport_expiration_day.select_by_value('10')
+                            passport_expiration_month = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'applicant' + '.' + str(user_expiration) + '.' + question['slug'] + '.month'))))
+                            passport_expiration_month.select_by_value('10')
+                            passport_expiration_year = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'applicant' + '.' + str(user_expiration) + '.' + question['slug'] + '.year'))))
+                            passport_expiration_year.select_by_value("2025") 
+                    except:
+                        pass
                 else:
                     try:
                         WebDriverWait(browser, 3).until(EC.visibility_of_element_located((By.NAME, 'applicant.0.' + question['slug'] + '.day')))
@@ -326,7 +330,7 @@ def questions_loop(product_num, browser, wait, num_order_loop, applicants):
                             passport_expiration_month = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'applicant' + '.' + str(user_expiration) + '.' + question['slug'] + '.month'))))
                             passport_expiration_month.select_by_value('10')
                             passport_expiration_year = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'applicant' + '.' + str(user_expiration) + '.' + question['slug'] + '.year'))))
-                            passport_expiration_year.select_by_value("2028") 
+                            passport_expiration_year.select_by_value("2025") 
                     except:
                         pass
             elif question['field_type'] == "address":
@@ -375,6 +379,24 @@ def questions_loop(product_num, browser, wait, num_order_loop, applicants):
                     buttons_inside[1].click()
                 except:
                     pass
+            elif question['field_type'] == 'file_upload' and question['slug'] == "passport_photo":
+                file_upload_button = WebDriverWait(browser, 2).until(EC.visibility_of_element_located((By.ID, "btn-applicant.0." + question["slug"])))
+                file_upload_button.click()
+                time.sleep(3)
+                passport_upload_button = browser.find_elements(By.TAG_NAME, 'input')
+                get_image = os.path.abspath('automations/Applications/uploads/Applicant-Photo.jpg')
+                passport_upload_button[1].send_keys(get_image)
+                accept_upload = wait.until(EC.element_to_be_clickable((By.XPATH, '//button[@data-handle="acceptFileUploadBtn"]')))
+                accept_upload.click()
+            elif question['field_type'] == 'file_upload':
+                file_upload_button = WebDriverWait(browser, 2).until(EC.visibility_of_element_located((By.ID, "btn-applicant.0." + question["slug"])))
+                file_upload_button.click()
+                time.sleep(3)
+                passport_upload_button = browser.find_elements(By.TAG_NAME, 'input')
+                get_image = os.path.abspath('automations/Applications/uploads/1.jpg')
+                passport_upload_button[1].send_keys(get_image)
+                accept_upload = wait.until(EC.element_to_be_clickable((By.XPATH, '//button[@data-handle="acceptFileUploadBtn"]')))
+                accept_upload.click()
         if "review" in current_url:
             try:
                 WebDriverWait(browser, 10).until(EC.text_to_be_present_in_element((By.ID, 'app'), 'Possible Duplicate'))
