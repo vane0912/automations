@@ -304,14 +304,14 @@ def questions_loop(product_num, browser, wait, num_order_loop, applicants):
                 except:
                     pass
             elif question['slug'] == "gender" and "continue" in current_url:
-                WebDriverWait(browser, 5).until(EC.visibility_of_element_located((By.XPATH, '//div[@data-ivisa-question-selector="applicant' + '.0.' + question['slug'] + '"]')))
+                WebDriverWait(browser, 2).until(EC.visibility_of_element_located((By.XPATH, '//div[@data-ivisa-question-selector="applicant' + '.0.' + question['slug'] + '"]')))
                 div_dropdown = wait.until(EC.visibility_of_element_located((By.XPATH, '//div[@data-ivisa-question-selector="applicant' + '.0.' + question['slug'] + '"]')))
                 options_inside = div_dropdown.find_elements(By.TAG_NAME, 'button')
                 options_inside[0].click()
             elif 'expiration' in question['slug'] or 'departure_date' in question['slug']:
                 if question['show_if'] is None:
                     try:
-                        WebDriverWait(browser, 3).until(EC.visibility_of_element_located((By.NAME, 'applicant.0.' + question['slug'] + '.day')))
+                        WebDriverWait(browser, 2).until(EC.visibility_of_element_located((By.NAME, 'applicant.0.' + question['slug'] + '.day')))
                         for user_expiration in range(applicants):
                             passport_expiration_day = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'applicant' + '.' + str(user_expiration) + '.' + question['slug'] + '.day'))))
                             passport_expiration_day.select_by_value('10')
@@ -323,7 +323,7 @@ def questions_loop(product_num, browser, wait, num_order_loop, applicants):
                         pass
                 else:
                     try:
-                        WebDriverWait(browser, 3).until(EC.visibility_of_element_located((By.NAME, 'applicant.0.' + question['slug'] + '.day')))
+                        WebDriverWait(browser, 2).until(EC.visibility_of_element_located((By.NAME, 'applicant.0.' + question['slug'] + '.day')))
                         for user_expiration in range(applicants):
                             passport_expiration_day = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'applicant' + '.' + str(user_expiration) + '.' + question['slug'] + '.day'))))
                             passport_expiration_day.select_by_value('10')
@@ -374,29 +374,35 @@ def questions_loop(product_num, browser, wait, num_order_loop, applicants):
                 ##    passport_expiration_year.select_by_value("No") 
             elif question['field_type'] == "boolean":
                 try:
-                    boolean = WebDriverWait(browser, 2).until(EC.visibility_of_element_located((By.NAME, "applicant.0." + question["slug"])))
+                    boolean = WebDriverWait(browser, 1).until(EC.visibility_of_element_located((By.NAME, "applicant.0." + question["slug"])))
                     buttons_inside = boolean.find_elements(By.TAG_NAME, "button")
                     buttons_inside[1].click()
                 except:
                     pass
             elif question['field_type'] == 'file_upload' and question['slug'] == "passport_photo":
-                file_upload_button = WebDriverWait(browser, 2).until(EC.visibility_of_element_located((By.ID, "btn-applicant.0." + question["slug"])))
-                file_upload_button.click()
-                time.sleep(3)
-                passport_upload_button = browser.find_elements(By.TAG_NAME, 'input')
-                get_image = os.path.abspath('automations/Applications/uploads/Applicant-Photo.jpg')
-                passport_upload_button[1].send_keys(get_image)
-                accept_upload = wait.until(EC.element_to_be_clickable((By.XPATH, '//button[@data-handle="acceptFileUploadBtn"]')))
-                accept_upload.click()
+                try:
+                    file_upload_button = WebDriverWait(browser, 2).until(EC.visibility_of_element_located((By.ID, "btn-applicant.0." + question["slug"])))
+                    file_upload_button.click()
+                    time.sleep(3)
+                    file_upload_in = browser.find_elements(By.NAME, 'applicant.0.' + question["slug"])
+                    get_image = os.path.abspath('automations/Applications/uploads/Applicant-Photo.jpg')
+                    file_upload_in[0].send_keys(get_image)
+                    accept_upload = wait.until(EC.element_to_be_clickable((By.XPATH, '//button[@data-handle="acceptFileUploadBtn"]')))
+                    accept_upload.click()
+                except:
+                    pass
             elif question['field_type'] == 'file_upload':
-                file_upload_button = WebDriverWait(browser, 2).until(EC.visibility_of_element_located((By.ID, "btn-applicant.0." + question["slug"])))
-                file_upload_button.click()
-                time.sleep(3)
-                passport_upload_button = browser.find_elements(By.TAG_NAME, 'input')
-                get_image = os.path.abspath('automations/Applications/uploads/1.jpg')
-                passport_upload_button[1].send_keys(get_image)
-                accept_upload = wait.until(EC.element_to_be_clickable((By.XPATH, '//button[@data-handle="acceptFileUploadBtn"]')))
-                accept_upload.click()
+                try: 
+                    file_upload_button = WebDriverWait(browser, 2).until(EC.visibility_of_element_located((By.ID, "btn-applicant.0." + question["slug"])))
+                    file_upload_button.click()
+                    time.sleep(3)
+                    file_upload_in = browser.find_elements(By.NAME, 'applicant.0.' + question["slug"])
+                    get_image = os.path.abspath('automations/Applications/uploads/1.jpg')
+                    file_upload_in[0].send_keys(get_image)
+                    accept_upload = wait.until(EC.element_to_be_clickable((By.XPATH, '//button[@data-handle="acceptFileUploadBtn"]')))
+                    accept_upload.click()
+                except:
+                    pass
         if "review" in current_url:
             try:
                 WebDriverWait(browser, 10).until(EC.text_to_be_present_in_element((By.ID, 'app'), 'Possible Duplicate'))
@@ -414,8 +420,12 @@ def questions_loop(product_num, browser, wait, num_order_loop, applicants):
                 btn_submit_payment.click()
                 wait.until(lambda driver: driver.current_url != current_url) 
         elif "continue" in current_url:
-            wait.until(EC.element_to_be_clickable((By.ID, "btnContinueUnderSection"))).click() 
-            wait.until(lambda driver: driver.current_url != current_url) 
+            try: 
+                WebDriverWait(browser, 2).until(EC.element_to_be_clickable((By.ID, "btnContinueUnderSection"))).click() 
+                wait.until(lambda driver: driver.current_url != current_url) 
+            except:
+                wait.until(EC.element_to_be_clickable((By.ID, "btnSubmitApplication"))).click() 
+                wait.until(lambda driver: driver.current_url != current_url)
         else:
             continue_sidebar = wait.until(EC.visibility_of_element_located((By.ID, "btnContinueSidebar")))
             continue_sidebar.click() if continue_sidebar.is_enabled() else wait.until(EC.element_to_be_clickable((By.ID, "btnContinueSidebar"))).click()

@@ -60,10 +60,10 @@ automations_list_applications = [
         },
         {
             'Title': 'India-1-Year-Multiple-Entry',
-            'Subtitles': ['Only for MX citizens'],
+            'Subtitles': ['Only for US citizens'],
             'Country' : 'India',
             'Type': India_1y_Multiple,
-            'Enabled': False,
+            'Enabled': True,
             'Requirements': [
                 {
                     'Label': 'ULR',
@@ -77,6 +77,10 @@ automations_list_applications = [
                     'Label': 'Status',
                     'Status_Available': ['Incomplete']
                 },
+                {
+                    'Label': 'App',
+                    'Type': 'default'
+                }
             ]
         },
         {
