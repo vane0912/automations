@@ -29,8 +29,12 @@ automations_list_applications = [
                 },
                 {
                     'Label': 'Status',
-                    'Status_Available': ['Received', 'MIN']
+                    'Status_Available': ['Incomplete']
                 },
+                {
+                    'Label': 'App',
+                    'Type': 'default'
+                }
             ]
         },
         {

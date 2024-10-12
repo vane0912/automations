@@ -405,6 +405,31 @@ def questions_loop(product_num, browser, wait, num_order_loop, applicants):
                     accept_upload.click()
                 except:
                     pass
+            elif 'issued' in question['slug']:
+                if question['show_if'] is None:
+                    try:
+                        WebDriverWait(browser, 2).until(EC.visibility_of_element_located((By.NAME, 'applicant.0.' + question['slug'] + '.day')))
+                        for user_expiration in range(applicants):
+                            passport_expiration_day = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'applicant' + '.' + str(user_expiration) + '.' + question['slug'] + '.day'))))
+                            passport_expiration_day.select_by_value('10')
+                            passport_expiration_month = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'applicant' + '.' + str(user_expiration) + '.' + question['slug'] + '.month'))))
+                            passport_expiration_month.select_by_value('10')
+                            passport_expiration_year = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'applicant' + '.' + str(user_expiration) + '.' + question['slug'] + '.year'))))
+                            passport_expiration_year.select_by_value("2020") 
+                    except:
+                        pass
+                else:
+                    try:
+                        WebDriverWait(browser, 2).until(EC.visibility_of_element_located((By.NAME, 'applicant.0.' + question['slug'] + '.day')))
+                        for user_expiration in range(applicants):
+                            passport_expiration_day = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'applicant' + '.' + str(user_expiration) + '.' + question['slug'] + '.day'))))
+                            passport_expiration_day.select_by_value('10')
+                            passport_expiration_month = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'applicant' + '.' + str(user_expiration) + '.' + question['slug'] + '.month'))))
+                            passport_expiration_month.select_by_value('10')
+                            passport_expiration_year = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'applicant' + '.' + str(user_expiration) + '.' + question['slug'] + '.year'))))
+                            passport_expiration_year.select_by_value("2020") 
+                    except:
+                        pass
         if "review" in current_url:
             try:
                 WebDriverWait(browser, 10).until(EC.text_to_be_present_in_element((By.ID, 'app'), 'Possible Duplicate'))
