@@ -343,6 +343,7 @@ def questions_loop(product_num, browser, wait, num_order_loop, applicants):
                     api_google = wait.until(EC.visibility_of_element_located((By.ID, 'autocomplete_results')))
                     select_option = api_google.find_elements(By.TAG_NAME, 'li')
                     select_option[0].click()
+                    time.sleep(2)
                 else:
                     try:
                         time.sleep(2)
@@ -353,6 +354,7 @@ def questions_loop(product_num, browser, wait, num_order_loop, applicants):
                         api_google = wait.until(EC.visibility_of_element_located((By.ID, 'autocomplete_results')))
                         select_option = api_google.find_elements(By.TAG_NAME, 'li')
                         select_option[0].click()
+                        time.sleep(2)
                     except:
                         pass
             elif question['slug'] == 'appointment_location_id':
