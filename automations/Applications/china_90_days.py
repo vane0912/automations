@@ -23,7 +23,10 @@ def CHINA_90_DAYS(data):
             product.click()
             #wait.until(EC.element_to_be_clickable((By.ID, "btnContinueUnderSection"))).click() 
             wait.until(lambda driver: driver.current_url != current_url) 
-            questions_loop(10845, browser, wait, order, int(Global_Variables['applicants']))
+            try: 
+                questions_loop(10845, browser, wait, order, int(Global_Variables['applicants']))
+            except:
+                failed_request()
         success_request()
     except:
         failed_request()
