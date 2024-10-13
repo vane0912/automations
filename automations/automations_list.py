@@ -29,7 +29,7 @@ automations_list_applications = [
                 },
                 {
                     'Label': 'Status',
-                    'Status_Available': ['Incomplete']
+                    'Status_Available': ['Received']
                 },
                 {
                     'Label': 'App',
@@ -54,7 +54,7 @@ automations_list_applications = [
                 },
                 {
                     'Label': 'Status',
-                    'Status_Available': ['Incomplete']
+                    'Status_Available': ['Received']
                 },
                 {
                     'Label': 'App',
@@ -79,7 +79,7 @@ automations_list_applications = [
                 },
                 {
                     'Label': 'Status',
-                    'Status_Available': ['Incomplete']
+                    'Status_Available': ['Received']
                 },
                 {
                     'Label': 'App',

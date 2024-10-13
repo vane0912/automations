@@ -82,6 +82,30 @@ def app_questions(url, product_num, app_version):
     data = json.loads(response.content)
     return data
 
+def step_1_dates(wait, slug, browser):
+    if slug == 'arrival_date':
+        arrival_date = wait.until(EC.element_to_be_clickable((By.NAME, "general." + slug)))
+        arrival_date.click()
+        svg_locator = (By.CSS_SELECTOR, "div.is-right svg")
+        day_month = (By.CSS_SELECTOR, "div.day-13")
+        safe_element_click(browser, svg_locator)
+        safe_element_click(browser, day_month)
+    else:
+        departure_date = wait.until(EC.element_to_be_clickable((By.NAME, "general." + slug)))
+        departure_date.click()
+        svg_locator = (By.CSS_SELECTOR, "div.is-right svg")
+        day_month = (By.CSS_SELECTOR, "div.day-18")
+        safe_element_click(browser, svg_locator)
+        safe_element_click(browser, day_month)
+
+def date_selector(wait, user, slug):
+    if slug == 'dob':
+        dob_day = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'applicant' + '.' + str(user) + '.' + slug + '.day'))))
+        dob_day.select_by_value('10')
+        dob_month = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'applicant' + '.' + str(user) + '.' + slug + '.month'))))
+        dob_month.select_by_value('10')
+        dob_year = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'applicant' + '.' + str(user) + '.' + slug + '.year'))))
+        dob_year.select_by_value("2000") 
 
 def questions_loop(product_num, browser, wait, num_order_loop, applicants):
     questions = app_questions(Global_Variables['url'], product_num, Global_Variables['App_Version'])
@@ -103,35 +127,22 @@ def questions_loop(product_num, browser, wait, num_order_loop, applicants):
                 wait.until(EC.element_to_be_clickable((add_traveler_btn[1]))).click()
         for question in arr_section_questions:
             if question['slug'] == 'arrival_date':
-                arrival_date = wait.until(EC.element_to_be_clickable((By.NAME, "general." + question['slug'])))
-                arrival_date.click()
-                svg_locator = (By.CSS_SELECTOR, "div.is-right svg")
-                day_month = (By.CSS_SELECTOR, "div.day-13")
-                safe_element_click(browser, svg_locator)
-                safe_element_click(browser, day_month)
+                step_1_dates(wait, question['slug'], browser)
             elif question['slug'] == 'departure_date': 
-                departure_date = wait.until(EC.element_to_be_clickable((By.NAME, "general." + question['slug'])))
-                departure_date.click()
-                svg_locator = (By.CSS_SELECTOR, "div.is-right svg")
-                day_month = (By.CSS_SELECTOR, "div.day-13")
-                safe_element_click(browser, svg_locator)
-                safe_element_click(browser, day_month)
+                step_1_dates(wait, question['slug'], browser)
             elif question['field_type'] == 'email':
-                if len(browser.find_elements(By.NAME, 'applicant.0.' + question['slug'])) > 0:
-                    print("Found2")
-                    email = WebDriverWait(browser, 2).until(EC.element_to_be_clickable((By.NAME, 'applicant.0.' + question['slug'])))
-                    email.send_keys(Global_Variables['Email'])
-                else: 
-                    email = WebDriverWait(browser, 2).until(EC.element_to_be_clickable((By.NAME, 'general.' + question['slug'])))
-                    email.send_keys(Global_Variables['Email'])
+                try: 
+                    if len(browser.find_elements(By.NAME, 'applicant.0.' + question['slug'])) > 0:
+                        email = WebDriverWait(browser, 2).until(EC.element_to_be_clickable((By.NAME, 'applicant.0.' + question['slug'])))
+                        email.send_keys(Global_Variables['Email'])
+                    else: 
+                        email = WebDriverWait(browser, 2).until(EC.element_to_be_clickable((By.NAME, 'general.' + question['slug'])))
+                        email.send_keys(Global_Variables['Email'])
+                except:
+                    pass
             elif question['slug'] == 'dob':
                 for user in range(applicants):
-                    dob_day = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'applicant' + '.' + str(user) + '.' + question['slug'] + '.day'))))
-                    dob_day.select_by_value('10')
-                    dob_month = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'applicant' + '.' + str(user) + '.' + question['slug'] + '.month'))))
-                    dob_month.select_by_value('10')
-                    dob_year = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'applicant' + '.' + str(user) + '.' + question['slug'] + '.year'))))
-                    dob_year.select_by_value("2000") 
+                    date_selector(wait, user, question['slug'])
             elif question['field_type'] == 'textbox':
                 try: 
                     input_field = WebDriverWait(browser, 2).until(EC.visibility_of_element_located((By.NAME, 'applicant' + '.' + '0' + '.' + question['slug'])))
@@ -453,6 +464,11 @@ def questions_loop(product_num, browser, wait, num_order_loop, applicants):
             except:
                 wait.until(EC.element_to_be_clickable((By.ID, "btnSubmitApplication"))).click() 
                 wait.until(lambda driver: driver.current_url != current_url)
+                wait.until(EC.element_to_be_clickable((By.ID, "btnDismissAppDownload"))).click() 
+                wait.until(lambda driver: driver.current_url != current_url)
+                order_num = wait.until(EC.visibility_of_element_located((By.ID, "h1-tag-container")))
+                Global_Variables['Order_Numbers'].append(re.findall(r'\d+', order_num.text))
+                break
         else:
             continue_sidebar = wait.until(EC.visibility_of_element_located((By.ID, "btnContinueSidebar")))
             continue_sidebar.click() if continue_sidebar.is_enabled() else wait.until(EC.element_to_be_clickable((By.ID, "btnContinueSidebar"))).click()
