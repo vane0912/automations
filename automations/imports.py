@@ -26,6 +26,8 @@ Global_Variables = {
     'App_Version': '',
     'Status': ''
 }
+def take_screenshot(driver, step):
+    driver.save_screenshot(f'/Users/Chapis/Desktop/Automation/Automation/automations/saved_screenshots/Correct/screenshot_{step}.png')
 def setArguments(data):
     for x in data:
         if x['type'] == 'ULR':
@@ -111,6 +113,7 @@ def questions_loop(product_num, browser, wait, num_order_loop, applicants):
     questions = app_questions(Global_Variables['url'], product_num, Global_Variables['App_Version'])
     sections_arr = []
     values_arr = []
+    num_screenshot = 0
     for key,value in questions['questions'].items():
         values_arr.append(value)
         sections_arr.append(value.get('multipart_section'))
@@ -125,7 +128,9 @@ def questions_loop(product_num, browser, wait, num_order_loop, applicants):
                 add_traveler_div = wait.until(EC.visibility_of_element_located((By.XPATH, "//div[@data-handle='add-traveler']")))
                 add_traveler_btn = add_traveler_div.find_elements(By.TAG_NAME, 'button')
                 wait.until(EC.element_to_be_clickable((add_traveler_btn[1]))).click()
-        for question in arr_section_questions:
+        for question in arr_section_questions: 
+            num_screenshot += 1
+            take_screenshot(browser, str(num_screenshot))
             if question['slug'] == 'arrival_date':
                 step_1_dates(wait, question['slug'], browser)
             elif question['slug'] == 'departure_date': 
@@ -460,6 +465,8 @@ def questions_loop(product_num, browser, wait, num_order_loop, applicants):
         elif "continue" in current_url:
             try: 
                 WebDriverWait(browser, 2).until(EC.element_to_be_clickable((By.ID, "btnContinueUnderSection"))).click() 
+                num_screenshot += 1
+                take_screenshot(browser, str(num_screenshot))
                 wait.until(lambda driver: driver.current_url != current_url) 
             except:
                 wait.until(EC.element_to_be_clickable((By.ID, "btnSubmitApplication"))).click() 
@@ -468,10 +475,14 @@ def questions_loop(product_num, browser, wait, num_order_loop, applicants):
                 wait.until(lambda driver: driver.current_url != current_url)
                 order_num = wait.until(EC.visibility_of_element_located((By.ID, "h1-tag-container")))
                 Global_Variables['Order_Numbers'].append(re.findall(r'\d+', order_num.text))
+                num_screenshot += 1
+                take_screenshot(browser, str(num_screenshot))
                 break
         else:
             continue_sidebar = wait.until(EC.visibility_of_element_located((By.ID, "btnContinueSidebar")))
             continue_sidebar.click() if continue_sidebar.is_enabled() else wait.until(EC.element_to_be_clickable((By.ID, "btnContinueSidebar"))).click()
+            num_screenshot += 1
+            take_screenshot(browser, str(num_screenshot))
             wait.until(lambda driver: driver.current_url != current_url) 
 ##https://costumer-facing1-production.up.railway.app
 ##https://costumer-facing1-automations-pr-6.up.railway.app
