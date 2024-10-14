@@ -28,5 +28,5 @@ def CHINA_90_DAYS(data):
             except:
                 failed_request()
         success_request()
-    except:
-        failed_request()
+    except Exception as e:
+        failed_request(e)

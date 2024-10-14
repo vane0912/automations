@@ -270,7 +270,7 @@ def questions_loop(product_num, browser, wait, num_order_loop, applicants):
                         input_field = wait.until(EC.element_to_be_clickable((By.NAME, 'telephone')))
                         input_field.send_keys('11111111') 
                         input_field.send_keys(Keys.ENTER)
-            elif question['field_type'] == 'dropdown':
+            elif question['field_type'] == 'dropdown' or question['field_type'] == 'dropdown_country' and question['multipart_section'] != 'step_3c':
                 try:
                     attempts = 0
                     max_attempts = 3  
@@ -336,17 +336,45 @@ def questions_loop(product_num, browser, wait, num_order_loop, applicants):
                             passport_expiration_year = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'applicant' + '.' + str(user_expiration) + '.' + question['slug'] + '.year'))))
                             passport_expiration_year.select_by_value("2025") 
                     except:
-                        pass
+                        WebDriverWait(browser, 2).until(EC.visibility_of_element_located((By.NAME, 'general.' + question['slug'] + '.day')))
+                        for user_expiration in range(applicants):
+                            passport_expiration_day = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'general.' + question['slug'] + '.day'))))
+                            passport_expiration_day.select_by_value('10')
+                            passport_expiration_month = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'general.' + question['slug'] + '.month'))))
+                            passport_expiration_month.select_by_value('10')
+                            passport_expiration_year = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'general.' + question['slug'] + '.year'))))
+                            passport_expiration_year.select_by_value("2025") 
                 else:
                     try:
-                        WebDriverWait(browser, 2).until(EC.visibility_of_element_located((By.NAME, 'applicant.0.' + question['slug'] + '.day')))
-                        for user_expiration in range(applicants):
-                            passport_expiration_day = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'applicant' + '.' + str(user_expiration) + '.' + question['slug'] + '.day'))))
-                            passport_expiration_day.select_by_value('10')
-                            passport_expiration_month = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'applicant' + '.' + str(user_expiration) + '.' + question['slug'] + '.month'))))
-                            passport_expiration_month.select_by_value('10')
-                            passport_expiration_year = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'applicant' + '.' + str(user_expiration) + '.' + question['slug'] + '.year'))))
-                            passport_expiration_year.select_by_value("2025") 
+                        attempts = 0
+                        max_attempts = 2  
+                        while attempts < max_attempts:
+                            if attempts == 0:
+                                try:
+                                    WebDriverWait(browser, 2).until(EC.visibility_of_element_located((By.NAME, 'applicant.0.' + question['slug'] + '.day')))
+                                    for user_expiration in range(applicants):
+                                        passport_expiration_day = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'applicant' + '.' + str(user_expiration) + '.' + question['slug'] + '.day'))))
+                                        passport_expiration_day.select_by_value('10')
+                                        passport_expiration_month = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'applicant' + '.' + str(user_expiration) + '.' + question['slug'] + '.month'))))
+                                        passport_expiration_month.select_by_value('10')
+                                        passport_expiration_year = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'applicant' + '.' + str(user_expiration) + '.' + question['slug'] + '.year'))))
+                                        passport_expiration_year.select_by_value("2025") 
+                                    attempts = 2 
+                                except:
+                                    attempts += 1
+                            elif attempts == 1:
+                                try:
+                                    WebDriverWait(browser, 2).until(EC.visibility_of_element_located((By.NAME, 'general.' + question['slug'] + '.day')))
+                                    for user_expiration in range(applicants):
+                                        passport_expiration_day = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'general' + '.' + str(user_expiration) + '.' + question['slug'] + '.day'))))
+                                        passport_expiration_day.select_by_value('10')
+                                        passport_expiration_month = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'general' + '.' + str(user_expiration) + '.' + question['slug'] + '.month'))))
+                                        passport_expiration_month.select_by_value('10')
+                                        passport_expiration_year = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'general' + '.' + str(user_expiration) + '.' + question['slug'] + '.year'))))
+                                        passport_expiration_year.select_by_value("2025") 
+                                    attempts = 2 
+                                except:
+                                    attempts += 1
                     except:
                         pass
             elif question['field_type'] == "address":

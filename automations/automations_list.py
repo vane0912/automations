@@ -92,7 +92,7 @@ automations_list_applications = [
             'Subtitles': ['Only for MX citizens'],
             'Country' : 'Egypt',
             'Type': EG_180_Multiple,
-            'Enabled': False,
+            'Enabled': True,
             'Requirements': [
                 {
                     'Label': 'ULR',
@@ -103,18 +103,13 @@ automations_list_applications = [
                     'Type': 'default',
                 },
                 {
-                    'Label': 'Applicants',
-                    'Type': 'default',
-                },
-                {
                     'Label': 'Status',
-                    'Status_Available': ['Received', 'MIN']
+                    'Status_Available': ['Received']
                 },
                 {
-                    'Label': 'N. Orders',
-                    'Type': 'Number',
-                },
-                
+                    'Label': 'App',
+                    'Type': 'default'
+                }
             ]
         }
         

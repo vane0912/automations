@@ -1,149 +1,32 @@
-from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-import time
-from selenium.webdriver.chrome.options import Options
-Global_Variables = {
-    'url': 'https://deploy-20240610--73a8cdd1.visachinaonline.com',
-    'Country': "MX",
-    'Email': "test@mailinator.com",
-    'First_name' : 'Pedro',
-    'Last_name' : 'Gonzalez',
-    'Passport_num' : '123456789'   
-}
-def EG_180_Multiple():
+from ..imports import *
+def EG_180_Multiple(data):
+    setArguments(data)
+    
+    Global_Variables['Order_Numbers'] = []
     chrome_options = Options()
-    chrome_options.add_argument('--headless')  # Run Chrome in headless mode
-    browser = webdriver.Chrome(options=chrome_options)
-    wait = WebDriverWait(browser, 150)
-    for x in range(3):
-        browser.get(Global_Variables.url + '/egypt/apply-now')
-        if(x == 0):
-            nationality = wait.until(EC.element_to_be_clickable((By.NAME, 'general.common_nationality_country')))
-            nationality.click()
-            #pyautogui.write(Global_Variables.country)
-            #pyautogui.hotkey('enter')
-        product = browser.find_element(By.XPATH, "//div[@data-ivisa-slug='visa_type_id']")
-        product.click()
-        #pyautogui.hotkey('down')
-        #pyautogui.hotkey('enter')
-        time.sleep(2)
-        continue_btn = browser.find_element(By.ID, "btnContinueUnderSection")
-        continue_btn.click()
-        ## Step 2
-        destination_input = wait.until(EC.element_to_be_clickable((By.NAME, "general.arrival_date")))
-        destination_input.click()
-        wait.until(EC.visibility_of(browser.find_element(By.XPATH, "//div[@placement='bottom-start']")))
-        wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, "div.is-right"))).click()
-        time.sleep(1)
-        wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, "div.day-13"))).click()
-        departure_input = wait.until(EC.element_to_be_clickable((By.NAME, "general.departure_date")))
-        departure_input.click()
-        wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, "div.is-right"))).click()
-        time.sleep(1)
-        wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, "div.day-18"))).click()
-
-        if x == 0:
-            email = browser.find_element(By.NAME,"general.email")
-            email.send_keys(Global_Variables.email_txt)
-        time.sleep(2)
-        continue_btn_sidebar = browser.find_element(By.ID, "btnContinueSidebar")
-        continue_btn_sidebar.click()
-        ## Step 3
-        first_name = wait.until(EC.element_to_be_clickable((By.NAME, 'applicant.0.first_name')))
-        first_name.send_keys(Global_Variables.first_name_txt)
-        last_name = browser.find_element(By.NAME, "applicant.0.last_name")
-        last_name.send_keys(Global_Variables.last_name_txt)
-        gender_select = browser.find_element(By.XPATH, "//select[@data-handle='dropdown-applicant.0.gender']")
-        gender_select.click()
-        gender_select.send_keys('f')
-        gender_select.send_keys(Keys.ENTER)
-        dob_day = browser.find_element(By.NAME, "applicant.0.dob.day")
-        dob_day.send_keys('23')
-        dob_day.send_keys(Keys.ENTER)
-        dob_month = browser.find_element(By.NAME, "applicant.0.dob.month")
-        dob_month.send_keys('d')
-        dob_month.send_keys(Keys.ENTER)
-        dob_year = browser.find_element(By.NAME, "applicant.0.dob.year")
-        dob_year.send_keys('1997')
-        dob_year.send_keys(Keys.ENTER)
-        browser.find_element(By.XPATH, '/html/body/div/div[3]/div[1]/div[4]/div/div[2]/div[2]/div[1]/div[1]/div[1]/div[2]/div[2]/button').click()
-        time.sleep(2)
-        first_name2 = wait.until(EC.element_to_be_clickable((By.NAME, 'applicant.1.first_name')))
-        first_name2.send_keys(Global_Variables.first_name_txt)
-        last_name2 = browser.find_element(By.NAME, "applicant.1.last_name")
-        last_name2.send_keys(Global_Variables.last_name_txt)
-        gender_select2 = browser.find_element(By.XPATH, "//select[@data-handle='dropdown-applicant.1.gender']")
-        gender_select2.click()
-        gender_select2.send_keys('f')
-        gender_select2.send_keys(Keys.ENTER)
-        dob_day2 = browser.find_element(By.NAME, "applicant.1.dob.day")
-        dob_day2.send_keys('23')
-        dob_day2.send_keys(Keys.ENTER)
-        dob_month2 = browser.find_element(By.NAME, "applicant.1.dob.month")
-        dob_month2.send_keys('d')
-        dob_month2.send_keys(Keys.ENTER)
-        dob_year2 = browser.find_element(By.NAME, "applicant.1.dob.year")
-        dob_year2.send_keys('1997')
-        dob_year2.send_keys(Keys.ENTER)
-        # step 4
-        time.sleep(2)
-        continue_btn_sidebar.click()
-        ##
-        time.sleep(2)
-        continue_btn_sidebar.click()
-        ##
-        passport_num = wait.until(EC.element_to_be_clickable((By.NAME, "applicant.0.passport_num")))
-        passport_num.send_keys(Global_Variables.passport_num)
-        time.sleep(1)
-        passport_day = browser.find_element(By.NAME, "applicant.0.passport_expiration_date.day")
-        passport_day.send_keys('23')
-        passport_day.send_keys(Keys.ENTER)
-        time.sleep(1)
-        passport_month = browser.find_element(By.NAME, "applicant.0.passport_expiration_date.month")
-        passport_month.send_keys('d')
-        passport_month.send_keys(Keys.ENTER)
-        time.sleep(1)
-        passport = browser.find_element(By.NAME, "applicant.0.passport_expiration_date.year")
-        passport.send_keys('2032')
-        passport.send_keys(Keys.ENTER)
-        time.sleep(1)
-        application_type = browser.find_element(By.XPATH, "//select[@data-handle='dropdown-applicant.0.application_type']")
-        application_type.click()
-        #pyautogui.hotkey('down')
-        time.sleep(1)
-        #pyautogui.hotkey('enter')
-        time.sleep(1)
-        passport_num2 = wait.until(EC.element_to_be_clickable((By.NAME, "applicant.1.passport_num")))
-        passport_num2.send_keys(Global_Variables.passport_num)
-        time.sleep(1)
-        passport_day2 = browser.find_element(By.NAME, "applicant.1.passport_expiration_date.day")
-        passport_day2.send_keys('23')
-        passport_day2.send_keys(Keys.ENTER)
-        time.sleep(1)
-        passport_month2 = browser.find_element(By.NAME, "applicant.1.passport_expiration_date.month")
-        passport_month2.send_keys('d')
-        passport_month2.send_keys(Keys.ENTER)
-        time.sleep(1)
-        time.sleep(1)
-        passport_year2 = browser.find_element(By.NAME, "applicant.1.passport_expiration_date.year")
-        passport_year2.send_keys('2032')
-        passport_year2.send_keys(Keys.ENTER)
-        application_type = browser.find_element(By.XPATH, "//select[@data-handle='dropdown-applicant.1.application_type']")
-        application_type.click()
-        #pyautogui.hotkey('down')
-        #pyautogui.hotkey('enter')
-        time.sleep(3)
-        continue_btn_sidebar.click()
-        time.sleep(3)
-        continue_btn_sidebar.click()
-        time.sleep(3)
-        continue_btn_sidebar.click()
-        time.sleep(3)
-        if browser.find_elements(By.ID, "btnDisclaimerNext"):
-            browser.find_element(By.ID, "btnDisclaimerNext").click()
-        wait.until(EC.element_to_be_clickable((By.ID, "btnSubmitPayment"))).click()
-        wait.until(EC.element_to_be_clickable((By.ID, "btnCompleteProcess"))).click()
-        time.sleep(3)
+    chrome_options.add_argument('--headless') 
+    chrome_options.add_argument('window-size=1920,1080')
+    chrome_options.add_argument('--no-sandbox')
+    chrome_options.add_argument('--disable-dev-shm-usage')
+    browser = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
+    wait = WebDriverWait(browser, 60, ignored_exceptions=(NoSuchElementException,StaleElementReferenceException))
+    try:
+        for order in range(int(Global_Variables['N. Orders'])):
+            browser.get(Global_Variables['url'] + '/egypt/apply-now')
+            current_url = browser.current_url
+            if order == 0:
+                nationality = wait.until(EC.element_to_be_clickable((By.NAME, 'general.common_nationality_country')))
+                nationality.click()
+                nationality_values = wait.until(EC.element_to_be_clickable((By.XPATH, "//input[@data-handle='dropdown-general.common_nationality_country']")))
+                nationality_values.send_keys(Global_Variables['Country'], Keys.ENTER)
+            product = wait.until(EC.element_to_be_clickable((By.XPATH, '//button[@data-handle="vt-17"]')))
+            product.click()
+            #wait.until(EC.element_to_be_clickable((By.ID, "btnContinueUnderSection"))).click() 
+            wait.until(lambda driver: driver.current_url != current_url) 
+            try:
+                questions_loop(10115, browser, wait, order, int(Global_Variables['applicants']))
+            except:
+                failed_request()
+        success_request()
+    except Exception as e:
+        failed_request(e)
