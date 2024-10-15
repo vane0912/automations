@@ -3,13 +3,20 @@ from .Applications.India_1y_Multiple import India_1y_Multiple
 from .Applications.Egypt_180_Multiple import EG_180_Multiple
 from .Applications.china_90_days import CHINA_90_DAYS
 from .Weekly.USPR import USPR_PASSPORT_RENEWAL
-automations_list_weekly = [
+
+automations_list_admin = [
     {
-        'Title': 'USPR-Passport-Renewal',
-        'Subtitles': ['Creates the 3 applications to check that USPR validations work'],
+        'Title': 'Check-Orders-Page',
+        'Subtitles': ['Customer orders and search pages can be viewed'],
         'Type': USPR_PASSPORT_RENEWAL,
-        'Enabled': True
-    }
+        'Enabled': True,
+        'Requirements': [
+                {
+                    'Label': 'URL',
+                    'Type': 'default',
+                },
+            ]
+        }
 ]
 automations_list_applications = [
         {
@@ -112,5 +119,4 @@ automations_list_applications = [
                 }
             ]
         }
-        
 ]

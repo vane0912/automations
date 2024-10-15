@@ -1,74 +1,44 @@
 {% extends "base.html" %}
-{% block title %}Weekly Automations{% endblock %}
+{% block title %}Admin Automations{% endblock %}
 {% block content %}
    <div class="w-9/12">
-      <h1 class="text-5xl font-extrabold">Weekly Automations</h1>
+      <h1 class="text-5xl font-extrabold">Admin Automations</h1>
       {%for automation in automations_list%}
          {%if automation['Enabled']%}
-            <div class="w-full flex flex-col justify-evenly cursor-pointer mt-14 p-6 rounded-md bg-white h-fit mb-3 border-[#302E2E] border-2">
-               <h1 class="text-2xl font-bold">{{automation.Title.replace('-', ' ')}}</h1>
+            <div class="w-full flex flex-col justify-evenly mt-14 p-6 rounded-md bg-white h-fit mb-3 border-[#302E2E] border-2">
+               <div class="w-full flex justify-between">
+                   <h1 class="text-2xl font-bold">{{automation.Title.replace('-', ' ')}}</h1>
+                    <div class="w-52">
+                        <button 
+                        onclick="runtest(document.getElementById('URL').value, '{{automation.Title}}')"
+                        class="bg-[#4ADE80] w-1/4 flex justify-center items-center ml-32 font-semibold rounded-lg h-10">
+                            <img class="w-6 h-6" id="play_btn" src="../static/images/boton-de-play.png" alt="">
+                            <img class="w-6 h-6 hidden" id="pause_btn" src="../static/images/boton-de-pausa.png" alt="">
+                        </button>
+                    </div>
+               </div>
                <ul class="list-disc">
                   {%for automation in automations_list[0]['Subtitles']%}
                     <li class="my-5 ml-5">{{automation}}</li>
                   {% endfor %}
                </ul>
                <div class="flex flex-col items-center w-full">
-                  <div class="flex w-full">
-                     <input 
-                     id="URL"
-                     placeholder="URL"
-                     class="w-full outline-none border-[1px] border-solid border-[#302E2E]/50 font-light h-[40px] px-6 py-5 rounded-lg" 
-                     type="text"
-                     >
-                  </div>
-                  <div class="flex w-full mt-3">
-                     <input 
-                     id="Email"
-                     placeholder="Email"
-                     class="w-5/6 outline-none border-[1px] border-solid border-[#302E2E]/50 font-light h-[40px] px-6 py-5 rounded-lg" 
-                     type="text"
-                     >
-                     <button 
-                     onclick="runtest(document.getElementById('URL').value, '{{automation.Title}}', document.getElementById('Email').value)"
-                     class="bg-[#4ADE80] w-1/4 ml-32 font-semibold rounded-lg h-10">
-                     RUN</button>
+                    {%for requirement in automations_list[0]['Requirements']%}
+                        <div class="flex w-full">
+                           <input 
+                           id="{{ requirement.Label }}" placeholder="{{ requirement.Label }}" name="{{ app_name }}-input" 
+                           class="w-full border-[1px] border-solid border-[#302E2E]/50 font-light h-[40px] px-6 py-5 rounded-lg mt-2" 
+                           type="{{ requirement.Type }}"
+                           >
+                        </div>
+                    {%endfor%}
                   </div>
                </div>
             </div>
          {% endif %}
       {% endfor %}
    </div>
-   <div id="automation_running" class="hidden bg-[#302E2E]/50 top-0 w-full h-screen">
-      <div class="w-full h-full flex justify-center items-center">
-          <div class="w-4/6 px-11 max-w-[1000px] bg-white h-1/2 max-h-[500px] border-2 border-solid border-[#302E2E] rounded-lg">
-              <div class="flex justify-between items-center h-full">
-                  <div class="flex flex-col w-2/4">
-                      <div class="flex justify-evenly"> 
-                          <h2 class="text-[32px] font-semibold text-center mb-5">Running automations</h2>
-                          <img class="w-12 h-12 animate-spin" src="../static/images/loading.png">
-                      </div>
-                      <p class="text-xl font-medium text-center mb-5">(This is going to take a while so go ahead and make yourself a coffee while you wait)</p>
-                      <p class="text-center">Sometimes the automation finishes but the response takes time to get to us, you can login to the email with this password and check the progress</p>
-                      <ul class="flex justify-evenly mt-4">
-                          <div>
-                              <li class="font-semibold">Email:</li>
-                              <li id="user_email_status"></li>
-                          </div>
-                          <div>
-                              <li class="font-semibold">Password:</li>
-                              <li>testivisa5!</li>
-                          </div>
-                      </ul>
-                  </div>
-                  <div class="w-2/6 max-w-[290px]">
-                      <div class="tenor-gif-embed relative left-2" data-postid="13657985" data-share-method="host" data-aspect-ratio="1" data-width="100%">
-                          <a href="https://tenor.com/view/coffee-cup-of-coffee-drinking-coffee-pusheen-tea-time-gif-13657985">Coffee Cup Of Coffee Sticker</a>
-                      </div>
-                  </div>
-              </div>
-          </div> 
-      </div>
-   </div>
+   
    <div id="automation_failed" class="hidden bg-[#302E2E]/50 top-0 w-full h-screen">
       <div class="w-full h-full flex justify-center items-center">
           <div class="w-fit bg-white h-fit border-2 border-solid border-[#302E2E] rounded-lg">
@@ -134,17 +104,17 @@
          automation_started = true
          pollAutomationStatus()
      }
-      function runtest(url, automation, email){
-         fetch(`/weekly/${automation}`,{
+      function runtest(url, automation){
+        document.getElementById('play_btn').classList.add('hidden')
+        document.getElementById('pause_btn').classList.add('flex')
+        document.getElementById('pause_btn').classList.remove('hidden')
+         fetch(`/admin/${automation}`,{
             method: 'POST',
             headers: {'Content-Type':'application/json'},
-            body: JSON.stringify({url: url, email: email})
+            body: JSON.stringify({url: url})
         })
         .then(res => res.json()) 
         .then(data => console.log(data))
-        document.getElementById('automation_running').classList.remove('hidden')
-        document.getElementById('automation_running').classList.add('absolute')
-        document.getElementById('user_email_status').textContent = email
         runpolling()
       }
       async function pollAutomationStatus(){
@@ -152,7 +122,6 @@
          const json_response = await response.json();
          if (json_response.Status === "Success") {
             console.log(json_response)
-            document.getElementById('automation_running').classList.add('hidden')
             document.getElementById('automation_results').classList.remove('hidden')
             document.getElementById('automation_results').classList.add('absolute')
             document.getElementsByName('user_email')[0].textContent = json_response.email
@@ -168,7 +137,6 @@
          }else if(json_response.Status === "Failed"){
              console.log(json_response)
              console.log('failed')
-             document.getElementById('automation_running').classList.add('hidden')
              document.getElementById('automation_failed').classList.remove('hidden')
              document.getElementById('automation_failed').classList.add('absolute')
          } 
