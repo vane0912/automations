@@ -556,10 +556,6 @@ video {
   --tw-contain-style:  ;
 }
 
-.visible{
-  visibility: visible;
-}
-
 .static{
   position: static;
 }
@@ -699,6 +695,14 @@ video {
   margin-top: 2rem;
 }
 
+.ml-3{
+  margin-left: 0.75rem;
+}
+
+.ml-7{
+  margin-left: 1.75rem;
+}
+
 .block{
   display: block;
 }
@@ -731,12 +735,12 @@ video {
   height: 4rem;
 }
 
-.h-2{
-  height: 0.5rem;
-}
-
 .h-28{
   height: 7rem;
+}
+
+.h-6{
+  height: 1.5rem;
 }
 
 .h-\[103px\]{
@@ -766,14 +770,6 @@ video {
 
 .h-screen{
   height: 100vh;
-}
-
-.h-8{
-  height: 2rem;
-}
-
-.h-6{
-  height: 1.5rem;
 }
 
 .max-h-\[500px\]{
@@ -816,12 +812,12 @@ video {
   width: 41.666667%;
 }
 
-.w-5\/6{
-  width: 83.333333%;
-}
-
 .w-52{
   width: 13rem;
+}
+
+.w-6{
+  width: 1.5rem;
 }
 
 .w-8\/12{
@@ -853,12 +849,12 @@ video {
   width: 100%;
 }
 
-.w-8{
-  width: 2rem;
+.w-60{
+  width: 15rem;
 }
 
-.w-6{
-  width: 1.5rem;
+.w-96{
+  width: 24rem;
 }
 
 .max-w-\[1000px\]{
@@ -915,6 +911,10 @@ video {
   justify-content: flex-start;
 }
 
+.justify-end{
+  justify-content: flex-end;
+}
+
 .justify-center{
   justify-content: center;
 }
@@ -925,6 +925,10 @@ video {
 
 .justify-evenly{
   justify-content: space-evenly;
+}
+
+.justify-items-end{
+  justify-items: end;
 }
 
 .justify-items-center{
@@ -942,6 +946,10 @@ video {
 
 .gap-y-4{
   row-gap: 1rem;
+}
+
+.self-end{
+  align-self: flex-end;
 }
 
 .overflow-x-hidden{
