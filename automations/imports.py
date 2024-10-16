@@ -26,6 +26,7 @@ Global_Variables = {
     'App_Version': '',
     'Status': ''
 }
+
 def take_screenshot(driver, step):
     driver.save_screenshot(f'/Users/Chapis/Desktop/Automation/Automation/automations/saved_screenshots/Correct/screenshot_{step}.png')
 def setArguments(data):

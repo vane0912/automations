@@ -2,13 +2,13 @@ from .Applications.Turkey_evisa_180 import TR_App_P2
 from .Applications.India_1y_Multiple import India_1y_Multiple
 from .Applications.Egypt_180_Multiple import EG_180_Multiple
 from .Applications.china_90_days import CHINA_90_DAYS
-from .Weekly.USPR import USPR_PASSPORT_RENEWAL
+from .Admin.check_orders_page import check_orders
 
 automations_list_admin = [
     {
         'Title': 'Check-Orders-Page',
         'Subtitles': ['Customer orders and search pages can be viewed'],
-        'Type': USPR_PASSPORT_RENEWAL,
+        'Type': check_orders,
         'Enabled': True,
         'Requirements': [
                 {
