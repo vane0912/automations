@@ -47,7 +47,7 @@
                    type="Number"
                    >
             </div>
-            <div class="w-full">
+            <!-- <div class="w-full">
                 <h2 class="text-xl font-semibold">Applicants</h2>
                 <input 
                 onchange="this.value > 6 ? alert('Please Enter less than 7 applicants') : this.value"
@@ -56,6 +56,7 @@
                 type="Number"
                 max="7">
             </div>
+            -->
             <button class="bg-[#4ADE80] mt-8 w-[200px] col-start-1 col-end-1 font-semibold rounded-lg h-[40px]" onclick="run_test('{{goto}}' ,location.pathname.split('/')[2])">RUN</button>
         </div>
     </div>
@@ -228,25 +229,6 @@
             console.log('There was an error while polling', err)
         }
     }
-
-    //function run_test(){
-    //    fetch(`https://deploy-20240711--086a1fb5.visachinaonline.com/mobile_api/product/10840/product_questions`,{
-    //        method: 'POST',
-    //        headers: {
-    //            'mobile-app-version':'4.5.5',
-    //            'Device-OS-Version':'13',
-    //            'Device-Platform':'ios',
-    //            'Cookie':'remember_web_59ba36addc2b2f9401580f014c7f58ea4e30989d=1693eyJpdiI6IjRnRjFyeUpBb2x1ZkYyeVJzV0J6d3c9PSIsInZhbHVlIjoiMnc3TGtYbmlvbnZ3KzFmSFAzSm4waUY2WWptSkJtMERCM2FPWjA2aFlGYUNrQ1JZandZYW9NRTZKRnEyZWVJRWY0UlQwNGYrMjFTY3d5aGVXNjFta0ZjeFFNVFVjaFdQZE1DVVRSb1BVdkd1WEVwc09qSzAwUk92a2VuaW1MZml2c1JBRVJxUzVSREhFM0J0WjRPQzI1cVgxVzRWeTQvZWdxanNybGVEam4wcW9WcHhXQU1xa3NySHR6RHFrbzUxak5JS0hyK1NlNzArKzVaY2NWOWdVNVZoSU9FVGdoSklLbHFTVU1GMm90QT0iLCJtYWMiOiJlMjQ4MmFiYTgyMWFlODY5YzFlZmRhYWRhYzA2ZDE3YzQ4NWVkZGM1OTdhZTYyOWE5NTY0YzVhZjhmMmUxNDZiIiwidGFnIjoiIn0=',
-    //            'mobile-app-type':'visa',
-    //            'Accept':'application/json'
-    //        }
-    //    }).then((res) => res.json())
-    //    .then((data) => {
-    //        const val = Object.values(data.questions)
-    //        const filter_step1 = val.filter(val => val.multipart_section === 'step_3a')
-    //        console.log(filter_step1)
-    //    })
-    //}
     </script>
 {% endblock %}
 

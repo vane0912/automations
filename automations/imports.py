@@ -28,7 +28,7 @@ Global_Variables = {
 }
 
 def take_screenshot(driver, step):
-    driver.save_screenshot(f'/Users/Chapis/Desktop/Automation/Automation/automations/saved_screenshots/Correct/screenshot_{step}.png')
+    driver.save_screenshot(os.getcwd() + f'/automations/Applications/saved_screenshots/Correct/screenshot_{step}.png')
 def setArguments(data):
     for x in data:
         if x['type'] == 'ULR':
@@ -58,20 +58,20 @@ def safe_element_click(driver, locator):
     print(f"Failed to click element after {max_attempts} attempts")
     return False 
 
-def success_request():
-    automation_results = {
-        'Order_numbers' : Global_Variables['Order_Numbers'],
-        'Status' : 'Success',
-        'order_status' : Global_Variables['Status'],
-        'email' : Global_Variables['Email'],
-    }
-    requests.post('http://127.0.0.1:5000' + '/check-automation-status',json=automation_results, headers={'Content-type': 'application/json', 'Accept': 'text/plain'})
-
-def failed_request(e):
-    requests.post('http://127.0.0.1:5000' + '/check-automation-status',json={'ERROR': str(e).splitlines()[0], 'Status' : 'Failed'}, headers={'Content-type': 'application/json', 'Accept': 'text/plain'})
-    logging.debug('Debug message: %s', e)
-    logging.error('Error occurred: %s', traceback.format_exc())
-    print(str(e).splitlines()[0])
+def send_result(result, e):
+    if result == 'Success':
+        automation_results = {
+            'Order_numbers' : Global_Variables['Order_Numbers'],
+            'Status' : 'Success',
+            'order_status' : Global_Variables['Status'],
+            'email' : Global_Variables['Email'],
+        }
+        requests.post('http://127.0.0.1:5000' + '/check-automation-status',json=automation_results, headers={'Content-type': 'application/json', 'Accept': 'text/plain'})
+    else:
+        requests.post('http://127.0.0.1:5000' + '/check-automation-status',json={'ERROR': str(e).splitlines()[0], 'Status' : 'Failed'}, headers={'Content-type': 'application/json', 'Accept': 'text/plain'})
+        logging.debug('Debug message: %s', e)
+        logging.error('Error occurred: %s', traceback.format_exc())
+        print(str(e).splitlines()[0])
 
 def app_questions(url, product_num, app_version):
     response = requests.post(url + '/mobile_api/product/'+ str(product_num) +'/product_questions', headers={

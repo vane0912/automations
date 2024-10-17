@@ -24,9 +24,11 @@ def EG_180_Multiple(data):
             #wait.until(EC.element_to_be_clickable((By.ID, "btnContinueUnderSection"))).click() 
             wait.until(lambda driver: driver.current_url != current_url) 
             try:
-                questions_loop(10115, browser, wait, order, int(Global_Variables['applicants']))
-            except:
-                failed_request()
-        success_request()
+                questions_loop(10115, browser, wait, order, 1)
+            except Exception as e:
+                browser.get_screenshot_as_file(os.getcwd() + '/automations/Applications/saved_screenshots/Error/error.png')
+                send_result('Failed',e)
+                break
+        send_result('Success',e)
     except Exception as e:
-        failed_request(e)
+        send_result('Failed',e)

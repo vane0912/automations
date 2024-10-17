@@ -12,26 +12,24 @@ def TR_App_P2(data):
     wait = WebDriverWait(browser, 10, ignored_exceptions=(NoSuchElementException,StaleElementReferenceException))
     
     try:
-        while True:
-            for order in range(int(Global_Variables['N. Orders'])):
-                browser.get(Global_Variables['url'] + '/turkey/apply-now')
-                current_url = browser.current_url
-                if order == 0:
-                    nationality = wait.until(EC.element_to_be_clickable((By.NAME, 'general.common_nationality_country')))
-                    nationality.click()
-                    nationality_values = wait.until(EC.element_to_be_clickable((By.XPATH, "//input[@data-handle='dropdown-general.common_nationality_country']")))
-                    nationality_values.send_keys('MX', Keys.ENTER)
-                product = wait.until(EC.element_to_be_clickable((By.XPATH, '//button[@data-handle="vt-38"]')))
-                product.click()
-                #wait.until(EC.element_to_be_clickable((By.ID, "btnContinueUnderSection"))).click() 
-                wait.until(lambda driver: driver.current_url != current_url) 
-                try:
-                    questions_loop(10135, browser, wait, order, int(Global_Variables['applicants']))
-                except:
-                    browser.get_screenshot_as_file('/Users/Chapis/Desktop/Automation/Automation/automations/saved_screenshots/Error/error.png')
-                    failed_request()
-                    break
-            success_request()
-            break
+        for order in range(int(Global_Variables['N. Orders'])):
+            browser.get(Global_Variables['url'] + '/turkey/apply-now')
+            current_url = browser.current_url
+            if order == 0:
+                nationality = wait.until(EC.element_to_be_clickable((By.NAME, 'general.common_nationality_country')))
+                nationality.click()
+                nationality_values = wait.until(EC.element_to_be_clickable((By.XPATH, "//input[@data-handle='dropdown-general.common_nationality_country']")))
+                nationality_values.send_keys('MX', Keys.ENTER)
+            product = wait.until(EC.element_to_be_clickable((By.XPATH, '//button[@data-handle="vt-38"]')))
+            product.click()
+            #wait.until(EC.element_to_be_clickable((By.ID, "btnContinueUnderSection"))).click() 
+            wait.until(lambda driver: driver.current_url != current_url) 
+            try:
+                questions_loop(10135, browser, wait, order, 1)
+            except Exception as e:
+                browser.get_screenshot_as_file(os.getcwd() + '/automations/Applications/saved_screenshots/Error/error.png')
+                send_result('Failed',e)
+                break
+        send_result('Success',e)
     except Exception as e:
-        failed_request(e)
+        send_result('Failed',e)
