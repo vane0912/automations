@@ -2,15 +2,15 @@ from ..imports import *
 
 
 def USPR_PASSPORT_RENEWAL(url, email):
-    Order_numbers = []
+    Global_Variables['Order_Numbers'] = []
+    Global_Variables['Email'] = email
     chrome_options = Options()
-    chrome_options.add_argument('--headless') 
+    #chrome_options.add_argument('--headless') 
     chrome_options.add_argument('window-size=1920,1080')
     chrome_options.add_argument('--no-sandbox')
     chrome_options.add_argument('--disable-dev-shm-usage')
     browser = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
-    wait = WebDriverWait(browser, 200, ignored_exceptions=(NoSuchElementException,StaleElementReferenceException))
-    
+    wait = WebDriverWait(browser, 200)
     try: 
         for x in range(3):
             browser.get(url + '/passport-renewal/united-states/application')
@@ -21,12 +21,12 @@ def USPR_PASSPORT_RENEWAL(url, email):
             dob_year = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'general.dob.year'))))
             dob_year.select_by_value("2000")
     
-            passport_issued_day = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'general.passport_issued_date.day'))))
-            passport_issued_day.select_by_value('4')
-            passport_issued_month = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'general.passport_issued_date.month'))))
-            passport_issued_month.select_by_value('5')
-            passport_issued_year = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'general.passport_issued_date.year'))))
-            passport_issued_year.select_by_value("2022")
+            passport_issue_day = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'general.passport_issued_date.day'))))
+            passport_issue_day.select_by_value('4')
+            passport_issue_month = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'general.passport_issued_date.month'))))
+            passport_issue_month.select_by_value('5')
+            passport_issue_year = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'general.passport_issued_date.year'))))
+            passport_issue_year.select_by_value("2022")
     
             passport_expiration_day = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'general.passport_expiration_date.day'))))
             passport_expiration_day.select_by_value('9')
@@ -39,9 +39,7 @@ def USPR_PASSPORT_RENEWAL(url, email):
             no_trips = upocoming_trips.find_elements(By.TAG_NAME, 'button')
             no_trips[1].click()
             
-            continue_btn = wait.until(EC.visibility_of_element_located((By.ID, 'btnContinueUnderSection')))
-            click_btn = continue_btn.find_elements(By.TAG_NAME, 'button')
-            wait.until(EC.element_to_be_clickable(click_btn[0])).click()
+            wait.until(EC.element_to_be_clickable((By.ID, 'btnContinueUnderSection'))).click()
 
             passport_num = wait.until(EC.element_to_be_clickable((By.NAME, 'general.passport_num')))
             passport_num.send_keys('1111111111')
@@ -74,20 +72,29 @@ def USPR_PASSPORT_RENEWAL(url, email):
             wait.until(EC.element_to_be_clickable((get_li[1]))).click() if x == 0 else wait.until(EC.element_to_be_clickable((get_li[0]))).click()
             wait.until(EC.element_to_be_clickable((By.ID, 'btnContinueSidebar'))).click()
             wait.until(EC.text_to_be_present_in_element((By.TAG_NAME, 'h1'), 'Review your order'))
+            wait.until(EC.element_to_be_clickable((By.ID, 'btnContinueSidebar'))).click()
             try:
                 WebDriverWait(browser, 8).until(EC.text_to_be_present_in_element((By.ID, 'app'), 'Possible Duplicate'))
                 btn_disclaimer = wait.until(EC.element_to_be_clickable((By.ID, "btnDisclaimerNext")))
                 btn_disclaimer.click()
-                wait.until(EC.element_to_be_clickable((By.ID, 'btnContinueSidebar'))).click()
 
                 btn_submit_payment = wait.until(EC.element_to_be_clickable((By.ID, "btnSubmitPayment")))
                 btn_submit_payment.click()
-                wait.until(EC.text_to_be_present_in_element((By.ID, 'question-container'), 'General Information'))
+                
+                order_number = wait.until(EC.visibility_of_element_located((By.XPATH, '//h2[@data-handle="order-id"]')))
+                Global_Variables['Order_Numbers'].append(re.findall(r'\d+', order_number.text))
+                
+                btn_complete = wait.until(EC.element_to_be_clickable((By.ID, "btnCompleteProcess")))
+                btn_complete.click()
             except: 
-                wait.until(EC.element_to_be_clickable((By.ID, 'btnContinueSidebar'))).click()
                 btn_submit_payment = wait.until(EC.element_to_be_clickable((By.ID, "btnSubmitPayment")))
                 btn_submit_payment.click()
-                wait.until(EC.text_to_be_present_in_element((By.ID, 'question-container'), 'General Information'))
+
+                order_number = wait.until(EC.visibility_of_element_located((By.XPATH, '//h2[@data-handle="order-id"]')))
+                Global_Variables['Order_Numbers'].append(re.findall(r'\d+', order_number.text))
+                
+                btn_complete = wait.until(EC.element_to_be_clickable((By.ID, "btnCompleteProcess")))
+                btn_complete.click()
             if x == 0:
                 browser.get(url + '/account/settings/security')
                 password = wait.until(EC.element_to_be_clickable((By.ID, "new_password")))
@@ -95,15 +102,8 @@ def USPR_PASSPORT_RENEWAL(url, email):
                 password_repeat = wait.until(EC.element_to_be_clickable((By.ID, "password_repeat")))
                 password_repeat.send_keys('testivisa5!') 
                 browser.find_element(By.XPATH, '//button[@data-handle="updatePasswordBtn"]').click()
-        automation_results = {
-            'Order_numbers' : Order_numbers,
-            'Status' : 'Success',
-            'email' : email,
-        }
-        requests.post('https://costumer-facing1-production.up.railway.app' + '/check-automation-status',json=automation_results, headers={'Content-type': 'application/json', 'Accept': 'text/plain'})
-        return automation_results
+        send_result('Success', '')
+        return 'Success'
     except Exception as e:
-        requests.post('https://costumer-facing1-production.up.railway.app' + '/check-automation-status',json={'ERROR': str(e).splitlines()[0], 'Status' : 'Failed'}, headers={'Content-type': 'application/json', 'Accept': 'text/plain'})
-        logging.debug('Debug message: %s', e)
-        logging.error('Error occurred: %s', traceback.format_exc())
-        return {'Status': e}
+        send_result('Error', '')
+        return 'Failed'
