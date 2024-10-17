@@ -6,7 +6,7 @@ def check_orders(url):
     chrome_options.add_argument('--no-sandbox')
     chrome_options.add_argument('--disable-dev-shm-usage')
     browser = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
-    wait = WebDriverWait(browser, 60, ignored_exceptions=(NoSuchElementException,StaleElementReferenceException))
+    wait = WebDriverWait(browser, 60)
     try:
         browser.get(url + '/admin')
         login_email = wait.until(EC.visibility_of_element_located((By.ID, 'email_login_input')))
@@ -57,7 +57,7 @@ def check_orders(url):
         browser.save_screenshot('/Users/Chapis/Desktop/Automation/Automation/automations/Admin/Orders_page/' + 'see_user_order_5.png')
         browser.execute_script("window.scrollTo(0, 2700)")
         browser.save_screenshot('/Users/Chapis/Desktop/Automation/Automation/automations/Admin/Orders_page/' + 'see_user_order_6.png')
-        success_request()
+        send_result('Success', '')
     except Exception as e:
         browser.save_screenshot('/Users/Chapis/Desktop/Automation/Automation/automations/Admin/Errors/' + 'error_images.png')
-        failed_request(e)
+        send_result('Error', e)

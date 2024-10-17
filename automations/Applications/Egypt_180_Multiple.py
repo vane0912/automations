@@ -25,10 +25,10 @@ def EG_180_Multiple(data):
             wait.until(lambda driver: driver.current_url != current_url) 
             try:
                 questions_loop(10115, browser, wait, order, 1)
+                send_result('Success', '')
             except Exception as e:
                 browser.get_screenshot_as_file(os.getcwd() + '/automations/Applications/saved_screenshots/Error/error.png')
                 send_result('Failed',e)
                 break
-        send_result('Success', '')
     except Exception as e:
         send_result('Failed',e)
