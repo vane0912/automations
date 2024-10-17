@@ -1,1 +1,0 @@
-/turkey/apply-no

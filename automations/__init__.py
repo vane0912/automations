@@ -14,11 +14,11 @@ def create_app():
     app.config.from_object(Config)
     
     from .homepage import homepage_bp
-    from .weekly import weekly_bp
+    from .weekly import admin
     from .applications import applications_bp
     
     app.register_blueprint(homepage_bp)
-    app.register_blueprint(weekly_bp)
+    app.register_blueprint(admin)
     app.register_blueprint(applications_bp)
 
     return app
