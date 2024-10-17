@@ -6,11 +6,9 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import StaleElementReferenceException, NoSuchElementException, ElementClickInterceptedException, TimeoutException, ElementNotInteractableException
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.common.alert import Alert
 from selenium.webdriver.support.ui import Select
 
 Global_Variables = {
@@ -27,6 +25,14 @@ Global_Variables = {
     'Status': ''
 }
 
+def date_selector(wait, slug):
+    if slug == 'dob':
+        dob_day = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'applicant.0.' + slug + '.day'))))
+        dob_day.select_by_value('10')
+        dob_month = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'applicant.0.' + slug + '.month'))))
+        dob_month.select_by_value('10')
+        dob_year = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'applicant.0.' + slug + '.year'))))
+        dob_year.select_by_value("2000") 
 def take_screenshot(driver, step):
     driver.save_screenshot(os.getcwd() + f'/automations/Applications/saved_screenshots/Correct/screenshot_{step}.png')
 def setArguments(data):
@@ -43,7 +49,31 @@ def setArguments(data):
             Global_Variables['Status'] = x['value']
         if x['type'] == 'App':
             Global_Variables['App_Version'] = x['value']
-    
+
+def try_multiple_selectors(driver, slug, action, *action_args):
+    attempts = 0
+    max_attempts = 3
+    while max_attempts > attempts:
+        if attempts == 0:
+            try:
+                WebDriverWait(driver, 2).until(EC.visibility_of_element_located((By.NAME, 'applicant.0.' + slug)))
+                element = WebDriverWait(driver, 60).until(EC.element_to_be_clickable((By.NAME, 'applicant.0.' + slug)))
+                action_method = getattr(element, action)
+                action_method(*action_args)
+                return True
+            except:
+                attempts += 1
+        elif attempts == 1:
+            try:
+                WebDriverWait(driver, 2).until(EC.visibility_of_element_located((By.NAME, 'general.' + slug)))
+                element = WebDriverWait(driver, 60).until(EC.element_to_be_clickable((By.NAME, 'general.' + slug)))
+                action_method = getattr(element, action)
+                action_method(*action_args)
+                return True
+            except:
+                attempts += 1
+        else:
+            return True
 def safe_element_click(driver, locator):
     attempts = 0
     max_attempts = 3  
@@ -101,15 +131,6 @@ def step_1_dates(wait, slug, browser):
         safe_element_click(browser, svg_locator)
         safe_element_click(browser, day_month)
 
-def date_selector(wait, user, slug):
-    if slug == 'dob':
-        dob_day = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'applicant' + '.' + str(user) + '.' + slug + '.day'))))
-        dob_day.select_by_value('10')
-        dob_month = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'applicant' + '.' + str(user) + '.' + slug + '.month'))))
-        dob_month.select_by_value('10')
-        dob_year = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'applicant' + '.' + str(user) + '.' + slug + '.year'))))
-        dob_year.select_by_value("2000") 
-
 def questions_loop(product_num, browser, wait, num_order_loop, applicants):
     questions = app_questions(Global_Variables['url'], product_num, Global_Variables['App_Version'])
     sections_arr = []
@@ -124,11 +145,6 @@ def questions_loop(product_num, browser, wait, num_order_loop, applicants):
             arr_section_questions = [item for item in values_arr if item["multipart_section"] in current_url]
         else:
             arr_section_questions = [item for item in values_arr if item["multipart_section"] in "general_after_payment"]
-        if "step=step_3a" in current_url and applicants > 1:
-            for x in range(applicants - 1):
-                add_traveler_div = wait.until(EC.visibility_of_element_located((By.XPATH, "//div[@data-handle='add-traveler']")))
-                add_traveler_btn = add_traveler_div.find_elements(By.TAG_NAME, 'button')
-                wait.until(EC.element_to_be_clickable((add_traveler_btn[1]))).click()
         for question in arr_section_questions: 
             num_screenshot += 1
             take_screenshot(browser, str(num_screenshot))
@@ -147,27 +163,11 @@ def questions_loop(product_num, browser, wait, num_order_loop, applicants):
                 except:
                     pass
             elif question['slug'] == 'dob':
-                for user in range(applicants):
-                    date_selector(wait, user, question['slug'])
+                date_selector(wait, question['slug'])
             elif question['field_type'] == 'textbox':
-                try: 
-                    input_field = WebDriverWait(browser, 2).until(EC.visibility_of_element_located((By.NAME, 'applicant' + '.' + '0' + '.' + question['slug'])))
-                    input_field.send_keys('aaaaa')
-                except:
-                    pass
+                try_multiple_selectors(browser, question['slug'], 'send_keys', 'aaaaaa')
             elif question['slug'] == 'passport_num':
-                if question['show_if'] is None:
-                    for user_passport in range(applicants):
-                        input_field = wait.until(EC.element_to_be_clickable((By.NAME, 'applicant' + '.' + str(user_passport) + '.' + question['slug'])))
-                        input_field.send_keys('aaaaa')
-                else:
-                    try:
-                        WebDriverWait(browser, 2).until(EC.visibility_of_element_located((By.NAME, 'applicant.0.' + question['slug'])))
-                        for user_passport in range(applicants):
-                            input_field = wait.until(EC.element_to_be_clickable((By.NAME, 'applicant' + '.' + str(user_passport) + '.' + question['slug'])))
-                            input_field.send_keys('aaaaa')
-                    except:
-                        pass
+                try_multiple_selectors(browser, question['slug'], 'send_keys', 'aaaaaa')
             elif question['field_type'] == 'fieldset_repeat':
                 if question['show_if'] is None:
                     for field in question['fieldset']:

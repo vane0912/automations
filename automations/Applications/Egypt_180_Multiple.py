@@ -9,7 +9,7 @@ def EG_180_Multiple(data):
     chrome_options.add_argument('--no-sandbox')
     chrome_options.add_argument('--disable-dev-shm-usage')
     browser = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
-    wait = WebDriverWait(browser, 60, ignored_exceptions=(NoSuchElementException,StaleElementReferenceException))
+    wait = WebDriverWait(browser, 60)
     try:
         for order in range(int(Global_Variables['N. Orders'])):
             browser.get(Global_Variables['url'] + '/egypt/apply-now')
@@ -29,6 +29,6 @@ def EG_180_Multiple(data):
                 browser.get_screenshot_as_file(os.getcwd() + '/automations/Applications/saved_screenshots/Error/error.png')
                 send_result('Failed',e)
                 break
-        send_result('Success',e)
+        send_result('Success', '')
     except Exception as e:
         send_result('Failed',e)

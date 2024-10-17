@@ -9,7 +9,7 @@ def TR_App_P2(data):
     chrome_options.add_argument('--no-sandbox')
     chrome_options.add_argument('--disable-dev-shm-usage')
     browser = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
-    wait = WebDriverWait(browser, 10, ignored_exceptions=(NoSuchElementException,StaleElementReferenceException))
+    wait = WebDriverWait(browser, 50)
     
     try:
         for order in range(int(Global_Variables['N. Orders'])):
@@ -30,6 +30,6 @@ def TR_App_P2(data):
                 browser.get_screenshot_as_file(os.getcwd() + '/automations/Applications/saved_screenshots/Error/error.png')
                 send_result('Failed',e)
                 break
-        send_result('Success',e)
+        send_result('Success', '')
     except Exception as e:
         send_result('Failed',e)
