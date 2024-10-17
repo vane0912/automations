@@ -10,7 +10,7 @@ def USPR_PASSPORT_RENEWAL(url, email):
     chrome_options.add_argument('--no-sandbox')
     chrome_options.add_argument('--disable-dev-shm-usage')
     browser = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
-    wait = WebDriverWait(browser, 200, ignored_exceptions=(NoSuchElementException,StaleElementReferenceException))
+    wait = WebDriverWait(browser, 200)
     try: 
         for x in range(3):
             browser.get(url + '/passport-renewal/united-states/application')
@@ -102,8 +102,8 @@ def USPR_PASSPORT_RENEWAL(url, email):
                 password_repeat = wait.until(EC.element_to_be_clickable((By.ID, "password_repeat")))
                 password_repeat.send_keys('testivisa5!') 
                 browser.find_element(By.XPATH, '//button[@data-handle="updatePasswordBtn"]').click()
-        success_request()
+        send_result('Success', '')
         return 'Success'
     except Exception as e:
-        failed_request(e)
+        send_result('Error', '')
         return 'Failed'
