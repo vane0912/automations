@@ -2,6 +2,7 @@ from .Applications.Turkey_evisa_180 import TR_App_P2
 from .Applications.India_1y_Multiple import India_1y_Multiple
 from .Applications.Egypt_180_Multiple import EG_180_Multiple
 from .Applications.china_90_days import CHINA_90_DAYS
+from .Applications.australia_visitor_visa import AUSTRALIA_VISITOR_VISA
 from .Admin.check_orders_page import check_orders
 
 automations_list_admin = [
@@ -99,6 +100,31 @@ automations_list_applications = [
             'Subtitles': ['Only for MX citizens'],
             'Country' : 'Egypt',
             'Type': EG_180_Multiple,
+            'Enabled': True,
+            'Requirements': [
+                {
+                    'Label': 'ULR',
+                    'Type': 'default',
+                },
+                {
+                    'Label': 'Email',
+                    'Type': 'default',
+                },
+                {
+                    'Label': 'Status',
+                    'Status_Available': ['Received']
+                },
+                {
+                    'Label': 'App',
+                    'Type': 'default'
+                }
+            ]
+        },
+        {
+            'Title': 'Australia-Visitor-Visa',
+            'Subtitles': ['Only for MX citizens'],
+            'Country' : 'Australia',
+            'Type': AUSTRALIA_VISITOR_VISA,
             'Enabled': True,
             'Requirements': [
                 {
