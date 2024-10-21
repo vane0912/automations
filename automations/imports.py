@@ -231,24 +231,23 @@ def questions_loop(product_num, browser, wait, num_order_loop, applicants):
                                     dropdown_input = wait.until(EC.visibility_of_element_located((By.XPATH, '//input[@data-handle="dropdown-general.' + question['slug'] + '.0.'+ field['slug'] + '"]')))
                                     dropdown_input.send_keys(Keys.ARROW_DOWN)
                                     dropdown_input.send_keys(Keys.ENTER)
-                                if field['field_type'] == 'datepicker' and 'start' in field['slug']:
+                                if field['field_type'] == 'datepicker' and 'start' or 'from' in field['slug']:
                                     start_day = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'general.' + question['slug'] + '.0.'+ field['slug'] + '.day'))))
-                                    start_day.select_by_value('10')
+                                    start_day.select_by_value('8')
                                     start_month = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'general.' + question['slug'] + '.0.'+ field['slug'] + '.month'))))
-                                    start_month.select_by_value('10')
+                                    start_month.select_by_value('8')
                                     start_year = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'general.' + question['slug'] + '.0.'+ field['slug'] + '.year'))))
-                                    start_year.select_by_value("2026") 
-                                if field['field_type'] == 'datepicker' and 'end' in field['slug']:
+                                    start_year.select_by_value("2025") 
+                                if field['field_type'] == 'datepicker' and 'end' or 'to' in field['slug']:
                                     start_day = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'general.' + question['slug'] + '.0.'+ field['slug'] + '.day'))))
                                     start_day.select_by_value('20')
                                     start_month = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'general.' + question['slug'] + '.0.'+ field['slug'] + '.month'))))
-                                    start_month.select_by_value('10')
+                                    start_month.select_by_value('8')
                                     start_year = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'general.' + question['slug'] + '.0.'+ field['slug'] + '.year'))))
-                                    start_year.select_by_value("2026")
+                                    start_year.select_by_value("2025")
                             attempts = 2
                         except:
-                            attempts = 2
-                            pass
+                            attempts += 1
             elif question['field_type'] == 'phone':
                 attempts = 0
                 max_attempts = 2
@@ -283,46 +282,88 @@ def questions_loop(product_num, browser, wait, num_order_loop, applicants):
                             attempts = 2
             elif question['field_type'] == 'dropdown' or question['field_type'] == 'dropdown_country' and question['multipart_section'] != 'step_3c':
                 attempts = 0
-                max_attempts = 3  
+                max_attempts = 4 
                 while attempts < max_attempts:
-                    if question['options'] and len(question['options']) > 5:
+                    if question['options'] and len(question['options']) >= 5:
                         if attempts == 0:
                             try:
-                                dropdown_general = WebDriverWait(browser, 2).until(EC.visibility_of_element_located((By.XPATH, '//select[@data-handle="dropdown-applicant' + '.0.' + question['slug'] + '"]')))
-                                Select(dropdown_general).select_by_index(0)
-                                attempts = 3
+                                dropdown_general = WebDriverWait(browser, 2).until(EC.visibility_of_element_located((By.XPATH, '//select[@data-handle="dropdown-general.' + question['slug'] + '"]')))
+                                if question['prevent_submission_if'] == None:
+                                    Select(dropdown_general).select_by_index(0)
+                                    attempts = 4
+                                else:
+                                    prevent_values = question["prevent_submission_if"]["value"]
+                                    accepted_values = [e for e in question["options"] if all(val not in e["value"] for val in prevent_values)]
+                                    Select(dropdown_general).select_by_value(accepted_values[0]["value"])
+                                    attempts = 4
+                                attempts = 4
                             except:
                                 attempts += 1
                         elif attempts == 1:
+                            try:
+                                dropdown_general = WebDriverWait(browser, 2).until(EC.visibility_of_element_located((By.XPATH, '//select[@data-handle="dropdown-applicant' + '.0.' + question['slug'] + '"]')))
+                                if question['prevent_submission_if'] == None:
+                                    Select(dropdown_general).select_by_index(0)
+                                else:
+                                    prevent_values = question["prevent_submission_if"]["value"]
+                                    accepted_values = [e for e in question["options"] if all(val not in e["value"] for val in prevent_values)]
+                                    Select(dropdown_general).select_by_value(accepted_values[0]["value"])
+                                    attempts = 4
+                                attempts = 4
+                            except:
+                                attempts += 1
+                        elif attempts == 2:
                             try: 
                                 WebDriverWait(browser, 2).until(EC.visibility_of_element_located((By.NAME, 'general.' + question['slug'])))
                                 dropdown_general = WebDriverWait(browser, 2).until(EC.element_to_be_clickable((By.NAME, 'general.' + question['slug'])))
                                 dropdown_general.click()
                                 dropdown_input = wait.until(EC.visibility_of_element_located((By.XPATH, '//input[@data-handle="dropdown-general.' + question['slug'] + '"]')))
-                                dropdown_input.send_keys(Keys.ARROW_DOWN)
-                                dropdown_input.send_keys(Keys.ENTER)
-                                attempts = 3
+                                if question['prevent_submission_if'] == None:
+                                    dropdown_input.send_keys(Keys.ARROW_DOWN)
+                                    dropdown_input.send_keys(Keys.ENTER)
+                                    attempts = 4
+                                else:
+                                    prevent_values = question["prevent_submission_if"]["value"]
+                                    accepted_values = [e for e in question["options"] if all(val not in e["value"] for val in prevent_values)]
+                                    dropdown_input.send_keys(accepted_values[0]["value"])
+                                    dropdown_input.send_keys(Keys.ENTER)
+                                    attempts = 4
+                                attempts = 4
                             except:
                                 attempts += 1
-                        elif attempts == 2:
+                        elif attempts == 3:
                             try: 
                                 WebDriverWait(browser, 2).until(EC.visibility_of_element_located((By.NAME, 'applicant.0.' + question['slug'])))
                                 dropdown_general = WebDriverWait(browser, 2).until(EC.element_to_be_clickable((By.NAME, 'applicant.0.' + question['slug'])))
                                 dropdown_general.click()
                                 dropdown_input = wait.until(EC.visibility_of_element_located((By.XPATH, '//input[@data-handle="dropdown-applicant.0.' + question['slug'] + '"]')))
-                                dropdown_input.send_keys(Keys.ARROW_DOWN)
-                                dropdown_input.send_keys(Keys.ENTER)
-                                attempts = 3
+                                if question['prevent_submission_if'] == None:
+                                    dropdown_input.send_keys(Keys.ARROW_DOWN)
+                                    dropdown_input.send_keys(Keys.ENTER)
+                                    attempts = 4
+                                else:
+                                    prevent_values = question["prevent_submission_if"]["value"]
+                                    accepted_values = [e for e in question["options"] if all(val not in e["value"] for val in prevent_values)]
+                                    dropdown_input.send_keys(accepted_values[0]["value"])
+                                    dropdown_input.send_keys(Keys.ENTER)
+                                    attempts = 4
                             except:
-                                attempts = 4
+                                attempts += 1
                     else:
                         if attempts == 0:
                             try:
                                 WebDriverWait(browser, 2).until(EC.visibility_of_element_located((By.XPATH, '//div[@data-ivisa-question-selector="applicant' + '.0.' + question['slug'] + '"]')))
-                                div_dropdown = wait.until(EC.visibility_of_element_located((By.XPATH, '//div[@data-ivisa-question-selector="applicant' + '.0.' + question['slug'] + '"]')))
-                                options_inside = div_dropdown.find_elements(By.TAG_NAME, 'button')
-                                options_inside[0].click()
-                                attempts = 3
+                                if question['prevent_submission_if'] == None:
+                                    div_dropdown = wait.until(EC.visibility_of_element_located((By.XPATH, '//div[@data-ivisa-question-selector="applicant' + '.0.' + question['slug'] + '"]')))
+                                    options_inside = div_dropdown.find_elements(By.TAG_NAME, 'button')
+                                    options_inside[0].click()
+                                    attempts = 4
+                                else:
+                                    prevent_values = question["prevent_submission_if"]["value"]
+                                    accepted_values = [e for e in question["options"] if all(val not in e["value"] for val in prevent_values)]
+                                    div_dropdown = wait.until(EC.element_to_be_clickable((By.XPATH, '//div[@data-ivisa-question-selector="applicant' + '.0.' + question['slug'] + '"]//button[@data-handle="boolean-' + accepted_values[0]["value"] + '"]')))
+                                    div_dropdown.click()
+                                    attempts = 4
                             except: 
                                 attempts += 1
                         elif attempts == 1:
@@ -330,7 +371,7 @@ def questions_loop(product_num, browser, wait, num_order_loop, applicants):
                                 div_dropdown = WebDriverWait(browser, 2).until(EC.visibility_of_element_located((By.XPATH, '//div[@data-ivisa-question-selector="general.' + question['slug'] + '"]')))
                                 options_inside = div_dropdown.find_elements(By.TAG_NAME, 'button')
                                 options_inside[0].click()
-                                attempts = 3
+                                attempts = 4
                             except: 
                                 attempts = 4
             elif question['slug'] == "gender" and "continue" in current_url:
@@ -391,15 +432,21 @@ def questions_loop(product_num, browser, wait, num_order_loop, applicants):
                     except:
                         pass
             elif question['slug'] == 'appointment_location_id':
-                time.sleep(2)
-                input_field_speciality = wait.until(EC.element_to_be_clickable((By.NAME, 'applicant.0.' + question['slug'] + '_autocomplete')))
-                input_field_speciality.send_keys('New York, EE. UU')
-                input_field_speciality.click()
-                input_field_speciality.send_keys(Keys.SPACE)
-                api_google = wait.until(EC.visibility_of_element_located((By.ID, 'autocomplete_results')))
-                select_option = api_google.find_elements(By.TAG_NAME, 'li')
-                select_option[0].click()
-                time.sleep(2)
+                try:
+                    WebDriverWait(browser, 2).until(EC.visibility_of_element_located((By.NAME, 'applicant.0.' + question['slug'])))
+                    div_dropdown = wait.until(EC.visibility_of_element_located((By.NAME, 'applicant.0.' + question['slug'])))
+                    options_inside = div_dropdown.find_elements(By.TAG_NAME, 'button')
+                    options_inside[0].click()
+                except:
+                    time.sleep(2)
+                    input_field_speciality = wait.until(EC.element_to_be_clickable((By.NAME, 'applicant.0.' + question['slug'] + '_autocomplete')))
+                    input_field_speciality.send_keys('New York, EE. UU')
+                    input_field_speciality.click()
+                    input_field_speciality.send_keys(Keys.SPACE)
+                    api_google = wait.until(EC.visibility_of_element_located((By.ID, 'autocomplete_results')))
+                    select_option = api_google.find_elements(By.TAG_NAME, 'li')
+                    select_option[0].click()
+                    time.sleep(2)
                 # Runner Pilot code
                 ## try:
                 ##    runner_pilot = WebDriverWait(browser, 5).until(EC.element_to_be_clickable((By.XPATH, '//button[@data-handle="boolean-No, I want to go to the embassy myself"]')))
@@ -408,12 +455,33 @@ def questions_loop(product_num, browser, wait, num_order_loop, applicants):
                 ##    passport_expiration_year = Select(wait.until(EC.element_to_be_clickable((By.XPATH, '//select[@data-handle="dropdown-applicant.0.runner_pilot"]'))))
                 ##    passport_expiration_year.select_by_value("No") 
             elif question['field_type'] == "boolean":
-                try:
-                    boolean = WebDriverWait(browser, 1).until(EC.visibility_of_element_located((By.NAME, "applicant.0." + question["slug"])))
-                    buttons_inside = boolean.find_elements(By.TAG_NAME, "button")
-                    buttons_inside[1].click()
-                except:
-                    pass
+                attempts = 0
+                max_attempts = 2
+                while attempts < max_attempts:
+                    if attempts == 0:
+                        try: 
+                            boolean = WebDriverWait(browser, 1).until(EC.visibility_of_element_located((By.NAME, "applicant.0." + question["slug"])))
+                            buttons_inside = boolean.find_elements(By.TAG_NAME, "button")
+                            if question['prevent_submission_if'] == None:
+                                buttons_inside[1].click()
+                            else:
+                                prevent_values = question["prevent_submission_if"]["value"]
+                                buttons_inside[0].click() if prevent_values[0] == "No" else buttons_inside[1].click()
+                            attempts = 2 
+                        except:
+                            attempts += 1
+                    if attempts == 1:
+                        try:
+                            boolean = WebDriverWait(browser, 1).until(EC.visibility_of_element_located((By.NAME, "general." + question["slug"])))
+                            buttons_inside = boolean.find_elements(By.TAG_NAME, "button")
+                            if question['prevent_submission_if'] == None:
+                                buttons_inside[1].click()
+                            else:
+                                prevent_values = question["prevent_submission_if"]["value"]
+                                buttons_inside[0].click() if prevent_values[0] == "No" else buttons_inside[1].click()
+                            attempts = 2
+                        except:
+                            attempts += 1
             elif question['field_type'] == 'file_upload' and question['slug'] == "passport_photo":
                 try:
                     file_upload_button = WebDriverWait(browser, 2).until(EC.visibility_of_element_located((By.ID, "btn-applicant.0." + question["slug"])))

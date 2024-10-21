@@ -125,7 +125,7 @@ automations_list_applications = [
             'Subtitles': ['Only for MX citizens'],
             'Country' : 'Australia',
             'Type': AUSTRALIA_VISITOR_VISA,
-            'Enabled': True,
+            'Enabled': False,
             'Requirements': [
                 {
                     'Label': 'ULR',
