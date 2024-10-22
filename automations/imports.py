@@ -116,20 +116,15 @@ def app_questions(url, product_num, app_version):
     return data
 
 def step_1_dates(wait, slug, browser):
+    dates_calendar = wait.until(EC.element_to_be_clickable((By.NAME, "general." + slug)))
+    dates_calendar.click()
+    svg_locator = (By.CSS_SELECTOR, "div.is-right svg")
     if slug == 'arrival_date':
-        arrival_date = wait.until(EC.element_to_be_clickable((By.NAME, "general." + slug)))
-        arrival_date.click()
-        svg_locator = (By.CSS_SELECTOR, "div.is-right svg")
         day_month = (By.CSS_SELECTOR, "div.day-13")
-        safe_element_click(browser, svg_locator)
-        safe_element_click(browser, day_month)
     else:
-        departure_date = wait.until(EC.element_to_be_clickable((By.NAME, "general." + slug)))
-        departure_date.click()
-        svg_locator = (By.CSS_SELECTOR, "div.is-right svg")
         day_month = (By.CSS_SELECTOR, "div.day-18")
-        safe_element_click(browser, svg_locator)
-        safe_element_click(browser, day_month)
+    safe_element_click(browser, svg_locator)
+    safe_element_click(browser, day_month)
 
 def questions_loop(product_num, browser, wait, num_order_loop, applicants):
     questions = app_questions(Global_Variables['url'], product_num, Global_Variables['App_Version'])
