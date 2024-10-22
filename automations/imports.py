@@ -53,10 +53,11 @@ def setArguments(data):
 def try_multiple_selectors(driver, slug, action, *action_args):
     attempts = 0
     max_attempts = 3
+
     while max_attempts > attempts:
         if attempts == 0:
             try:
-                WebDriverWait(driver, 2).until(EC.visibility_of_element_located((By.NAME, 'applicant.0.' + slug)))
+                WebDriverWait(driver, 1).until(EC.visibility_of_element_located((By.NAME, 'applicant.0.' + slug)))
                 element = WebDriverWait(driver, 60).until(EC.element_to_be_clickable((By.NAME, 'applicant.0.' + slug)))
                 action_method = getattr(element, action)
                 action_method(*action_args)
@@ -65,7 +66,7 @@ def try_multiple_selectors(driver, slug, action, *action_args):
                 attempts += 1
         elif attempts == 1:
             try:
-                WebDriverWait(driver, 2).until(EC.visibility_of_element_located((By.NAME, 'general.' + slug)))
+                WebDriverWait(driver, 1).until(EC.visibility_of_element_located((By.NAME, 'general.' + slug)))
                 element = WebDriverWait(driver, 60).until(EC.element_to_be_clickable((By.NAME, 'general.' + slug)))
                 action_method = getattr(element, action)
                 action_method(*action_args)
@@ -151,10 +152,9 @@ def questions_loop(product_num, browser, wait, num_order_loop, applicants):
                 try: 
                     if len(browser.find_elements(By.NAME, 'applicant.0.' + question['slug'])) > 0:
                         email = WebDriverWait(browser, 2).until(EC.element_to_be_clickable((By.NAME, 'applicant.0.' + question['slug'])))
-                        email.send_keys(Global_Variables['Email'])
                     else: 
                         email = WebDriverWait(browser, 2).until(EC.element_to_be_clickable((By.NAME, 'general.' + question['slug'])))
-                        email.send_keys(Global_Variables['Email'])
+                    email.send_keys(Global_Variables['Email'])
                 except:
                     pass
             elif question['slug'] == 'dob':
@@ -169,7 +169,7 @@ def questions_loop(product_num, browser, wait, num_order_loop, applicants):
                 while attempts < max_attempts:
                     if attempts == 0:
                         try:
-                            WebDriverWait(browser, 2).until(EC.visibility_of_element_located((By.XPATH, '//div[@data-ivisa-question-selector="applicant' + '.0.' + question['slug'] + '"]')))
+                            WebDriverWait(browser, 1).until(EC.visibility_of_element_located((By.XPATH, '//div[@data-ivisa-question-selector="applicant' + '.0.' + question['slug'] + '"]')))
                             for field in question['fieldset']:
                                 if field['field_type'] == 'textbox':
                                     input_field = wait.until(EC.element_to_be_clickable((By.NAME, 'applicant.0.' + question['slug'] + '.0.'+ field['slug'])))
@@ -215,7 +215,7 @@ def questions_loop(product_num, browser, wait, num_order_loop, applicants):
                             attempts += 1
                     elif attempts == 1:
                         try:
-                            WebDriverWait(browser, 2).until(EC.visibility_of_element_located((By.XPATH, '//div[@data-ivisa-question-selector="general.' + question['slug'] + '"]')))
+                            WebDriverWait(browser, 1).until(EC.visibility_of_element_located((By.XPATH, '//div[@data-ivisa-question-selector="general.' + question['slug'] + '"]')))
                             for field in question['fieldset']:
                                 if field['field_type'] == 'textbox':
                                     input_field = wait.until(EC.element_to_be_clickable((By.NAME, 'general.' + question['slug'] + '.0.'+ field['slug'])))
