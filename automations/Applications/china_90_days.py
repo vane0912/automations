@@ -34,6 +34,8 @@ def CHINA_90_DAYS(data):
                     confirm_password = wait.until(EC.element_to_be_clickable((By.XPATH, '//button[@data-handle="updatePasswordBtn"]')))
                     confirm_password.click()
                     wait.until(EC.visibility_of_element_located((By.CLASS_NAME, 'swal-modal')))
+                if order == int(Global_Variables['N. Orders']) - 1:
+                    send_result('Success', '')
             except Exception as e:
                 browser.get_screenshot_as_file(os.getcwd() + '/automations/Applications/saved_screenshots/Error/error.png')
                 send_result('Failed',e)
