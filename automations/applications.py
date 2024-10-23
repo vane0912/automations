@@ -14,10 +14,10 @@ applications_bp = Blueprint('applications', __name__)
 def get_app(app_type=None):
     categories = []
     filtered_Array = []
-    print(filtered_Array)
+
     for x in automations_list_applications:
         if x['Enabled'] == True:
-            categories.append(x['Country'])
+            categories.append(x['Country']) if x['Country'] not in categories else categories
         if x['Country'] == app_type:
             filtered_Array.append(x)
     return render_template('applications.html', categories=categories, app_type=app_type, automations=filtered_Array)

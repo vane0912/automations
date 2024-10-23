@@ -144,5 +144,30 @@ automations_list_applications = [
                     'Type': 'default'
                 }
             ]
+        },
+        {
+            'Title': 'India-1-Year-Multiple-Entry',
+            'Subtitles': ['Only for US citizens'],
+            'Country' : 'India',
+            'Type': India_1y_Multiple,
+            'Enabled': True,
+            'Requirements': [
+                {
+                    'Label': 'ULR',
+                    'Type': 'default',
+                },
+                {
+                    'Label': 'Email',
+                    'Type': 'default',
+                },
+                {
+                    'Label': 'Status',
+                    'Status_Available': ['Received', 'MIN']
+                },
+                {
+                    'Label': 'App',
+                    'Type': 'default'
+                }
+            ]
         }
 ]
