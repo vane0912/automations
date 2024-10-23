@@ -5,7 +5,7 @@ def TR_App_P2(data):
     
     Global_Variables['Order_Numbers'] = []
     chrome_options = Options()
-    chrome_options.add_argument('--headless') 
+    #chrome_options.add_argument('--headless') 
     chrome_options.add_argument('window-size=1920,1080')
     chrome_options.add_argument('--no-sandbox')
     chrome_options.add_argument('--disable-dev-shm-usage')
@@ -37,8 +37,11 @@ def TR_App_P2(data):
                     confirm_password.click()
                     wait.until(EC.visibility_of_element_located((By.CLASS_NAME, 'swal-modal')))
                 if order == int(Global_Variables['N. Orders']) - 1:
-                    MIN(Global_Variables['Order_Numbers'])
-                    send_result('Success', '')
+                    try:
+                        MIN(Global_Variables['Order_Numbers'], Global_Variables['url'])
+                        send_result('Success', '')
+                    except Exception as e:
+                        send_result('Failed',e)
         
             except Exception as e:
                 browser.get_screenshot_as_file(os.getcwd() + '/automations/Applications/saved_screenshots/Error/error.png')

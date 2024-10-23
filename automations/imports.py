@@ -10,6 +10,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.support.ui import Select
+from selenium.webdriver.common.alert import Alert
 
 Global_Variables = {
     'url': 'https://deploy-20240619--079f7edd.visachinaonline.com',
