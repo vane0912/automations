@@ -1,4 +1,5 @@
 from ..imports import *
+from ..status_functions import *
 def EG_180_Multiple(data):
     setArguments(data)
     
@@ -35,10 +36,20 @@ def EG_180_Multiple(data):
                     confirm_password.click()
                     wait.until(EC.visibility_of_element_located((By.CLASS_NAME, 'swal-modal')))
                 if order == int(Global_Variables['N. Orders']) - 1:
-                    send_result('Success', '')
+                    if Global_Variables['Status'] == 'MIN':
+                        try:
+                            MIN(Global_Variables['Order_Numbers'], Global_Variables['url'])
+                            send_result('Success', '')
+                        except Exception as e:
+                            browser.get_screenshot_as_file(os.getcwd() + '/automations/Applications/saved_screenshots/Error/error.png')
+                            send_result('Failed',e)
+                            break
+                    else:
+                        send_result('Success', '')
             except Exception as e:
                 browser.get_screenshot_as_file(os.getcwd() + '/automations/Applications/saved_screenshots/Error/error.png')
                 send_result('Failed',e)
                 break
     except Exception as e:
+        browser.get_screenshot_as_file(os.getcwd() + '/automations/Applications/saved_screenshots/Error/error.png')
         send_result('Failed',e)

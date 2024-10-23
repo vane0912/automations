@@ -5,7 +5,7 @@ def TR_App_P2(data):
     
     Global_Variables['Order_Numbers'] = []
     chrome_options = Options()
-    #chrome_options.add_argument('--headless') 
+    chrome_options.add_argument('--headless') 
     chrome_options.add_argument('window-size=1920,1080')
     chrome_options.add_argument('--no-sandbox')
     chrome_options.add_argument('--disable-dev-shm-usage')
@@ -42,13 +42,15 @@ def TR_App_P2(data):
                             MIN(Global_Variables['Order_Numbers'], Global_Variables['url'])
                             send_result('Success', '')
                         except Exception as e:
+                            browser.get_screenshot_as_file(os.getcwd() + '/automations/Applications/saved_screenshots/Error/error.png')
                             send_result('Failed',e)
+                            break
                     else:
                         send_result('Success', '')
-        
             except Exception as e:
                 browser.get_screenshot_as_file(os.getcwd() + '/automations/Applications/saved_screenshots/Error/error.png')
                 send_result('Failed',e)
                 break
     except Exception as e:
+        browser.get_screenshot_as_file(os.getcwd() + '/automations/Applications/saved_screenshots/Error/error.png')
         send_result('Failed',e)

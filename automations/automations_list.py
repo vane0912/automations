@@ -62,7 +62,7 @@ automations_list_applications = [
                 },
                 {
                     'Label': 'Status',
-                    'Status_Available': ['Received']
+                    'Status_Available': ['Received', 'MIN']
                 },
                 {
                     'Label': 'App',
@@ -87,7 +87,7 @@ automations_list_applications = [
                 },
                 {
                     'Label': 'Status',
-                    'Status_Available': ['Received']
+                    'Status_Available': ['Received', 'MIN']
                 },
                 {
                     'Label': 'App',
@@ -96,7 +96,7 @@ automations_list_applications = [
             ]
         },
         {
-            'Title': 'Egypt-180-days-Multiple-Applicants',
+            'Title': 'Egypt-180-days-Multiple-Entries',
             'Subtitles': ['Only for MX citizens'],
             'Country' : 'Egypt',
             'Type': EG_180_Multiple,
@@ -112,7 +112,7 @@ automations_list_applications = [
                 },
                 {
                     'Label': 'Status',
-                    'Status_Available': ['Received']
+                    'Status_Available': ['Received', 'MIN']
                 },
                 {
                     'Label': 'App',
