@@ -1,5 +1,6 @@
 from .Applications.Turkey_evisa_180 import TR_App_P2
 from .Applications.India_1y_Multiple import India_1y_Multiple
+from .Applications.India_Business_eVisa import India_Business_eVisa
 from .Applications.Egypt_180_Multiple import EG_180_Multiple
 from .Applications.china_90_days import CHINA_90_DAYS
 from .Applications.australia_visitor_visa import AUSTRALIA_VISITOR_VISA
@@ -146,10 +147,10 @@ automations_list_applications = [
             ]
         },
         {
-            'Title': 'India-1-Year-Multiple-Entry',
-            'Subtitles': ['Only for US citizens'],
+            'Title': 'India-Business-eVisa',
+            'Subtitles': ['Only for MX citizens'],
             'Country' : 'India',
-            'Type': India_1y_Multiple,
+            'Type': India_Business_eVisa,
             'Enabled': True,
             'Requirements': [
                 {

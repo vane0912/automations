@@ -252,11 +252,14 @@ def questions_loop(product_num, browser, wait, num_order_loop, applicants):
                         try:
                             WebDriverWait(browser, 2).until(EC.visibility_of_element_located((By.NAME, "general." + question['slug'])))
                             wait.until(EC.visibility_of_element_located((By.XPATH,'//div[@data-handle="filter-value"]'))).click()
-                            input_code = wait.until(EC.visibility_of_element_located((By.XPATH, '//input[@data-handle="dial-codes"]')))
+                            try:
+                                input_code = WebDriverWait(browser, 2).until(EC.visibility_of_element_located((By.XPATH, '//input[@data-handle="dial-codes"]')))
+                            except: 
+                                input_code = browser.find_element(By.XPATH, '//input[@data-handle="dial-codes"]')
                             input_code.send_keys("+52")
                             input_code.send_keys(Keys.ARROW_DOWN)
                             input_code.send_keys(Keys.ENTER)
-                            input_field = wait.until(EC.element_to_be_clickable((By.NAME, 'telephone')))
+                            input_field = wait.until(EC.element_to_be_clickable((By.XPATH, '//div[@name="general.'+ question['slug'] + '"]' + '//input[@name="telephone"]' )))
                             input_field.send_keys('11111111') 
                             input_field.send_keys(Keys.ENTER)
                             attempts = 2
@@ -266,11 +269,15 @@ def questions_loop(product_num, browser, wait, num_order_loop, applicants):
                         try:
                             WebDriverWait(browser, 2).until(EC.visibility_of_element_located((By.NAME, "applicant" + '.0.' + question['slug'])))
                             wait.until(EC.visibility_of_element_located((By.XPATH, '//div[@name="applicant.0.'+ question['slug'] + '"]' + '//div[@data-handle="filter-value"]'))).click()
-                            input_code = wait.until(EC.visibility_of_element_located((By.XPATH, '//input[@data-handle="dial-codes"]')))
+                            try:
+                                input_code = WebDriverWait(browser, 2).until(EC.visibility_of_element_located((By.XPATH, '//input[@data-handle="dial-codes"]')))
+                            except: 
+                                input_code = browser.find_element(By.XPATH, '//div[@name="applicant.0.'+ question['slug'] + '"]' + '//input[@data-handle="dial-codes"]')
                             input_code.send_keys("+52")
                             input_code.send_keys(Keys.ARROW_DOWN)
                             input_code.send_keys(Keys.ENTER)
-                            input_field = wait.until(EC.element_to_be_clickable((By.NAME, 'telephone')))
+                            input_field = wait.until(EC.element_to_be_clickable((By.XPATH, '//div[@name="applicant.0.'+ question['slug'] + '"]' + '//input[@name="telephone"]' )))
+                            time.sleep(2)
                             input_field.send_keys('11111111') 
                             input_field.send_keys(Keys.ENTER)
                             attempts = 2
@@ -283,7 +290,7 @@ def questions_loop(product_num, browser, wait, num_order_loop, applicants):
                     if question['options'] and len(question['options']) >= 5:
                         if attempts == 0:
                             try:
-                                dropdown_general = WebDriverWait(browser, 2).until(EC.visibility_of_element_located((By.XPATH, '//select[@data-handle="dropdown-general.' + question['slug'] + '"]')))
+                                dropdown_general = WebDriverWait(browser, 1).until(EC.visibility_of_element_located((By.XPATH, '//select[@data-handle="dropdown-general.' + question['slug'] + '"]')))
                                 if question['prevent_submission_if'] == None:
                                     Select(dropdown_general).select_by_index(0)
                                     attempts = 4
@@ -329,7 +336,7 @@ def questions_loop(product_num, browser, wait, num_order_loop, applicants):
                                 attempts += 1
                         elif attempts == 3:
                             try: 
-                                WebDriverWait(browser, 2).until(EC.visibility_of_element_located((By.NAME, 'applicant.0.' + question['slug'])))
+                                WebDriverWait(browser, 1).until(EC.visibility_of_element_located((By.NAME, 'applicant.0.' + question['slug'])))
                                 dropdown_general = WebDriverWait(browser, 2).until(EC.element_to_be_clickable((By.NAME, 'applicant.0.' + question['slug'])))
                                 dropdown_general.click()
                                 dropdown_input = wait.until(EC.visibility_of_element_located((By.XPATH, '//input[@data-handle="dropdown-applicant.0.' + question['slug'] + '"]')))
@@ -404,29 +411,20 @@ def questions_loop(product_num, browser, wait, num_order_loop, applicants):
                         except:
                             attempts += 1
             elif question['field_type'] == "address":
-                if question['show_if'] is None:
-                    time.sleep(2)
-                    input_field = wait.until(EC.element_to_be_clickable((By.NAME, 'applicant' + '.0.' + question['slug'])))
+                try:
+                    input_field =  WebDriverWait(browser, 3).until(EC.visibility_of_element_located((By.NAME, 'applicant' + '.0.' + question['slug'])))
                     browser.execute_script("arguments[0].value = '136 West 40th Street';", input_field)
-                    input_field.click()
                     input_field.send_keys(Keys.SPACE)
-                    api_google = wait.until(EC.visibility_of_element_located((By.ID, 'autocomplete_results')))
+                    time.sleep(2)
+                    try:
+                        api_google = WebDriverWait(browser, 3)(EC.visibility_of_element_located((By.ID, 'autocomplete_results')))
+                    except:
+                        api_google = browser.find_element(By.TAG_NAME, 'ul')
                     select_option = api_google.find_elements(By.TAG_NAME, 'li')
                     select_option[0].click()
                     time.sleep(2)
-                else:
-                    try:
-                        time.sleep(2)
-                        input_field =  WebDriverWait(browser, 3).until(EC.element_to_be_clickable((By.NAME, 'applicant' + '.0.' + question['slug'])))
-                        browser.execute_script("arguments[0].value = '136 West 40th Street';", input_field)
-                        input_field.click()
-                        input_field.send_keys(Keys.SPACE)
-                        api_google = wait.until(EC.visibility_of_element_located((By.ID, 'autocomplete_results')))
-                        select_option = api_google.find_elements(By.TAG_NAME, 'li')
-                        select_option[0].click()
-                        time.sleep(2)
-                    except:
-                        pass
+                except:
+                    pass
             elif question['slug'] == 'appointment_location_id':
                 try:
                     WebDriverWait(browser, 2).until(EC.visibility_of_element_located((By.NAME, 'applicant.0.' + question['slug'])))
