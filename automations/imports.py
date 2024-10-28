@@ -283,7 +283,7 @@ def questions_loop(product_num, browser, wait, num_order_loop, applicants):
                             attempts = 2
                         except: 
                             attempts = 2
-            elif question['field_type'] == 'dropdown' or question['field_type'] == 'dropdown_country' and question['multipart_section'] != 'step_3c':
+            elif question['field_type'] == 'dropdown':
                 attempts = 0
                 max_attempts = 4 
                 while attempts < max_attempts:
@@ -336,7 +336,7 @@ def questions_loop(product_num, browser, wait, num_order_loop, applicants):
                                 attempts += 1
                         elif attempts == 3:
                             try: 
-                                WebDriverWait(browser, 1).until(EC.visibility_of_element_located((By.NAME, 'applicant.0.' + question['slug'])))
+                                WebDriverWait(browser, 2).until(EC.visibility_of_element_located((By.NAME, 'applicant.0.' + question['slug'])))
                                 dropdown_general = WebDriverWait(browser, 2).until(EC.element_to_be_clickable((By.NAME, 'applicant.0.' + question['slug'])))
                                 dropdown_general.click()
                                 dropdown_input = wait.until(EC.visibility_of_element_located((By.XPATH, '//input[@data-handle="dropdown-applicant.0.' + question['slug'] + '"]')))
@@ -532,6 +532,29 @@ def questions_loop(product_num, browser, wait, num_order_loop, applicants):
                             attempts += 1
                     else:
                         attempts = 3
+            elif question['field_type'] == 'dropdown_country' and question['multipart_section'] != 'step_3c':
+                try:
+                    try:
+                        WebDriverWait(browser, 2).until(EC.visibility_of_element_located((By.NAME, 'general.' + question['slug'])))
+                        dropdown_general = WebDriverWait(browser, 2).until(EC.element_to_be_clickable((By.NAME, 'general.' + question['slug'])))
+                        dropdown_general.click()
+                        dropdown_input = wait.until(EC.visibility_of_element_located((By.XPATH, '//input[@data-handle="dropdown-general.' + question['slug'] + '"]')))
+                    except:
+                        WebDriverWait(browser, 2).until(EC.visibility_of_element_located((By.NAME, 'applicant.0.' + question['slug'])))
+                        dropdown_general = WebDriverWait(browser, 2).until(EC.element_to_be_clickable((By.NAME, 'applicant.0.' + question['slug'])))
+                        dropdown_general.click()
+                        dropdown_input = wait.until(EC.visibility_of_element_located((By.XPATH, '//input[@data-handle="dropdown-applicant.0.' + question['slug'] + '"]')))
+                    if question['prevent_submission_if'] == None:
+                        dropdown_input.send_keys(Keys.ARROW_DOWN)
+                        dropdown_input.send_keys(Keys.ENTER)
+                        attempts = 4
+                    else:
+                        prevent_values = question["prevent_submission_if"]["value"]
+                        accepted_values = [e for e in question["options"] if all(val not in e["value"] for val in prevent_values)]
+                        dropdown_input.send_keys(accepted_values[0]["value"])
+                        dropdown_input.send_keys(Keys.ENTER)
+                except:
+                    pass
         if "review" in current_url:
             try:
                 WebDriverWait(browser, 5).until(EC.text_to_be_present_in_element((By.ID, 'app'), 'Possible Duplicate'))
