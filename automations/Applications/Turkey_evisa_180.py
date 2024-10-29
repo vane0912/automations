@@ -21,10 +21,15 @@ def TR_App_P2(data):
                 nationality.click()
                 nationality_values = wait.until(EC.element_to_be_clickable((By.XPATH, "//input[@data-handle='dropdown-general.common_nationality_country']")))
                 nationality_values.send_keys('MX', Keys.ENTER)
-            product = wait.until(EC.element_to_be_clickable((By.XPATH, '//button[@data-handle="vt-38"]')))
-            product.click()
-            #wait.until(EC.element_to_be_clickable((By.ID, "btnContinueUnderSection"))).click() 
-            wait.until(lambda driver: driver.current_url != current_url) 
+            Select(wait.until(EC.visibility_of_element_located((By.XPATH, '//select[@data-handle="dropdown-general.visa_type_id"]')))).select_by_value('38')
+            # New design step_1 selector
+            #product = wait.until(EC.element_to_be_clickable((By.XPATH, '//button[@data-handle="vt-22"]')))
+            #product.click()
+            try:
+                WebDriverWait(browser, 15).until(lambda driver: driver.current_url != current_url)  
+            except:
+                wait.until(EC.element_to_be_clickable((By.ID, "btnContinueUnderSection"))).click()
+                wait.until(lambda driver: driver.current_url != current_url)
             try:
                 questions_loop(10135, browser, wait, order, 1)
                 if order == 0:

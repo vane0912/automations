@@ -25,10 +25,10 @@ def AUSTRALIA_VISITOR_VISA(data):
             #product = wait.until(EC.element_to_be_clickable((By.XPATH, '//button[@data-handle="vt-22"]')))
             #product.click()
             try:
-                wait.until(lambda driver: driver.current_url != current_url) 
+                WebDriverWait(browser, 15).until(lambda driver: driver.current_url != current_url)  
             except:
                 wait.until(EC.element_to_be_clickable((By.ID, "btnContinueUnderSection"))).click()
-                wait.until(lambda driver: driver.current_url != current_url) 
+                wait.until(lambda driver: driver.current_url != current_url)
             try:
                 questions_loop(10431, browser, wait, order, 1)
                 if order == 0:
