@@ -1,4 +1,18 @@
-from .imports import *
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+import os
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.support.ui import Select
+from selenium.webdriver.common.alert import Alert
+
+def take_screenshot(driver, step):
+    driver.save_screenshot(os.getcwd() + f'/automations/Applications/saved_screenshots/Correct/screenshot_{step}.png')
 def MIN(orders_num, url):
     chrome_options = Options()
     chrome_options.add_argument('--headless') 
@@ -34,12 +48,12 @@ def MIN(orders_num, url):
         take_screenshot(browser, "admin_2")
         select_min_reason = wait.until(EC.element_to_be_clickable((By.XPATH, '//label[@data-handle="Non-English characters"]')))
         select_min_reason.click()
-        take_screenshot(browser, "admin_3")
         wait.until(EC.visibility_of_element_located((By.XPATH, '//label[@data-handle="Non-English characters"]')))
+        take_screenshot(browser, "admin_3")
         close_modal = wait.until(EC.element_to_be_clickable((By.XPATH, '//button[@data-handle="close-modal"]')))
         close_modal.click()
-        take_screenshot(browser, "admin_4")
         wait.until(EC.element_to_be_clickable((By.NAME, 'change-status')))
+        take_screenshot(browser, "admin_4")
         Select(browser.find_element(By.NAME, 'change-status')).select_by_value("info_needed")
         
         go_trough_MIN = wait.until(EC.element_to_be_clickable((By.XPATH, '//button[@data-handle="minModalYes"]')))
@@ -51,3 +65,12 @@ def MIN(orders_num, url):
         take_screenshot(browser, "admin_6")
         wait.until(EC.visibility_of_element_located((By.XPATH, '//div[@data-vue-component="filterable-list"]')))
         take_screenshot(browser, "admin_7")
+
+
+status_func = {
+    'MIN': MIN,
+    #'Wog': WOG,
+    #'Scheduling': Scheduling,
+    #'Scheduled': Scheduled,
+    #'Incomplete': Incomplete,
+}

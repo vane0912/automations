@@ -1,4 +1,5 @@
 from .selector_functions import selectors
+from .status_functions import status_func
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import logging, time, re, requests,json, traceback, os, chromedriver_autoinstaller
@@ -72,7 +73,47 @@ def app_questions(url, product_num, app_version):
     data = json.loads(response.content)
     return data
 
-
+def run_orders(browser, wait, num_order, product_num, select_num, country, country_url):
+    browser.get(Global_Variables['url'] + country_url)
+    current_url = browser.current_url
+    if num_order == 0:
+        nationality = wait.until(EC.element_to_be_clickable((By.NAME, 'general.common_nationality_country')))
+        nationality.click()
+        nationality_values = wait.until(EC.element_to_be_clickable((By.XPATH, "//input[@data-handle='dropdown-general.common_nationality_country']")))
+        nationality_values.send_keys(country, Keys.ENTER)
+    Select(wait.until(EC.visibility_of_element_located((By.XPATH, '//select[@data-handle="dropdown-general.visa_type_id"]')))).select_by_value(select_num)
+    # New design step_1 selector
+    #product = wait.until(EC.element_to_be_clickable((By.XPATH, '//button[@data-handle="vt-22"]')))
+    #product.click()
+    try:
+        wait.until(lambda driver: driver.current_url != current_url) 
+    except:
+        wait.until(EC.element_to_be_clickable((By.ID, "btnContinueUnderSection"))).click()
+        wait.until(lambda driver: driver.current_url != current_url) 
+    try:
+        questions_loop(product_num, browser, wait, num_order, 1)
+        if num_order == 0:
+            browser.get(Global_Variables['url'] + '/account/settings/security')
+            password = wait.until(EC.visibility_of_element_located((By.ID, 'new_password')))
+            password.send_keys('testivisa5!')
+            password_repeat = wait.until(EC.visibility_of_element_located((By.ID, 'password_repeat')))
+            password_repeat.send_keys('testivisa5!')
+            confirm_password = wait.until(EC.element_to_be_clickable((By.XPATH, '//button[@data-handle="updatePasswordBtn"]')))
+            confirm_password.click()
+            wait.until(EC.visibility_of_element_located((By.CLASS_NAME, 'swal-modal')))
+        if num_order == int(Global_Variables['N. Orders']) - 1:
+            if Global_Variables['Status'] in status_func:
+                try:
+                    status_func[Global_Variables['Status']](Global_Variables['Order_Numbers'], Global_Variables['url'])
+                    send_result('Success', '')
+                except Exception as e:
+                    browser.get_screenshot_as_file(os.getcwd() + '/automations/Applications/saved_screenshots/Error/error.png')
+                    send_result('Failed',e)
+            else:
+                send_result('Success', '')
+    except Exception as e:
+        browser.get_screenshot_as_file(os.getcwd() + '/automations/Applications/saved_screenshots/Error/error.png')
+        send_result('Failed',e)
 def questions_loop(product_num, browser, wait, num_order_loop, applicants):
     questions = app_questions(Global_Variables['url'], product_num, Global_Variables['App_Version'])
     sections_arr = []

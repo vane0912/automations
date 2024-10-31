@@ -4,6 +4,7 @@ from .Applications.India_Business_eVisa import India_Business_eVisa
 from .Applications.Egypt_180_Multiple import EG_180_Multiple
 from .Applications.china_90_days import CHINA_90_DAYS
 from .Applications.australia_visitor_visa import AUSTRALIA_VISITOR_VISA
+from .Applications.australia_eta import AUSTRALIA_ETA
 from .Admin.check_orders_page import check_orders
 
 automations_list_admin = [
@@ -51,7 +52,7 @@ automations_list_applications = [
             'Subtitles': ['Only for US citizens'],
             'Country' : 'China',
             'Type': CHINA_90_DAYS,
-            'Enabled': True,
+            'Enabled': False,
             'Requirements': [
                 {
                     'Label': 'ULR',
@@ -126,6 +127,31 @@ automations_list_applications = [
             'Subtitles': ['Only for MX citizens'],
             'Country' : 'Australia',
             'Type': AUSTRALIA_VISITOR_VISA,
+            'Enabled': True,
+            'Requirements': [
+                {
+                    'Label': 'ULR',
+                    'Type': 'default',
+                },
+                {
+                    'Label': 'Email',
+                    'Type': 'default',
+                },
+                {
+                    'Label': 'Status',
+                    'Status_Available': ['Received']
+                },
+                {
+                    'Label': 'App',
+                    'Type': 'default'
+                }
+            ]
+        },
+        {
+            'Title': 'Australia-Visitor-Visa',
+            'Subtitles': ['Only for MX citizens'],
+            'Country' : 'Australia',
+            'Type': AUSTRALIA_ETA,
             'Enabled': True,
             'Requirements': [
                 {

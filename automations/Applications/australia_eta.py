@@ -1,6 +1,6 @@
 from ..imports import *
 from ..status_functions import *
-def AUSTRALIA_VISITOR_VISA(data):
+def AUSTRALIA_ETA(data):
     setArguments(data)
     
     Global_Variables['Order_Numbers'] = []
@@ -13,7 +13,7 @@ def AUSTRALIA_VISITOR_VISA(data):
     wait = WebDriverWait(browser, 40)
     try:
         for order in range(int(Global_Variables['N. Orders'])):
-            run_orders(browser, wait, order, 10431, '5085', 'MX', '/australia/apply-now')
+            run_orders(browser, wait, order, 10104, '4', 'US', '/australia/apply-now')
     except Exception as e:
         browser.get_screenshot_as_file(os.getcwd() + '/automations/Applications/saved_screenshots/Error/error.png')
         send_result('Failed',e)
