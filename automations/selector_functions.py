@@ -163,7 +163,6 @@ def fieldset_repeat(question, wait, browser, data):
                         dob_year = Select(wait.until(EC.element_to_be_clickable((By.NAME, 'general.' + question['slug'] + '.0.' + field['slug'] +'.year'))))
                         dob_year.select_by_value("2000") 
                     if field['slug'] == 'gender':
-                        print('//div[@data-ivisa-question-selector="general.' + question['slug'] + '.0.'+ field['slug'] + '"]')
                         WebDriverWait(browser, 2).until(EC.visibility_of_element_located((By.XPATH, '//div[@data-ivisa-question-selector="general.' + question['slug'] + '.0.'+ field['slug'] + '"]')))
                         div_dropdown = wait.until(EC.visibility_of_element_located((By.XPATH, '//div[@data-ivisa-question-selector="general.' + question['slug'] + '.0.'+ field['slug'] + '"]')))
                         options_inside = div_dropdown.find_elements(By.TAG_NAME, 'button')

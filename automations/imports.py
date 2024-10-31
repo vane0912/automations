@@ -92,7 +92,6 @@ def questions_loop(product_num, browser, wait, num_order_loop, applicants):
             take_screenshot(browser, str(num_screenshot))
             if question['slug'] in selectors:
                 selectors[question['slug']](question, wait, browser, Global_Variables)
-                print(question['slug'])
             elif question['field_type'] in selectors:
                 selectors[question['field_type']](question, wait, browser, Global_Variables)
         if "review" in current_url:
