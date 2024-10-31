@@ -5,7 +5,7 @@ def EG_180_Multiple(data):
     
     Global_Variables['Order_Numbers'] = []
     chrome_options = Options()
-    chrome_options.add_argument('--headless') 
+    #chrome_options.add_argument('--headless') 
     chrome_options.add_argument('window-size=1920,1080')
     chrome_options.add_argument('--no-sandbox')
     chrome_options.add_argument('--disable-dev-shm-usage')
@@ -20,10 +20,15 @@ def EG_180_Multiple(data):
                 nationality.click()
                 nationality_values = wait.until(EC.element_to_be_clickable((By.XPATH, "//input[@data-handle='dropdown-general.common_nationality_country']")))
                 nationality_values.send_keys(Global_Variables['Country'], Keys.ENTER)
-            product = wait.until(EC.element_to_be_clickable((By.XPATH, '//button[@data-handle="vt-17"]')))
-            product.click()
-            #wait.until(EC.element_to_be_clickable((By.ID, "btnContinueUnderSection"))).click() 
-            wait.until(lambda driver: driver.current_url != current_url) 
+            Select(wait.until(EC.visibility_of_element_located((By.XPATH, '//select[@data-handle="dropdown-general.visa_type_id"]')))).select_by_value('17')
+            # New design step_1 selector
+            #product = wait.until(EC.element_to_be_clickable((By.XPATH, '//button[@data-handle="vt-22"]')))
+            #product.click()
+            try:
+                wait.until(lambda driver: driver.current_url != current_url) 
+            except:
+                wait.until(EC.element_to_be_clickable((By.ID, "btnContinueUnderSection"))).click()
+                wait.until(lambda driver: driver.current_url != current_url) 
             try:
                 questions_loop(10115, browser, wait, order, 1)
                 if order == 0:
