@@ -2,7 +2,6 @@ from ..imports import *
 from ..status_functions import *
 def AUSTRALIA_ETA(data):
     setArguments(data)
-    
     Global_Variables['Order_Numbers'] = []
     chrome_options = Options()
     chrome_options.add_argument('--headless') 

@@ -49,7 +49,7 @@ automations_list_applications = [
         },
         {
             'Title': 'China-Tourist-Visa-90-Days',
-            'Subtitles': ['Only for US citizens'],
+            'Subtitles': ['Only for MX citizens'],
             'Country' : 'China',
             'Type': CHINA_90_DAYS,
             'Enabled': False,
@@ -99,7 +99,7 @@ automations_list_applications = [
         },
         {
             'Title': 'Egypt-180-days-Multiple-Entries',
-            'Subtitles': ['Only for MX citizens'],
+            'Subtitles': ['Only for US citizens'],
             'Country' : 'Egypt',
             'Type': EG_180_Multiple,
             'Enabled': True,
@@ -148,8 +148,8 @@ automations_list_applications = [
             ]
         },
         {
-            'Title': 'Australia-Visitor-Visa',
-            'Subtitles': ['Only for MX citizens'],
+            'Title': 'Australia-ETA',
+            'Subtitles': ['Only for US citizens'],
             'Country' : 'Australia',
             'Type': AUSTRALIA_ETA,
             'Enabled': True,
@@ -174,7 +174,7 @@ automations_list_applications = [
         },
         {
             'Title': 'India-Business-eVisa',
-            'Subtitles': ['Only for MX citizens'],
+            'Subtitles': ['Only for US citizens'],
             'Country' : 'India',
             'Type': India_Business_eVisa,
             'Enabled': True,
