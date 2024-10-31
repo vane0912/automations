@@ -158,6 +158,7 @@ def questions_loop(product_num, browser, wait, num_order_loop, applicants):
                 take_screenshot(browser, str(num_screenshot))
                 wait.until(lambda driver: driver.current_url != current_url) 
             except:
+                time.sleep(3)
                 wait.until(EC.element_to_be_clickable((By.ID, "btnSubmitApplication"))).click() 
                 wait.until(lambda driver: driver.current_url != current_url)
                 wait.until(EC.element_to_be_clickable((By.ID, "btnDismissAppDownload"))).click() 
