@@ -66,7 +66,6 @@ def MIN(orders_num, url):
         wait.until(EC.visibility_of_element_located((By.XPATH, '//div[@data-vue-component="filterable-list"]')))
         take_screenshot(browser, "admin_7")
 
-
 status_func = {
     'MIN': MIN,
     #'Wog': WOG,

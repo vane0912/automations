@@ -7,6 +7,7 @@ from .Applications.australia_visitor_visa import AUSTRALIA_VISITOR_VISA
 from .Applications.oman_eVisa import OMAN_EVISA_30_DAYS
 from .Applications.australia_eta import AUSTRALIA_ETA
 from .Admin.check_orders_page import check_orders
+from .Admin.doc_upload import doc_upload
 
 automations_list_admin = [
     {
@@ -20,7 +21,19 @@ automations_list_admin = [
                     'Type': 'default',
                 },
             ]
-        }
+    },
+    #{
+    #    'Title': 'Doc_Upload_Admin_Portal',
+    #    'Subtitles': ['File Upload in the admin portal'],
+    #    'Type': doc_upload,
+    #    'Enabled': True,
+    #    'Requirements': [
+    #            {
+    #                'Label': 'URL',
+    #                'Type': 'default',
+    #            },
+    #        ]
+    #}
 ]
 automations_list_applications = [
         {
