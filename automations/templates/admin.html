@@ -1,44 +1,39 @@
 {% extends "base.html" %}
 {% block title %}Admin Automations{% endblock %}
 {% block content %}
-   <div class="w-9/12">
+   <div class="w-9/12 flex flex-col">
       <h1 class="text-5xl font-extrabold">Admin Automations</h1>
       {%for automation in automations_list%}
-         {%if automation['Enabled']%}
-            <div class="w-full flex flex-col justify-evenly mt-14 p-6 rounded-md bg-white h-fit mb-3 border-[#302E2E] border-2">
-               <div class="w-full flex justify-between">
-                   <h1 class="text-2xl font-bold">{{automation.Title.replace('-', ' ')}}</h1>
-                    <div class="w-2/5 flex justify-end">
-                        <h1 id="automation_failed" class="text-xl font-semibold hidden ml-7">Ups something went wrong</h1>
-                        <button 
-                        onclick="runtest(document.getElementById('URL').value, '{{automation.Title}}')"
-                        id="run_automation"
-                        class="bg-[#4ADE80] w-1/4 flex justify-center items-center font-semibold rounded-lg h-10">
-                            <img class="w-6 h-6" id="play_btn" src="../static/images/boton-de-play.png" alt="">
-                            <img class="w-6 h-6 hidden" id="pause_btn" src="../static/images/boton-de-pausa.png" alt="">
-                        </button>
-                        <h1 id="automation_succeded" class="text-xl font-semibold hidden">Success!</h1>
-                    </div>
-               </div>
-               <ul class="list-disc">
-                  {%for automation in automations_list[0]['Subtitles']%}
-                    <li class="my-5 ml-5">{{automation}}</li>
-                  {% endfor %}
-               </ul>
-               <div class="flex flex-col items-center w-full">
-                    {%for requirement in automations_list[0]['Requirements']%}
-                        <div class="flex w-full">
-                           <input 
-                           id="{{ requirement.Label }}" placeholder="{{ requirement.Label }}" name="{{ app_name }}-input" 
-                           class="w-full border-[1px] border-solid border-[#302E2E]/50 font-light h-[40px] px-6 py-5 rounded-lg mt-2" 
-                           type="{{ requirement.Type }}"
-                           >
-                        </div>
-                    {%endfor%}
-                  </div>
-               </div>
+         <div class="w-full flex flex-col justify-evenly mt-14 p-6 rounded-md bg-white h-fit mb-3 border-[#302E2E] border-2">
+            <div class="w-full flex justify-between">
+                <h1 class="text-2xl font-bold">{{automation.Title.replace('-', ' ')}}</h1>
+                 <div class="w-2/5 flex justify-end">
+                     <button 
+                     onclick="runtest(document.getElementById('URL_{{automation.automation_id}}').value, '{{automation.Title}}', '{{automation.automation_id}}')"
+                     id="run_automation"
+                     class="bg-[#4ADE80] w-1/4 flex justify-center items-center font-semibold rounded-lg h-10">
+                         <img class="w-6 h-6" id="play_btn_{{automation.automation_id}}" src="../static/images/boton-de-play.png" alt="">
+                         <img class="w-6 h-6 hidden" id="pause_btn_{{automation.automation_id}}" src="../static/images/boton-de-pausa.png" alt="">
+                     </button>
+                 </div>
             </div>
-         {% endif %}
+            <ul class="list-disc">
+               {%for sub in automation['Subtitles']%}
+                 <li class="my-5 ml-5">{{sub}}</li>
+               {% endfor %}
+            </ul>
+            <div class="flex flex-col items-center w-full">
+                 {%for requirement in automations_list[0]['Requirements']%}
+                     <div class="flex w-full">
+                        <input 
+                        id="{{ requirement.Label }}_{{automation.automation_id}}" placeholder="{{ requirement.Label }}" name="{{ app_name }}-input" 
+                        class="w-full border-[1px] border-solid border-[#302E2E]/50 font-light h-[40px] px-6 py-5 rounded-lg mt-2" 
+                        type="{{ requirement.Type }}"
+                        >
+                     </div>
+                 {%endfor%}
+               </div>
+         </div>
       {% endfor %}
    </div>
    
@@ -47,11 +42,11 @@
       function runpolling(){
          automation_started = true
          pollAutomationStatus()
-     }
-      function runtest(url, automation){
-        document.getElementById('play_btn').classList.add('hidden')
-        document.getElementById('pause_btn').classList.add('flex')
-        document.getElementById('pause_btn').classList.remove('hidden')
+      }
+      function runtest(url, automation, automation_id){
+        document.getElementById('play_btn_' + automation_id).classList.add('hidden')
+        document.getElementById('pause_btn_' + automation_id).classList.add('flex')
+        document.getElementById('pause_btn_' + automation_id).classList.remove('hidden')
         fetch(`/admin/${automation}`,{
             method: 'POST',
             headers: {'Content-Type':'application/json'},

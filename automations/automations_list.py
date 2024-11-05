@@ -11,6 +11,7 @@ from .Admin.doc_upload import doc_upload
 
 automations_list_admin = [
     {
+        'automation_id' : 1,
         'Title': 'Check-Orders-Page',
         'Subtitles': ['Customer orders and search pages can be viewed'],
         'Type': check_orders,
@@ -22,18 +23,19 @@ automations_list_admin = [
                 },
             ]
     },
-    #{
-    #    'Title': 'Doc_Upload_Admin_Portal',
-    #    'Subtitles': ['File Upload in the admin portal'],
-    #    'Type': doc_upload,
-    #    'Enabled': True,
-    #    'Requirements': [
-    #            {
-    #                'Label': 'URL',
-    #                'Type': 'default',
-    #            },
-    #        ]
-    #}
+    {
+        'automation_id' : 2,
+        'Title': 'Doc-Upload-Admin-Portal',
+        'Subtitles': ['File Upload in the admin portal'],
+        'Type': doc_upload,
+        'Enabled': True,
+        'Requirements': [
+                {
+                    'Label': 'URL',
+                    'Type': 'default',
+                },
+            ]
+    }
 ]
 automations_list_applications = [
         {

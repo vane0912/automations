@@ -11,7 +11,8 @@ admin = Blueprint('admin', __name__)
 @admin.route('/admin')
 def weekly():
     check_status.clear()
-    return render_template('admin.html', automations_list=automations_list_admin,)
+    automations_enabled = [item for item in automations_list_admin if item['Enabled']]
+    return render_template('admin.html', automations_list=automations_enabled)
 @admin.route('/admin/<title>', methods=['POST'])
 def runAutomation(title=None):
     if request.method == 'POST':
