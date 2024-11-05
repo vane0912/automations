@@ -2,6 +2,24 @@
 {% block title %}Admin Automations{% endblock %}
 {% block content %}
    <div class="w-9/12 flex flex-col">
+      <div class="hidden justify-center items-center bg-gray-900/40 h-full w-full top-0 left-0" id="Success_Response">
+         <div class="bg-white max-w-2xl border-2 flex flex-col items-center border-[rgb(74,222,128)] h-fit p-24 rounded-md">
+            <img src="../static/images/garrapata.png" 
+            class="w-40 h-40"
+            alt="">
+            <h2 class="text-center text-3xl font-bold mt-8">Success!</h2>
+            <h3 class="mt-2">The automation ran Succesfully please refresh the page</h3>
+         </div>   
+      </div>
+      <div class="hidden justify-center items-center bg-gray-900/40 h-full w-full top-0 left-0" id="Failed_Response">
+         <div class="bg-white max-w-2xl border-2 flex flex-col items-center border-[rgb(74,222,128)] h-fit p-24 rounded-md">
+            <img src="../static/images/error.png" 
+            class="w-40 h-40"
+            alt="">
+            <h2 class="text-center text-3xl font-bold mt-8">Error</h2>
+            <h3 class="mt-2 text-center">There was an error when running the automation, please try again or contact me if it doesn't work</h3>
+         </div>   
+      </div>
       <h1 class="text-5xl font-extrabold">Admin Automations</h1>
       {%for automation in automations_list%}
          <div class="w-full flex flex-col justify-evenly mt-14 p-6 rounded-md bg-white h-fit mb-3 border-[#302E2E] border-2">
@@ -60,12 +78,14 @@
          const response = await fetch(`/check-automation-status`);
          const json_response = await response.json();
          if (json_response.Status === "Success") {
-            document.getElementById('automation_succeded').classList.remove('hidden')
-            document.getElementById('run_automation').classList.add('hidden')
+            document.getElementById('Success_Response').classList.remove('hidden')
+            document.getElementById('Success_Response').classList.add('absolute')
+            document.getElementById('Success_Response').classList.add('flex')
         }else if(json_response.Status === "Failed"){
             console.log(json_response)
-            document.getElementById('automation_failed').classList.remove('hidden')
-            document.getElementById('run_automation').classList.add('hidden')
+            document.getElementById('Failed_Response').classList.remove('hidden')
+            document.getElementById('Failed_Response').classList.add('absolute')
+            document.getElementById('Failed_Response').classList.add('flex')
          } 
          else {
              await new Promise(resolve => setTimeout(resolve, 10000))

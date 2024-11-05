@@ -1,7 +1,7 @@
 from ..imports import *
 def doc_upload(url):
     chrome_options = Options()
-    #chrome_options.add_argument('--headless') 
+    chrome_options.add_argument('--headless') 
     chrome_options.add_argument('window-size=1920,1080')
     chrome_options.add_argument('--no-sandbox')
     chrome_options.add_argument('--disable-dev-shm-usage')
@@ -28,7 +28,7 @@ def doc_upload(url):
         get_tables = filter_component.find_elements(By.TAG_NAME, 'table')
         get_rows = get_tables[1].find_elements(By.TAG_NAME, 'tr')
         # Change order Number selection
-        get_td = get_rows[3].find_elements(By.TAG_NAME, 'td')
+        get_td = get_rows[4].find_elements(By.TAG_NAME, 'td')
         go_to_order_num = get_td[0].find_element(By.TAG_NAME, 'a')
         go_to_order_num.click()
         wait.until(EC.visibility_of_element_located((By.TAG_NAME, 'h1')))
