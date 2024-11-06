@@ -25,7 +25,7 @@ Global_Variables = {
     'Passport_num' : '123456789',
     'N. Orders': 0,
     'Order_Numbers': [],
-    'App_Version': '',
+    'App_Version': '4.8.2',
     'Status': ''
 }
 
@@ -43,8 +43,6 @@ def setArguments(data):
             Global_Variables['N. Orders'] = x['value']
         if x['type'] == 'Status':
             Global_Variables['Status'] = x['value']
-        if x['type'] == 'App':
-            Global_Variables['App_Version'] = x['value']
 
 def send_result(result, e):
     if result == 'Success':

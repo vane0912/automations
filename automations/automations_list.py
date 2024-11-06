@@ -56,10 +56,6 @@ automations_list_applications = [
                 {
                     'Label': 'Status',
                     'Status_Available': ['Received', 'MIN']
-                },
-                {
-                    'Label': 'App',
-                    'Type': 'default'
                 }
             ]
         },
@@ -81,10 +77,6 @@ automations_list_applications = [
                 {
                     'Label': 'Status',
                     'Status_Available': ['Received', 'MIN']
-                },
-                {
-                    'Label': 'App',
-                    'Type': 'default'
                 }
             ]
         },
@@ -106,10 +98,6 @@ automations_list_applications = [
                 {
                     'Label': 'Status',
                     'Status_Available': ['Received', 'MIN']
-                },
-                {
-                    'Label': 'App',
-                    'Type': 'default'
                 }
             ]
         },
@@ -131,10 +119,6 @@ automations_list_applications = [
                 {
                     'Label': 'Status',
                     'Status_Available': ['Received', 'MIN']
-                },
-                {
-                    'Label': 'App',
-                    'Type': 'default'
                 }
             ]
         },
@@ -156,10 +140,6 @@ automations_list_applications = [
                 {
                     'Label': 'Status',
                     'Status_Available': ['Received']
-                },
-                {
-                    'Label': 'App',
-                    'Type': 'default'
                 }
             ]
         },
@@ -181,10 +161,6 @@ automations_list_applications = [
                 {
                     'Label': 'Status',
                     'Status_Available': ['Received']
-                },
-                {
-                    'Label': 'App',
-                    'Type': 'default'
                 }
             ]
         },
@@ -206,10 +182,6 @@ automations_list_applications = [
                 {
                     'Label': 'Status',
                     'Status_Available': ['Received', 'MIN']
-                },
-                {
-                    'Label': 'App',
-                    'Type': 'default'
                 }
             ]
         },
@@ -233,7 +205,7 @@ automations_list_applications = [
                     'Status_Available': ['Received']
                 },
                 {
-                    'Label': 'App',
+                    'Label': '',
                     'Type': 'default'
                 }
             ]

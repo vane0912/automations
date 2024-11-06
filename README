@@ -2,10 +2,70 @@
 
 - Code editor i would recommend [Visual Studio](https://code.visualstudio.com/)
 - Having Git installed in your computer, you can find the link to how to install it here [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)]
-- Install Python 
+- Install Python on your computer [Python](https://www.python.org/downloads/)
+- Install FFmpeg, this would allow us to take evidence of the automations [FFmpeg](https://ffmpeg.org/download.html)
 
 ## How can i install the repository?
 
 - First create a folder in your computer where you will save the automations, you can name it however you like 
 - Open Visual Studio and navigate to the folder you just created 
+- On the terminal run this command. macOS "python3 -m venv .venv" Windows "py -3 -m venv .venv"
+- Once that code ran a folder named .venv should have been created, now run this command: 
+Windows ".venv\Scripts\activate" macOS ". .venv/bin/activate"
 - Open a new terminal and clone the repository with the following command "git clone https://github.com/vane0912/automations.git"
+- We also need to install Flask so run this command on the terminal "pip install Flask selenium"
+- Now to make our lives easier on your main folder (where you can see the files main.py, README etc) create a file named "Makefile" inside paste the code inside this block
+
+```Makefile
+run_flask:
+	flask --app automations run --debug
+```
+
+- Now on the terminal run this "make run_flask"
+- And Done! you should see the following on the terminal 
+``` js
+    flask --app automations run --debug
+     * Serving Flask app 'automations'
+     * Debug mode: on
+    WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+     * Running on http://127.0.0.1:5000
+    Press CTRL+C to quit
+     * Restarting with stat
+     * Debugger is active!
+     * Debugger PIN: 663-733-427
+```
+- Copy and paste this url "http://127.0.0.1:5000" on any navigator of your preference and you should see the app running 
+
+# Additonal Notes
+
+## How to see the automation while is running
+
+- There is two options for us when we run an automation, we can let the automation run on the background without us seeing anything (headless) or we can run the automation and see it as it runs, for this you need to navigate to the folder "automations/Applications" and select the application you are going to run for example "Turkey_evisa_180.py" here you can see this line "chrome_options.add_argument('--headless') at the start of this line add # that line should look like this
+
+```python
+#chrome_options.add_argument('--headless')
+```
+- Now run the automation on the page as normal and you should be able to see it as it runs 
+
+## How to create a video
+
+- When you run an automation for an application you can see the process on the 'Applications/saved_screenshots' folder where the automation will take screenshots of the application process but to reduce all of this screenshots to a video you need to do the following:
+
+    - Go to the Makefile we created previously and paste the following code:
+
+macOs:
+
+```Makefile
+   video: 
+       ffmpeg -framerate 1 -i automations/Applications/saved_screenshots/Correct/screenshot_%d.png -vcodec     libx264 -pix_fmt yuv420p output.mp4
+       rm automations/Applications/saved_screenshots/Correct/* 
+```
+Windows:
+
+```Makefile
+   video: 
+       ffmpeg -framerate 1 -i automations/Applications/saved_screenshots/Correct/screenshot_%d.png -vcodec     libx264 -pix_fmt yuv420p output.mp4
+       del automations/Applications/saved_screenshots/Correct/* 
+```
+- Now on a new terminal (not the same from where our app is running) run this command "make video"
+- A new video should have been created on your main folder with the name "output.mp4"
