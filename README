@@ -1,4 +1,12 @@
 ## What do we need to have installed?
 
 - Code editor i would recommend [Visual Studio](https://code.visualstudio.com/)
+- Having Git installed in your computer, you can find the link to how to install it here [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)]
 - Install Python 
+
+## How can i install the repository?
+
+- First create a folder in your computer where you will save the automations, you can name it however you like 
+- Open Visual Studio and navigate to the folder you just created 
+- Open a new terminal 
+![imagen_terminal](terminal.png)
