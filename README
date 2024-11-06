@@ -8,5 +8,4 @@
 
 - First create a folder in your computer where you will save the automations, you can name it however you like 
 - Open Visual Studio and navigate to the folder you just created 
-- Open a new terminal 
-![imagen_terminal](./terminal.png)
+- Open a new terminal and clone the repository with the following command "git clone https://github.com/vane0912/automations.git"
