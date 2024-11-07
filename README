@@ -1,6 +1,6 @@
 ## What do we need to have installed?
 
-- Code editor i would recommend [Visual Studio](https://code.visualstudio.com/)
+- Code editor, i would recommend [Visual Studio](https://code.visualstudio.com/)
 - Having Git installed in your computer, you can find the link to how to install it here [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)]
 - Install Python on your computer [Python](https://www.python.org/downloads/)
 - Install FFmpeg, this would allow us to take evidence of the automations [FFmpeg](https://ffmpeg.org/download.html)
