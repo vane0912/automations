@@ -43,7 +43,7 @@ run_flask:
 - There is two options for us when we run an automation, we can let the automation run on the background without us seeing anything (headless) or we can run the automation and see it as it runs, for this you need to navigate to the folder "automations/Applications" and select the application you are going to run for example "Turkey_evisa_180.py" here you can see this line "chrome_options.add_argument('--headless') at the start of this line add # that line should look like this
 
 ```python
-#chrome_options.add_argument('--headless')
+    #chrome_options.add_argument('--headless')
 ```
 - Now run the automation on the page as normal and you should be able to see it as it runs 
 
@@ -69,3 +69,29 @@ Windows:
 ```
 - Now on a new terminal (not the same from where our app is running) run this command "make video"
 - A new video should have been created on your main folder with the name "output.mp4"
+
+## How to update the mobile app version
+
+If you start getting errors when trying to run the automations it might be because the mobile app version  have been updated and we need to updated it in the code so please do the following:
+
+- Go to the folder "automations" and navigate to the file imports.py where you can see the following code:
+
+```python
+    Global_Variables = {
+        'url': 'https://deploy-20240619--079f7edd.visachinaonline.com',
+        'applicants': 5,
+        'Country': "US",
+        'Email': "",
+        'First_name' : 'Pedro',
+        'Last_name' : 'Gonzalez',
+        'Passport_num' : '123456789',
+        'N. Orders': 0,
+        'Order_Numbers': [],
+        'App_Version': '4.8.2',
+        'Status': ''
+    }
+```
+
+On the object 'App_Version' you can see the app version we are currently using to run the automation so just update the value from '4.8.2' to whichever version we have right now in the app (Ask Kim about which version we are using please) and save the changes. macOS "Command + S" Windows "Ctrl + S"
+
+
