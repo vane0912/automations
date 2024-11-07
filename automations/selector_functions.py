@@ -333,20 +333,41 @@ def gender(question, wait, browser, data):
     options_inside = div_dropdown.find_elements(By.TAG_NAME, 'button')
     options_inside[0].click() 
 def address(question, wait, browser, data):
-    try:
-        input_field =  WebDriverWait(browser, 3).until(EC.visibility_of_element_located((By.NAME, 'applicant' + '.0.' + question['slug'])))
-        browser.execute_script("arguments[0].value = '136 West 40th Street';", input_field)
-        input_field.send_keys(Keys.SPACE)
-        time.sleep(2)
-        try:
-            api_google = WebDriverWait(browser, 3)(EC.visibility_of_element_located((By.ID, 'autocomplete_results')))
-        except:
-            api_google = browser.find_element(By.TAG_NAME, 'ul')
-        select_option = api_google.find_elements(By.TAG_NAME, 'li')
-        select_option[0].click()
-        time.sleep(2)
-    except:
-        pass
+    attempts = 0
+    max_attempts = 2
+    while attempts < max_attempts:
+        if attempts == 0:
+            try:
+                input_field =  WebDriverWait(browser, 3).until(EC.visibility_of_element_located((By.NAME, 'applicant' + '.0.' + question['slug'])))
+                browser.execute_script("arguments[0].value = '136 West 40th Street';", input_field)
+                input_field.send_keys(Keys.SPACE)
+                time.sleep(2)
+                try:
+                    api_google = WebDriverWait(browser, 3).until(EC.visibility_of_element_located((By.ID, 'autocomplete_results')))
+                except:
+                    api_google = browser.find_element(By.TAG_NAME, 'ul')
+                select_option = api_google.find_elements(By.TAG_NAME, 'li')
+                select_option[0].click()
+                time.sleep(2)
+                attempts = 2
+            except:
+                attempts += 1
+        elif attempts == 1:
+            try:
+                input_field =  WebDriverWait(browser, 3).until(EC.visibility_of_element_located((By.NAME, 'general.' + question['slug'])))
+                browser.execute_script("arguments[0].value = '136 West 40th Street';", input_field)
+                input_field.send_keys(Keys.SPACE)
+                time.sleep(2)
+                try:
+                    api_google = WebDriverWait(browser, 3).until(EC.visibility_of_element_located((By.ID, 'autocomplete_results')))
+                except:
+                    api_google = browser.find_element(By.TAG_NAME, 'ul')
+                select_option = api_google.find_elements(By.TAG_NAME, 'li')
+                select_option[0].click()
+                time.sleep(2)
+                attempts = 2
+            except: 
+                attempts += 1
 def appointment_location_id(question, wait, browser, data):
     try:
         WebDriverWait(browser, 2).until(EC.visibility_of_element_located((By.NAME, 'applicant.0.' + question['slug'])))
