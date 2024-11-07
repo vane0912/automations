@@ -13,7 +13,11 @@ def EG_180_Multiple(data):
     wait = WebDriverWait(browser, 60)
     try:
         for order in range(int(Global_Variables['N. Orders'])):
-            run_orders(browser, wait, order, 10115, '17', Global_Variables['Country'], '/egypt/apply-now')
+            try:
+                run_orders(browser, wait, order, 10115, '17', Global_Variables['Country'], '/egypt/apply-now')
+            except Exception as e:
+                browser.get_screenshot_as_file(os.getcwd() + '/automations/Applications/saved_screenshots/Error/error.png')
+                send_result('Failed',e)
     except Exception as e:
         browser.get_screenshot_as_file(os.getcwd() + '/automations/Applications/saved_screenshots/Error/error.png')
         send_result('Failed',e)
