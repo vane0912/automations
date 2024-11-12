@@ -1,17 +1,7 @@
 from flask import Flask
-from dotenv import load_dotenv
-import os
-
-
-load_dotenv()
- 
-class Config(): 
-    ENVIROMENT_VARIABLE = os.getenv('RAILWAY_ENVIRONMENT')
-    URL_VARIABLE = os.getenv('RAILWAY_STATIC_URL')
 
 def create_app():
     app = Flask(__name__)
-    app.config.from_object(Config)
     
     from .homepage import homepage_bp
     from .weekly import admin

@@ -24,11 +24,7 @@ def get_app(app_type=None):
 
 @applications_bp.route('/run-automation/<app_name>', methods=['POST', 'GET'])
 async def set_variables(app_name=None):
-    url=''
-    if current_app.config['ENVIROMENT_VARIABLE'] == 'production':
-        url = current_app.config['URL_VARIABLE']
-    else: 
-        url = 'http://127.0.0.1:5000'
+    url = 'http://127.0.0.1:5000'
     filtered_Array = []
     for x in automations_list_applications:
         if x['Title'] == app_name:
