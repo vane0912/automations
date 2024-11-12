@@ -1,12 +1,4 @@
-from selenium.webdriver.support.wait import WebDriverWait
-import time,os
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.ui import Select
-from selenium.webdriver.common.alert import Alert
+from .global_imports import *
 
 def safe_element_click(driver, locator):
     attempts = 0
@@ -24,13 +16,14 @@ def safe_element_click(driver, locator):
 def arrival_date(question, wait, browser, data):
     dates_calendar = wait.until(EC.element_to_be_clickable((By.NAME, "general." + question['slug'])))
     dates_calendar.click()
-    svg_locator = (By.CSS_SELECTOR, "div.is-right svg")
+    svg_locator = (By.XPATH, '//button[@data-dp-element="action-next"]')
     if question['slug'] == 'arrival_date':
-        day_month = (By.CSS_SELECTOR, "div.day-13")
+        get_all = browser.find_elements(By.CLASS_NAME, "dp--future")
+        get_all[2].click()
     else:
-        day_month = (By.CSS_SELECTOR, "div.day-18")
-    safe_element_click(browser, svg_locator)
-    safe_element_click(browser, day_month)   
+        get_all = browser.find_elements(By.CLASS_NAME, "dp--future")
+        get_all[5].click()
+    safe_element_click(browser, svg_locator) 
 def email(question, wait, browser, data):
     try: 
       if len(browser.find_elements(By.NAME, 'applicant.0.' + question['slug'])) > 0:
@@ -430,6 +423,7 @@ def file_upload(question, wait, browser, data):
             file_upload_in[0].send_keys(get_image)
             accept_upload = WebDriverWait(browser, 120).until(EC.element_to_be_clickable((By.XPATH, '//button[@data-handle="acceptFileUploadBtn"]')))
             accept_upload.click()
+            WebDriverWait(browser, 8).until(EC.element_to_be_clickable((By.ID, 'nextDocumentBtn'))).click()
         except:
             pass
     else:
@@ -442,6 +436,7 @@ def file_upload(question, wait, browser, data):
             file_upload_in[0].send_keys(get_image)
             accept_upload = WebDriverWait(browser, 120).until(EC.element_to_be_clickable((By.XPATH, '//button[@data-handle="acceptFileUploadBtn"]')))
             accept_upload.click()
+            WebDriverWait(browser, 8).until(EC.element_to_be_clickable((By.ID, 'nextDocumentBtn'))).click()
         except:
             pass 
 def datepicker(question, wait, browser, data):

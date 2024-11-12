@@ -33,8 +33,7 @@ def doc_upload(url):
         go_to_order_num.click()
         wait.until(EC.visibility_of_element_located((By.TAG_NAME, 'h1')))
 
-        info_details = wait.until(EC.element_to_be_clickable((By.XPATH, '//div[@data-handle="dl-info-title"]')))
-        info_details.click()
+        
         browser.save_screenshot('/Users/Chapis/Desktop/Automation/Automation/automations/Admin/Upload_image/' + 'see_docs_user_1.png')
         info_user = wait.until(EC.element_to_be_clickable((By.XPATH, '//div[@data-handle="applicant-details"]')))
         info_user.click()

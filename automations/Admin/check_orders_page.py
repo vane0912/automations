@@ -45,8 +45,7 @@ def check_orders(url):
         csa_details.click()
         notes_details = wait.until(EC.element_to_be_clickable((By.XPATH, '//div[@data-handle="dl-notes-title"]')))
         notes_details.click()
-        info_details = wait.until(EC.element_to_be_clickable((By.XPATH, '//div[@data-handle="dl-info-title"]')))
-        info_details.click()
+        
         browser.execute_script("window.scrollTo(0, 400)")
         browser.save_screenshot('/Users/Chapis/Desktop/Automation/Automation/automations/Admin/Orders_page/' + 'see_user_order_2.png')
         browser.execute_script("window.scrollTo(0, 800)")

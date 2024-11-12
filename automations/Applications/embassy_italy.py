@@ -1,6 +1,6 @@
 from ..imports import *
 from ..status_functions import *
-def TR_App_P2(data):
+def EMBASSY_ITALY(data):
     setArguments(data)
     Global_Variables['Order_Numbers'] = []
     chrome_options = Options()
@@ -9,12 +9,14 @@ def TR_App_P2(data):
     chrome_options.add_argument('--no-sandbox')
     chrome_options.add_argument('--disable-dev-shm-usage')
     browser = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
-    wait = WebDriverWait(browser, 50)
+    wait = WebDriverWait(browser, 40)
     try:
         for order in range(int(Global_Variables['N. Orders'])):
             try:
-                run_orders(browser, wait, order, 10135, '38', 'MX', '/turkey/apply-now')
+                run_orders(browser, wait, order, 10100, '0', 'US', '/italy')
             except Exception as e:
+                browser.get_screenshot_as_file(os.getcwd() + '/automations/Applications/saved_screenshots/Error/error.png')
                 send_result('Failed',e)
     except Exception as e:
+        browser.get_screenshot_as_file(os.getcwd() + '/automations/Applications/saved_screenshots/Error/error.png')
         send_result('Failed',e)

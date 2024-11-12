@@ -8,6 +8,7 @@ from .Applications.oman_eVisa import OMAN_EVISA_30_DAYS
 from .Applications.australia_eta import AUSTRALIA_ETA
 from .Admin.check_orders_page import check_orders
 from .Admin.doc_upload import doc_upload
+from .Applications.embassy_italy import EMBASSY_ITALY
 
 automations_list_admin = [
     {
@@ -191,6 +192,27 @@ automations_list_applications = [
             'Country' : 'Oman',
             'Type': OMAN_EVISA_30_DAYS,
             'Enabled': True,
+            'Requirements': [
+                {
+                    'Label': 'ULR',
+                    'Type': 'default',
+                },
+                {
+                    'Label': 'Email',
+                    'Type': 'default',
+                },
+                {
+                    'Label': 'Status',
+                    'Status_Available': ['Received']
+                }
+            ]
+        },
+        {
+            'Title': 'Embassy-registration-Us-Citizen',
+            'Subtitles': ['Only for US citizens'],
+            'Country' : 'United states',
+            'Type': EMBASSY_ITALY,
+            'Enabled': False,
             'Requirements': [
                 {
                     'Label': 'ULR',
